@@ -1,0 +1,34 @@
+﻿@namespace Client.App.Shared.Dialogs
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5">
+            <MudText>@ContentTitle</MudText>
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>@ContentText</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="ConfirmButtonColor" Variant="Variant.Filled" OnClick="Submit">@ConfirmButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string ContentTitle { get; set; }
+
+    [Parameter] public string ContentText { get; set; }
+
+    [Parameter] public string ConfirmButtonText { get; set; } = "Confirm";
+
+    [Parameter] public Color ConfirmButtonColor { get; set; } = Color.Primary;
+
+    void Submit()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}
