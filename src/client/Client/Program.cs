@@ -10,7 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor()
+      .AddHubOptions(options =>
+      {
+          options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+          options.EnableDetailedErrors = true;
+          options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+          options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+          options.MaximumParallelInvocationsPerClient = 1;
+          options.MaximumReceiveMessageSize = 32 * 1024;
+          options.StreamBufferCapacity = 10;
+      }); 
+
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
 {
