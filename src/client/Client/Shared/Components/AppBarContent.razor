@@ -1,31 +1,5 @@
 ﻿@*<MudSpacer />
 
-<MudHidden Breakpoint="Breakpoint.SmAndDown">
-    <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
-        1 <MudAvatar Style="height:20px; width:20px" Class="mx-2 align-self-center" Image="@AppIcons.TFuelLogo"></MudAvatar> ≈ @TFuelPrice.ToString("N4") USD
-    </MudChip>
-</MudHidden>
-
-@if (!string.IsNullOrEmpty(ShortenWalletAddress))
-{
-    <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudChip Class="ml-1 cursor-pointer" Color="Color.Primary" Variant="Variant.Text" OnClick="@(() => InvokeUpdateWalletModalAsync())">@ShortenWalletAddress</MudChip>
-    </MudHidden>
-
-    <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudChip Class="ml-1" Color="Color.Primary" Variant="Variant.Text">
-            @WalletBalance
-            <MudAvatar Style="height:20px; width:20px" Class="ml-2 align-self-center" Image="@AppIcons.TFuelLogo"></MudAvatar>
-        </MudChip>
-    </MudHidden>
-}
-else
-{
-    <MudHidden Breakpoint="Breakpoint.Xs">
-        <MudChip Class="cursor-pointer" Color="Color.Info" OnClick="@(() => InvokeUpdateWalletModalAsync())">Add Wallet</MudChip>
-    </MudHidden>
-}
-
 <MudMenu Class="ml-3" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Variant="Variant.Filled" Color="Color.Secondary">
     <ActivatorContent>
         <MudChip Color="Color.Secondary" Icon="@Icons.Material.Filled.Person">

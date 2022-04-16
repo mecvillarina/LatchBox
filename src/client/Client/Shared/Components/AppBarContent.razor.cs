@@ -8,8 +8,6 @@ namespace Client.Shared.Components
     {
         public string Name { get; set; }
 
-        public double TFuelPrice { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
             await LoadDataAsync();

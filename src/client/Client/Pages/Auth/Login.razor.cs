@@ -1,17 +1,14 @@
 ﻿using Blazored.FluentValidation;
-using Client.Infrastructure.Managers;
-using Client.Infrastructure.Exceptions;
+using Client.Parameters;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using System;
-using System.Threading.Tasks;
 
-namespace Client.Pages.Account
+namespace Client.Pages.Auth
 {
     public partial class Login
     {
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
+        private LoginParameter Model { get; set; } = new();
         public bool IsProcessing { get; set; }
 
         private async Task SubmitAsync()
@@ -19,6 +16,8 @@ namespace Client.Pages.Account
             if (Validated)
             {
                 IsProcessing = true;
+                string rootpath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory());
+                bool? result = await DialogService.ShowMessageBox("Path", rootpath, yesText: "Ok");
 
                 try
                 {
