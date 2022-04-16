@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Client.Extensions;
 using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Managers;
+using Client.Infrastructure.Models;
 using Client.Services;
 using MudBlazor;
 using MudBlazor.Services;
@@ -25,7 +26,7 @@ builder.Services.AddServerSideBlazor()
 #if RELEASE
 builder.Services.AddSignalR().AddAzureSignalR();
 #endif
-
+builder.Services.Configure<NeoSettings>(builder.Configuration.GetSection("NEO"));
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
 {
