@@ -1,6 +1,5 @@
 using Blazored.LocalStorage;
 using Client.Extensions;
-using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Managers;
 using Client.Infrastructure.Models;
 using Client.Services;
@@ -37,7 +36,6 @@ builder.Services.AddMudServices(configuration =>
     configuration.SnackbarConfiguration.ShowCloseIcon = false;
 });
 builder.Services.AddScoped<ClientPreferenceManager>();
-builder.Services.AddScoped<AppRouteViewService>();
 builder.Services.AddScoped<IAppDialogService, AppDialogService>();
 builder.Services.AddManagers();
 builder.Services.AddScoped<AppBreakpointService>();

@@ -9,8 +9,6 @@ namespace Client.Pages.Auth
 {
     public partial class Login
     {
-        [Inject] public IAuthManager AuthManager { get; set; }
-
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private LoginParameter Model { get; set; } = new();
@@ -26,7 +24,7 @@ namespace Client.Pages.Auth
         {
             if (Validated)
             {
-                if(WalletBrowserFile == null)
+                if (WalletBrowserFile == null)
                 {
                     AppDialogService.ShowError("Please select wallet file path");
                     return;
@@ -34,18 +32,17 @@ namespace Client.Pages.Auth
 
                 IsProcessing = true;
 
-                var block = await AuthManager.Login(WalletBrowserFile, Model.Password);
+                await AuthManager.Login(WalletBrowserFile, Model.Password);
+                var isAuthenticated = await AuthManager.IsAuthenticated();
 
-                bool? result = await DialogService.ShowMessageBox("Path", block.ToString(), yesText: "Ok");
-
-                try
+                if (isAuthenticated)
                 {
-                    //await Task.Delay(1000);
-                    //NavigationManager.NavigateTo("/", true);
+                    await Task.Delay(1000);
+                    NavigationManager.NavigateTo("/", true);
                 }
-                catch (Exception ex)
+                else
                 {
-                    AppDialogService.ShowError(ex.Message);
+                    AppDialogService.ShowError("Open wallet error, please check wallet file or password and retry");
                 }
 
                 IsProcessing = false;

@@ -18,7 +18,7 @@ namespace Client.Shared
 
         private async Task<bool> CheckAuthorization()
         {
-            var isAuthenticated = await AppRouteViewService.IsAuthenticated();
+            var isAuthenticated = await AuthManager.IsAuthenticated();
 
             if (!isAuthenticated)
             {
