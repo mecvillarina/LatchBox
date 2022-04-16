@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 
-namespace Client.App.Infrastructure.Managers
+namespace Client.Infrastructure.Managers
 {
     public class ManagerToolkit : IManagerToolkit
     {

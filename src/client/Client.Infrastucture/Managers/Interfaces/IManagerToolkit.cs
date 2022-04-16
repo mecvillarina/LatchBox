@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Client.App.Infrastructure.Managers
+namespace Client.Infrastructure.Managers
 {
     public interface IManagerToolkit : IManager
     {

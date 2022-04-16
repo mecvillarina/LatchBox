@@ -6,7 +6,7 @@ using MudBlazor;
 using System;
 using System.Threading.Tasks;
 
-namespace Client.App.Pages.Account
+namespace Client.Pages.Account
 {
     public partial class Login
     {
@@ -23,11 +23,11 @@ namespace Client.App.Pages.Account
                 try
                 {
                     await Task.Delay(1000);
-                    _navigationManager.NavigateTo("/", true);
+                    NavigationManager.NavigateTo("/", true);
                 }
                 catch (Exception ex)
                 {
-                    _appDialogService.ShowError(ex.Message);
+                    AppDialogService.ShowError(ex.Message);
                 }
 
                 IsProcessing = false;

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Client.App.Infrastructure.Managers
+namespace Client.Infrastructure.Managers
 {
     public class ManagerBase
     {

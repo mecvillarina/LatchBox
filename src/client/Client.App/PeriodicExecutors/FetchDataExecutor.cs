@@ -1,4 +1,4 @@
-﻿using Client.App.Infrastructure.Managers;
+﻿using Client.Infrastructure.Managers;
 using Client.App.Services;
 using System;
 using System.Timers;

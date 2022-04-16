@@ -1,5 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using Client.App.Infrastructure.Managers;
+using Client.Infrastructure.Managers;
 using Client.App.PeriodicExecutors;
 using Client.App.Services;
 using Client.Infrastructure.Authentication;

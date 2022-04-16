@@ -1,10 +1,15 @@
-﻿using MudBlazor;
+﻿using Blazored.LocalStorage;
+using Client.Infrastructure.Managers;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using System;
 using System.Threading.Tasks;
 
 namespace Client.App.Pages
 {
     public partial class HomePage
     {
+        [Inject] public IRpcManager _rpcManager { get; set; }
         protected override void OnInitialized()
         {
             AppBreakpointService.BreakpointChanged += async (s, e) => await SetStylesAsync(e);
@@ -15,6 +20,7 @@ namespace Client.App.Pages
             if (firstRender)
             {
                 await SetStylesAsync(AppBreakpointService.CurrentBreakpoint);
+                Console.WriteLine(await _rpcManager.GetBlock());
             }
         }
 
