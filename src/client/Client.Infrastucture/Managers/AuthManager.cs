@@ -14,7 +14,13 @@ namespace Client.Infrastructure.Managers
         {
         }
 
-        public async Task<bool> Login(IBrowserFile walletFile, string password)
+        public async Task<bool> IsAuthenticated()
+        {
+            var wallet = await ManagerToolkit.GetWalletAsync();
+            return wallet != null;
+        }
+
+        public async Task Login(IBrowserFile walletFile, string password)
         {
             string filename = $"{Guid.NewGuid()}.json";
             var tempFilePath = $"{ManagerToolkit.FilePathTemp}/{filename}";
@@ -28,30 +34,24 @@ namespace Client.Infrastructure.Managers
             NEP6Wallet wallet = new NEP6Wallet(tempFilePath, ManagerToolkit.NeoProtocolSettings);
             try
             {
-                KeyPair keyPair2;
                 using (wallet.Unlock(password))
                 {
                     var addressess = wallet.GetAccounts().Select(x => x.Address).ToList();
                     var walletFilePath = $"{ManagerToolkit.FilePathWallet}/{filename}";
                     File.Copy(tempFilePath, walletFilePath);
-                    DeleteFile(tempFilePath);
                     await ManagerToolkit.SaveWalletAsync(filename, addressess);
-                    return true;
                 }
             }
             catch
             {
-
+                // do nothing
             }
-
-            return false;
-        }
-
-        private void DeleteFile(string tempFilePath)
-        {
-            if (File.Exists(tempFilePath))
+            finally
             {
-                File.Delete(tempFilePath);
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Client.Infrastructure.Constants;
 using Client.Infrastructure.Models;
 using Microsoft.Extensions.Options;
 using Neo;
@@ -50,12 +51,12 @@ namespace Client.Infrastructure.Managers
                 Addresses = addresses
             };
 
-            await _localStorage.SetItemAsync("Wallet", wallet);
+            await _localStorage.SetItemAsync(StorageConstants.Local.Wallet, wallet);
         }
 
         public async Task<WalletInformation> GetWalletAsync()
         {
-            return await _localStorage.GetItemAsync<WalletInformation>("Wallet");
+            return await _localStorage.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
         }
     }
 }
