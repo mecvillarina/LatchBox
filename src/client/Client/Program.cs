@@ -39,6 +39,7 @@ builder.Services.AddScoped<ClientPreferenceManager>();
 builder.Services.AddScoped<IAppDialogService, AppDialogService>();
 builder.Services.AddManagers();
 builder.Services.AddScoped<AppBreakpointService>();
+builder.Services.AddScoped<ClipboardService>();
 //builder.Services.AddScoped<FetchDataExecutor>();
 //builder.Services.AddScoped<RenderUIExecutor>();
 

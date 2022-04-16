@@ -8,7 +8,7 @@ namespace Client.Infrastructure.Managers
     public interface IWalletManager : IManager
     {
         Task<List<string>> GetAddresses();
-        Task<List<WalletAddressAssets>> GetAddressesAssetsAsync();
-        Task<WalletAddressAssets> GetAddressAssets(string address, List<UInt160> exceptAssetHashes);
+        Task<List<WalletAddressAsset>> GetAddressesAssetsAsync();
+        Task<List<WalletAddressAsset>> GetAddressAssets(string address, List<UInt160> exceptAssetHashes);
     }
 }

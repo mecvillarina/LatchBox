@@ -2,9 +2,8 @@
 
 namespace Client.Infrastructure.Models
 {
-    public class WalletAddressAssets
+    public class WalletAddressAsset : AssetToken
     {
         public string Address { get; set; }
-        public List<AssetToken> Assets { get; set; }
     }
 }
