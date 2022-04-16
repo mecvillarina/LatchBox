@@ -21,8 +21,8 @@ namespace Client.Pages.Auth
 
                 try
                 {
-                    await Task.Delay(1000);
-                    NavigationManager.NavigateTo("/", true);
+                    //await Task.Delay(1000);
+                    //NavigationManager.NavigateTo("/", true);
                 }
                 catch (Exception ex)
                 {
