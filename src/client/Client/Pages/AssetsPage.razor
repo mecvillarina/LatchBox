@@ -2,3 +2,52 @@
 
 @attribute [Authorize]
 
+<MudContainer MaxWidth="MaxWidth.False">
+    <div class="d-flex">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Assets</MudText>
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Assets</MudText>
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+        </MudHidden>
+    </div>
+</MudContainer>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+    @if (!IsLoaded)
+    {
+        //skeleton
+    }
+    else
+    {
+        <MudPaper Square="true" Elevation="10" Class="grey darken-4">
+
+            <MudTable Items="@AddressAssets" GroupBy="@_groupDefinition" GroupHeaderStyle="background-color:var(--mud-palette-background-grey)" GroupFooterClass="mb-4" Class="mx-0 grey darken-4" Breakpoint="Breakpoint.None" FixedHeader="true">
+                <ColGroup>
+                    <col />
+                    <col />
+                    <col />
+                </ColGroup>
+                <HeaderContent>
+                    <MudTh>Symbol</MudTh>
+                    <MudTh>Asset Hash</MudTh>
+                    <MudTh>Balance</MudTh>
+                </HeaderContent>
+                <GroupHeaderTemplate>
+                    <MudTh Class="mud-table-cell-custom-group" colspan="3">
+                        <span class="cursor-pointer" @onclick="@(async () => await OnCopyWalletAddressAsync(context.Key.ToString()))">@($"{context.GroupName}: {context.Key}")</span>
+                    </MudTh>
+                </GroupHeaderTemplate>
+                <RowTemplate>
+                    <MudTd>@context.Symbol</MudTd>
+                    <MudTd>@context.AssetHash</MudTd>
+                    <MudTd>@context.Balance.ToString($"N{(int)context.Decimals}")</MudTd>
+                </RowTemplate>
+            </MudTable>
+
+        </MudPaper>
+    }
+
+</MudContainer>

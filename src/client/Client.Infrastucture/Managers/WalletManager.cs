@@ -2,6 +2,7 @@
 using Client.Infrastructure.Models;
 using Neo;
 using Neo.SmartContract.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -29,10 +30,10 @@ namespace Client.Infrastructure.Managers
             return new List<string>();
         }
 
-        public async Task<List<WalletAddressAssets>> GetAddressesAssetsAsync()
+        public async Task<List<WalletAddressAsset>> GetAddressesAssetsAsync()
         {
             var addresses = await GetAddresses();
-            var addressesAssets = new List<WalletAddressAssets>();
+            var addressesAssets = new List<WalletAddressAsset>();
 
             if (addresses.Any())
             {
@@ -43,46 +44,46 @@ namespace Client.Infrastructure.Managers
                 {
                     var addressAssets = await GetAddressAssets(address, exceptAssetHashes).ConfigureAwait(false);
 
-                    addressAssets.Assets.Insert(0,new AssetToken()
+                    addressAssets.Insert(0, new WalletAddressAsset()
                     {
+                        Address = address,
                         AssetHash = NativeContract.GAS.Hash,
-                        Balance = (BigInteger) (await ManagerToolkit.NeoWalletApi.GetGasBalanceAsync(address).ConfigureAwait(false)),
+                        Balance = await ManagerToolkit.NeoWalletApi.GetGasBalanceAsync(address).ConfigureAwait(false),
                         Symbol = NativeContract.GAS.Symbol,
                         Decimals = NativeContract.GAS.Decimals
                     });
 
-                    addressAssets.Assets.Insert(0, new AssetToken()
+                    addressAssets.Insert(0, new WalletAddressAsset()
                     {
+                        Address = address,
                         AssetHash = NativeContract.NEO.Hash,
                         Balance = await ManagerToolkit.NeoWalletApi.GetNeoBalanceAsync(address).ConfigureAwait(false),
                         Symbol = NativeContract.NEO.Symbol,
                         Decimals = NativeContract.NEO.Decimals
                     });
 
-                    addressAssets.Assets.Insert(0, new AssetToken()
+                    addressAssets.Insert(0, new WalletAddressAsset()
                     {
+                        Address = address,
                         AssetHash = platformToken.AssetHash,
-                        Balance = await ManagerToolkit.NeoWalletApi.GetTokenBalanceAsync(platformToken.AssetHash.ToString(), address).ConfigureAwait(false),
+                        Balance = Convert.ToDecimal(((double)(await ManagerToolkit.NeoWalletApi.GetTokenBalanceAsync(platformToken.AssetHash.ToString(), address).ConfigureAwait(false))) / Math.Pow(10, (int)platformToken.Decimals)),
                         Symbol = platformToken.Symbol,
                         Decimals = platformToken.Decimals
                     });
 
-                    addressesAssets.Add(addressAssets);
+                    addressesAssets.AddRange(addressAssets);
                 }
             }
 
             return addressesAssets;
         }
 
-        public async Task<WalletAddressAssets> GetAddressAssets(string address, List<UInt160> exceptAssetHashes)
+        public async Task<List<WalletAddressAsset>> GetAddressAssets(string address, List<UInt160> exceptAssetHashes)
         {
             var assets = await ManagerToolkit.NeoRpcClient.GetNep17BalancesAsync(address).ConfigureAwait(false);
 
-            var walletAddress = new WalletAddressAssets()
-            {
-                Address = address,
-                Assets = new List<AssetToken>()
-            };
+            var addressAssets = new List<WalletAddressAsset>();
+
 
             foreach (var assetBalance in assets.Balances)
             {
@@ -91,17 +92,20 @@ namespace Client.Infrastructure.Managers
                     var symbol = await ManagerToolkit.NeoNep17Api.SymbolAsync(assetBalance.AssetHash).ConfigureAwait(false);
                     var decimals = await ManagerToolkit.NeoNep17Api.DecimalsAsync(assetBalance.AssetHash).ConfigureAwait(false);
 
-                    walletAddress.Assets.Add(new AssetToken()
+                    var balance = Convert.ToDecimal((double)(assetBalance.Amount) / Math.Pow(10, (int)decimals));
+
+                    addressAssets.Add(new WalletAddressAsset()
                     {
+                        Address = address,
                         AssetHash = assetBalance.AssetHash,
-                        Balance = assetBalance.Amount,
+                        Balance = balance,
                         Symbol = symbol,
                         Decimals = decimals
                     });
                 }
             }
 
-            return walletAddress;
+            return addressAssets;
         }
 
 
