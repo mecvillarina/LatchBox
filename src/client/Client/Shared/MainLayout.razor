@@ -6,7 +6,7 @@
 <MudDialogProvider Position="DialogPosition.Center" MaxWidth="MaxWidth.Small" FullWidth="true" CloseButton="false" DisableBackdropClick="true" CloseOnEscapeKey="false" />
 <MudSnackbarProvider />
 
-@if (IsAuthenticated)
+@if (IsAuthVerified)
 {
     <MudLayout>
         <MudAppBar Elevation="5" Dense="false">

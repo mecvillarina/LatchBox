@@ -10,6 +10,7 @@ namespace Client.Shared
 {
     public partial class AuthLayout : IAsyncDisposable
     {
+        private bool IsAuthVerified { get; set; }
         public string MainContainerClass { get; set; }
         public MudTheme CurrentTheme { get; set; }
 
@@ -24,13 +25,31 @@ namespace Client.Shared
             await AppBreakpointService.DisposeAsync();
         }
 
+        private async Task<bool> CheckAuthorization()
+        {
+            var isAuthenticated = await AppRouteViewService.IsAuthenticated();
+
+            if (isAuthenticated)
+            {
+                NavigationManager.NavigateTo("/", true);
+            }
+
+            return isAuthenticated;
+        }
+
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                AppBreakpointService.BreakpointChanged += HandleBreakpointChanged;
-                await AppBreakpointService.InitAsync();
-                await SetStyles(AppBreakpointService.CurrentBreakpoint);
+                var isAuthenticated = await CheckAuthorization();
+
+                if (!isAuthenticated)
+                {
+                    AppBreakpointService.BreakpointChanged += HandleBreakpointChanged;
+                    await AppBreakpointService.InitAsync();
+                    IsAuthVerified = true;
+                    await SetStyles(AppBreakpointService.CurrentBreakpoint);
+                }
             }
 
             await base.OnAfterRenderAsync(firstRender);

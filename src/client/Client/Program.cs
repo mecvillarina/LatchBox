@@ -48,6 +48,3 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
-
-var routeViewService = app.Services.GetRequiredService<AppRouteViewService>();
-await routeViewService.PopulateAsync();

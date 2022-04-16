@@ -15,12 +15,10 @@ namespace Client.Infrastructure.Authentication
             _localStorage = localStorage;
         }
 
-        public bool IsAuthenticated { get; private set; }
-
-        public async Task PopulateAsync()
+        public async Task<bool> IsAuthenticated()
         {
             var walletInfo = await _localStorage.GetItemAsync<string>(StorageConstants.Local.WalletInfo);
-            IsAuthenticated = walletInfo == null;
+            return walletInfo == null;
         }
     }
 }

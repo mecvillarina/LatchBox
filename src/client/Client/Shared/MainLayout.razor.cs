@@ -7,40 +7,45 @@ namespace Client.Shared
 {
     public partial class MainLayout : IAsyncDisposable
     {
-        private bool IsAuthenticated { get; set; }
+        private bool IsAuthVerified { get; set; }
         private bool DrawerOpen { get; set; } = true;
         private MudTheme CurrentTheme { get; set; }
 
         protected override void OnInitialized()
         {
             CurrentTheme = ClientPreferenceManager.GetCurrentTheme();
-            //FetchDataExecutor.StartExecuting();
-            //RenderUIExecutor.StartExecuting();
         }
 
-        private async Task LoadDataAsync()
+        private async Task<bool> CheckAuthorization()
         {
-            //IsAuthenticated = AppRouteViewService.IsAuthenticated;
+            var isAuthenticated = await AppRouteViewService.IsAuthenticated();
+
+            if (!isAuthenticated)
+            {
+                NavigationManager.NavigateTo("/auth/login", true);
+            }
+
+            return isAuthenticated;
         }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                //await AppBreakpointService.InitAsync();
-                //await LoadDataAsync();
-                //StateHasChanged();
+                var isAuthenticated = await CheckAuthorization();
 
-                if (!IsAuthenticated)
+                if (isAuthenticated)
                 {
-                    NavigationManager.NavigateTo("/", true);
+                    await AppBreakpointService.InitAsync();
+                    IsAuthVerified = true;
+                    await InvokeAsync(StateHasChanged);
                 }
             }
         }
 
         public async ValueTask DisposeAsync()
         {
-            //await AppBreakpointService.DisposeAsync();
+            await AppBreakpointService.DisposeAsync();
         }
     }
 }
