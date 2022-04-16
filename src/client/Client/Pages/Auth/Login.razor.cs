@@ -39,6 +39,7 @@ namespace Client.Pages.Auth
                 {
                     await Task.Delay(1000);
                     NavigationManager.NavigateTo("/", true);
+                    return;
                 }
                 else
                 {
