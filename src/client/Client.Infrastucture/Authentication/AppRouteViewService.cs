@@ -18,7 +18,7 @@ namespace Client.Infrastructure.Authentication
         public async Task<bool> IsAuthenticated()
         {
             var walletInfo = await _localStorage.GetItemAsync<string>(StorageConstants.Local.WalletInfo);
-            return walletInfo == null;
+            return walletInfo != null;
         }
     }
 }
