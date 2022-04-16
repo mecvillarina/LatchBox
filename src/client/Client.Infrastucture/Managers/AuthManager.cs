@@ -28,7 +28,6 @@ namespace Client.Infrastructure.Managers
             NEP6Wallet wallet = new NEP6Wallet(tempFilePath, ManagerToolkit.NeoProtocolSettings);
             try
             {
-                password = "@7tb7KFPA";
                 KeyPair keyPair2;
                 using (wallet.Unlock(password))
                 {
