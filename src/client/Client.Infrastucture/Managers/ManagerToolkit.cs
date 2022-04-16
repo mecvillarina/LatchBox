@@ -66,14 +66,14 @@ namespace Client.Infrastructure.Managers
             return await _localStorageService.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
         }
 
-        public async Task<PlatformToken> GetPlatformTokenAsync()
+        public async Task<AssetToken> GetPlatformTokenAsync()
         {
             var tokenHash = _neoSettings.PlatformTokenHash;
             var scriptHash = Neo.Network.RPC.Utility.GetScriptHash(tokenHash, ProtocolSettings.Default);
             var symbol = await NeoNep17Api.SymbolAsync(scriptHash).ConfigureAwait(false);
             var decimals = await NeoNep17Api.DecimalsAsync(scriptHash).ConfigureAwait(false);
 
-            return new PlatformToken()
+            return new AssetToken()
             {
                 AssetHash = scriptHash,
                 Symbol = symbol,
