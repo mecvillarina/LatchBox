@@ -1,5 +1,10 @@
 ﻿//using Neo;
 //using Neo.Network.RPC;
+using Client.Infrastructure.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Neo;
+using Neo.Network.RPC;
 using System;
 using System.Threading.Tasks;
 
@@ -9,14 +14,13 @@ namespace Client.Infrastructure.Managers
     {
         public RpcManager(IManagerToolkit managerToolkit) : base(managerToolkit)
         {
+
         }
 
         public async Task<uint> GetBlock()
         {
-            //RpcClient client = new RpcClient(new Uri("http://seed1t4.neo.org:20332"), null, null, ProtocolSettings.Load("config.json"));
-            //uint blockCount = await client.GetBlockCountAsync().ConfigureAwait(false);
-            //return blockCount;
-            return 0;
+            uint blockCount = await ManagerToolkit.NeoRpcClient.GetBlockCountAsync().ConfigureAwait(false);
+            return blockCount;
         }
     }
 }

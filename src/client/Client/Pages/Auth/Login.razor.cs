@@ -1,4 +1,5 @@
 ﻿using Blazored.FluentValidation;
+using Client.Infrastructure.Managers;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -8,13 +9,15 @@ namespace Client.Pages.Auth
 {
     public partial class Login
     {
+        [Inject] public IAuthManager AuthManager { get; set; }
+
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         private LoginParameter Model { get; set; } = new();
         public bool IsProcessing { get; set; }
 
         private string WalletFilename = "Please select file location";
-        private Stream WalletFileStream;
+        private IBrowserFile WalletBrowserFile;
         private bool PasswordVisibility;
         private InputType PasswordInput = InputType.Password;
         private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -23,23 +26,17 @@ namespace Client.Pages.Auth
         {
             if (Validated)
             {
-                if(WalletFileStream == null)
+                if(WalletBrowserFile == null)
                 {
                     AppDialogService.ShowError("Please select wallet file path");
                     return;
                 }
 
                 IsProcessing = true;
-                string rootpath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "..", "temp");
 
-                if (!Directory.Exists(rootpath))
-                {
-                    Directory.CreateDirectory(rootpath);
-                }
+                var block = await AuthManager.Login(WalletBrowserFile, Model.Password);
 
-                rootpath = @$"{rootpath}\{Guid.NewGuid().ToString()}.json";
-                File.WriteAllText(rootpath, "Hello World");
-                bool? result = await DialogService.ShowMessageBox("Path", rootpath, yesText: "Ok");
+                bool? result = await DialogService.ShowMessageBox("Path", block.ToString(), yesText: "Ok");
 
                 try
                 {
@@ -79,7 +76,7 @@ namespace Client.Pages.Auth
             {
                 if (file.Name.EndsWith(".json"))
                 {
-                    WalletFileStream = file.OpenReadStream(maxFileSize);
+                    WalletBrowserFile = file;
                     WalletFilename = file.Name;
                 }
                 else

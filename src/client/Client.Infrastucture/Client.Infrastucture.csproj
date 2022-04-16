@@ -13,7 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.0" />
     <PackageReference Include="MudBlazor" Version="6.0.7" />
-    <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+    <PackageReference Include="Neo.Network.RPC.RpcClient" Version="3.1.0" />
     <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="9.2.1" />
   </ItemGroup>
 
