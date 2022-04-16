@@ -67,8 +67,6 @@ namespace Client.Pages.Auth
 
         private async Task OnWalletFileChanged(InputFileChangeEventArgs e)
         {
-            long maxFileSize = 1024 * 1024 * 1;
-
             foreach (var file in e.GetMultipleFiles(1))
             {
                 if (file.Name.EndsWith(".json"))

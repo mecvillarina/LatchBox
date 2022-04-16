@@ -13,20 +13,27 @@ namespace Client.Infrastructure.Managers
 {
     public class ManagerToolkit : IManagerToolkit
     {
-        private readonly ILocalStorageService _localStorage;
+        private readonly ILocalStorageService _localStorageService;
+        private readonly NeoSettings _neoSettings;
+
         public RpcClient NeoRpcClient { get; }
         public ProtocolSettings NeoProtocolSettings { get; }
+        public WalletAPI NeoWalletApi { get; }
+        public Nep17API NeoNep17Api { get; }
+
         public string FilePathRoot => Directory.GetCurrentDirectory();
         public string FilePathTemp => Path.Combine(Directory.GetCurrentDirectory(), "..", "temp");
         public string FilePathWallet => Path.Combine(Directory.GetCurrentDirectory(), "..", "wallet");
 
-        public ManagerToolkit(ILocalStorageService localStorage, IOptions<NeoSettings> neoSettingsOption)
+        public ManagerToolkit(ILocalStorageService localStorageService, IOptions<NeoSettings> neoSettingsOption)
         {
-            _localStorage = localStorage;
+            _localStorageService = localStorageService;
+            _neoSettings = neoSettingsOption.Value;
 
-            NeoProtocolSettings = ProtocolSettings.Load(neoSettingsOption.Value.ProtocolSettingsConfigFile);
-            NeoRpcClient = new RpcClient(new Uri(neoSettingsOption.Value.RpcUrl), null, null, NeoProtocolSettings);
-
+            NeoProtocolSettings = ProtocolSettings.Load(_neoSettings.ProtocolSettingsConfigFile);
+            NeoRpcClient = new RpcClient(new Uri(_neoSettings.RpcUrl), null, null, NeoProtocolSettings);
+            NeoWalletApi = new WalletAPI(NeoRpcClient);
+            NeoNep17Api = new Nep17API(NeoRpcClient);
             Init();
         }
 
@@ -51,12 +58,27 @@ namespace Client.Infrastructure.Managers
                 Addresses = addresses
             };
 
-            await _localStorage.SetItemAsync(StorageConstants.Local.Wallet, wallet);
+            await _localStorageService.SetItemAsync(StorageConstants.Local.Wallet, wallet);
         }
 
         public async Task<WalletInformation> GetWalletAsync()
         {
-            return await _localStorage.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
+            return await _localStorageService.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
+        }
+
+        public async Task<PlatformToken> GetPlatformTokenAsync()
+        {
+            var tokenHash = _neoSettings.PlatformTokenHash;
+            var scriptHash = Neo.Network.RPC.Utility.GetScriptHash(tokenHash, ProtocolSettings.Default);
+            var symbol = await NeoNep17Api.SymbolAsync(scriptHash).ConfigureAwait(false);
+            var decimals = await NeoNep17Api.DecimalsAsync(scriptHash).ConfigureAwait(false);
+
+            return new PlatformToken()
+            {
+                AssetHash = scriptHash,
+                Symbol = symbol,
+                Decimals = decimals,
+            };
         }
     }
 }

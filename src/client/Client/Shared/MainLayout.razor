@@ -22,11 +22,19 @@
             else
             {
                 <MudDrawerHeader>
-                    <div>
-                        <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
-                    </div>
+                    <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
                 </MudDrawerHeader>
             }
+
+            <MudNavMenu Rounded="true" Margin="Margin.Dense">
+                <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+                <MudNavLink Href="/assets" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBalanceWallet">Assets</MudNavLink>
+                <MudNavGroup Title="Locks" Icon="@Icons.Material.Filled.Dvr" Expanded="true">
+                    <MudNavLink Href="/my/locks" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Lock">Your Locks</MudNavLink>
+                    <MudNavLink Href="/my/claims" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Redeem">Your Claims</MudNavLink>
+                    <MudNavLink Href="/my/refunds" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LockReset">Your Refunds</MudNavLink>
+                </MudNavGroup>
+            </MudNavMenu>
         </MudDrawer>
         <MudMainContent>
             <MudContainer MaxWidth="MaxWidth.False" Class="mt-4 mb-2 px-2 px-sm-4 py-4">

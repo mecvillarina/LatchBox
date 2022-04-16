@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using Neo.Wallets;
 using Neo.Wallets.NEP6;
 using System;
 using System.IO;

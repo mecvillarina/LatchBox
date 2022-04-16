@@ -10,11 +10,15 @@ namespace Client.Infrastructure.Managers
     {
         RpcClient NeoRpcClient { get; }
         ProtocolSettings NeoProtocolSettings { get; }
+        WalletAPI NeoWalletApi { get; }
+        Nep17API NeoNep17Api { get; }
+
         string FilePathRoot { get; }
         string FilePathTemp { get; }
         string FilePathWallet { get; }
 
         Task SaveWalletAsync(string filename, List<string> addresses);
         Task<WalletInformation> GetWalletAsync();
+        Task<PlatformToken> GetPlatformTokenAsync();
     }
 }
