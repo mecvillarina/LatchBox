@@ -12,10 +12,8 @@ namespace Client.Infrastructure.Managers
 {
     public class WalletManager : ManagerBase, IWalletManager
     {
-        private readonly ILocalStorageService _localStorageService;
-        public WalletManager(IManagerToolkit managerToolkit, ILocalStorageService localStorageService) : base(managerToolkit)
+        public WalletManager(IManagerToolkit managerToolkit) : base(managerToolkit)
         {
-            _localStorageService = localStorageService;
         }
 
         public async Task<List<string>> GetAddresses()
