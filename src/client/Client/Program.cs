@@ -20,7 +20,11 @@ builder.Services.AddServerSideBlazor()
           options.MaximumParallelInvocationsPerClient = 1;
           options.MaximumReceiveMessageSize = 32 * 1024;
           options.StreamBufferCapacity = 10;
-      }); 
+      });
+
+#if RELEASE
+builder.Services.AddSignalR().AddAzureSignalR();
+#endif
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
