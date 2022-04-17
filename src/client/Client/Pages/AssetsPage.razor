@@ -6,11 +6,11 @@
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Assets</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchAddressBalancesAsync" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Assets</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchAddressBalancesAsync" />
         </MudHidden>
     </div>
 </MudContainer>
@@ -35,7 +35,7 @@
                     <MudTd><span class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">@context.Address</span></MudTd>
                     <MudTd>
                         <span>
-                            @if (!IsBalanceLoaded)
+                            @if (string.IsNullOrEmpty(@context.NEOBalanceDisplay))
                             {
                                 <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
@@ -47,7 +47,7 @@
                     </MudTd>
                     <MudTd>
                         <span>
-                            @if (!IsBalanceLoaded)
+                            @if (string.IsNullOrEmpty(@context.GASBalanceDisplay))
                             {
                                 <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
@@ -59,7 +59,7 @@
                     </MudTd>
                     <MudTd>
                         <span>
-                            @if (!IsBalanceLoaded)
+                            @if (string.IsNullOrEmpty(@context.PlatformTokenBalanceDisplay))
                             {
                                 <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }

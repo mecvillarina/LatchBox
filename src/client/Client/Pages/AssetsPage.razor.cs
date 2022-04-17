@@ -10,7 +10,6 @@ namespace Client.Pages
     public partial class AssetsPage
     {
         public bool IsLoaded { get; set; }
-        public bool IsBalanceLoaded { get; set; }
         public List<AssetPageAddressBalance> AddressBalances { get; set; } = new();
 
         public AssetToken PlatformToken { get; set; }
@@ -24,30 +23,35 @@ namespace Client.Pages
                     var addresses = await WalletManager.GetAddressesAsync();
                     AddressBalances = addresses.Select(x => new AssetPageAddressBalance() { Address = x }).ToList();
                     PlatformToken = await AssetManager.GetPlatformTokenAsync();
-                    
+
                     IsLoaded = true;
                     StateHasChanged();
-                    foreach (var addressBalance in AddressBalances)
-                    {
-                        var neo = await AssetManager.GetTokenAsync(NativeContract.NEO.Hash, addressBalance.Address);
-                        var gas = await AssetManager.GetTokenAsync(NativeContract.GAS.Hash, addressBalance.Address);
-                        var platformToken = await AssetManager.GetTokenAsync(PlatformToken.AssetHash, addressBalance.Address);
-                        addressBalance.NEOBalanceDisplay = neo.Balance.ToBalanceDisplay(neo.Decimals);
-                        addressBalance.GASBalanceDisplay = gas.Balance.ToBalanceDisplay(gas.Decimals);
-                        addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToBalanceDisplay(platformToken.Decimals); 
-                    }
-
-
-                    IsBalanceLoaded = true;
-                    StateHasChanged();
+                    await FetchAddressBalancesAsync();
                 });
             }
         }
 
-        private async Task OnCopyWalletAddressAsync(string address)
+        private async Task FetchAddressBalancesAsync()
         {
-            await ClipboardService.WriteTextAsync(address);
-            AppDialogService.ShowSuccess($"{address} copied to clipboard.");
+            foreach (var addressBalance in AddressBalances)
+            {
+                addressBalance.NEOBalanceDisplay = null;
+                addressBalance.GASBalanceDisplay = null;
+                addressBalance.PlatformTokenBalanceDisplay = null;
+            }
+
+            StateHasChanged();
+
+            foreach (var addressBalance in AddressBalances)
+            {
+                var neo = await AssetManager.GetTokenAsync(NativeContract.NEO.Hash, addressBalance.Address);
+                var gas = await AssetManager.GetTokenAsync(NativeContract.GAS.Hash, addressBalance.Address);
+                var platformToken = await AssetManager.GetTokenAsync(PlatformToken.AssetHash, addressBalance.Address);
+                addressBalance.NEOBalanceDisplay = neo.Balance.ToBalanceDisplay(neo.Decimals);
+                addressBalance.GASBalanceDisplay = gas.Balance.ToBalanceDisplay(gas.Decimals);
+                addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToBalanceDisplay(platformToken.Decimals);
+                StateHasChanged();
+            }
         }
 
         private void InvokeAssetsPreviewerModal(string address)

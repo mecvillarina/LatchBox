@@ -1,0 +1,30 @@
+﻿@page "/my/refunds"
+
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.False">
+    <div class="d-flex">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Token Refunds</MudText>
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Token Refunds</MudText>
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+        </MudHidden>
+    </div>
+</MudContainer>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+    @if (!IsLoaded)
+    {
+        //skeleton
+    }
+    else
+    {
+        <MudPaper Square="true" Elevation="10" Class="grey darken-4">
+
+        </MudPaper>
+    }
+
+</MudContainer>

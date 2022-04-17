@@ -1,4 +1,4 @@
-﻿using Client.Infrastructure.Managers;
+﻿using Client.Infrastructure.Managers.Interfaces;
 
 namespace Client.Extensions
 {

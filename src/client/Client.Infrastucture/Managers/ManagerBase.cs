@@ -1,12 +1,4 @@
-﻿using Client.Infrastructure.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Neo;
-using Neo.Network.RPC;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using Client.Infrastructure.Managers.Interfaces;
 
 namespace Client.Infrastructure.Managers
 {

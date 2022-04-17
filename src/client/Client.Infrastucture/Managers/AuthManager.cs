@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Client.Infrastructure.Managers.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
 using Neo.Wallets.NEP6;
 using System;
 using System.IO;

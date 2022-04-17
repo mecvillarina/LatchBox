@@ -1,7 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using MudBlazor;
 using Client.Infrastructure.Constants;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Settings;
+using MudBlazor;
 using System.Threading.Tasks;
 
 namespace Client.Infrastructure.Managers
