@@ -1,35 +1,3 @@
-﻿@*<MudSpacer />
+﻿<MudSpacer />
 
-<MudMenu Class="ml-3" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Variant="Variant.Filled" Color="Color.Secondary">
-    <ActivatorContent>
-        <MudChip Color="Color.Secondary" Icon="@Icons.Material.Filled.Person">
-            <MudHidden Breakpoint="Breakpoint.Xs">
-                @Name
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp">
-                Account Information
-            </MudHidden>
-        </MudChip>
-    </ActivatorContent>
-    <ChildContent>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudMenuItem>@Name</MudMenuItem>
-            @if (!string.IsNullOrEmpty(ShortenWalletAddress))
-            {
-                <MudMenuItem OnClick="@(() => InvokeUpdateWalletModalAsync())">Address: @ShortenWalletAddress</MudMenuItem>
-                <MudMenuItem>
-                    <MudText Class="d-flex align-self-center">
-                        Balance: @WalletBalance
-                        <MudAvatar Style="height:20px; width:20px" Color="Color.Transparent" Class="ml-1 align-self-center" Image="@AppIcons.TFuelLogo"></MudAvatar>
-                    </MudText>
-                </MudMenuItem>
-            }
-            else
-            {
-                <MudMenuItem OnClick="@(() => InvokeUpdateWalletModalAsync())">Add Wallet</MudMenuItem>
-            }
-
-        </MudHidden>
-        <MudMenuItem OnClick="@(() => Logout())">Signout</MudMenuItem>
-    </ChildContent>
-</MudMenu>*@
+<MudIconButton Icon="@Icons.Material.Filled.Logout" OnClick="@(() => Logout())" Color="Color.Primary"  Variant="Variant.Filled" Size="Size.Small" />

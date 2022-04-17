@@ -19,6 +19,11 @@ namespace Client.Infrastructure.Managers
             return wallet != null;
         }
 
+        public async Task LogoutAsync()
+        {
+            await ManagerToolkit.ClearLocalStorageAsync();
+        }
+
         public async Task Login(IBrowserFile walletFile, string password)
         {
             string filename = $"{Guid.NewGuid()}.json";

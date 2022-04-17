@@ -25,7 +25,7 @@
 
             <MudItem xs="12">
                 <InputFile id="fileInput" OnChange="OnWalletFileChanged" hidden accept=".json" />
-                <MudButton HtmlTag="label" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.FileOpen" for="fileInput">
+                <MudButton HtmlTag="label" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary" Disabled="@IsProcessing" StartIcon="@Icons.Filled.FileOpen" for="fileInput">
                    @WalletFilename
                 </MudButton>
             </MudItem>

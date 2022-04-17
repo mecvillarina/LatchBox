@@ -26,7 +26,6 @@ namespace Client.Pages
                     AddressAssets = await WalletManager.GetAddressesAssetsAsync();
                     IsLoaded = true;
                     StateHasChanged();
-                    AppDialogService.ShowError(AddressAssets.Count.ToString());
                 });
             }
         }
