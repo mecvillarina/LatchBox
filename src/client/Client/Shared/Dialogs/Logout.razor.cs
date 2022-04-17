@@ -15,7 +15,7 @@ namespace Client.Shared.Dialogs
 
         private async Task Submit()
         {
-            //await AccountManager.LogoutAsync();
+            await AuthManager.LogoutAsync();
             NavigationManager.NavigateTo("/auth/login");
             MudDialog.Close(DialogResult.Ok(true));
         }

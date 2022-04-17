@@ -7,5 +7,6 @@ namespace Client.Infrastructure.Managers
     {
         Task<bool> IsAuthenticated();
         Task Login(IBrowserFile walletFile, string password);
+        Task LogoutAsync();
     }
 }

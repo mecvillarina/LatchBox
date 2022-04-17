@@ -80,5 +80,10 @@ namespace Client.Infrastructure.Managers
                 Decimals = decimals,
             };
         }
+
+        public async Task ClearLocalStorageAsync()
+        {
+            await _localStorageService.ClearAsync();
+        }
     }
 }

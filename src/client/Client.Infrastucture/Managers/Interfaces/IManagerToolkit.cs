@@ -20,5 +20,6 @@ namespace Client.Infrastructure.Managers
         Task SaveWalletAsync(string filename, List<string> addresses);
         Task<WalletInformation> GetWalletAsync();
         Task<AssetToken> GetPlatformTokenAsync();
+        Task ClearLocalStorageAsync();
     }
 }
