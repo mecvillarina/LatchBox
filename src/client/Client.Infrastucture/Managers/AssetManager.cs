@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Models;
+﻿using Client.Infrastructure.Managers.Interfaces;
+using Client.Infrastructure.Models;
 using Neo;
 using Neo.SmartContract.Native;
 using System;

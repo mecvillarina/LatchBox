@@ -1,7 +1,7 @@
 ﻿using MudBlazor;
 using System.Threading.Tasks;
 
-namespace Client.Infrastructure.Managers
+namespace Client.Infrastructure.Managers.Interfaces
 {
     public interface IClientPreferenceManager : IPreferenceManager
     {

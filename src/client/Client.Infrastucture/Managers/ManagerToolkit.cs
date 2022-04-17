@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Client.Infrastructure.Constants;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Microsoft.Extensions.Options;
 using Neo;
