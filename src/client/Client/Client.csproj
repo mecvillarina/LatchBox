@@ -23,8 +23,4 @@
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\Locks\" />
-	</ItemGroup>
 </Project>
