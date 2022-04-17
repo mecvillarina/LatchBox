@@ -1,5 +1,6 @@
 ﻿using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
+using Client.Pages.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo.SmartContract.Native;
@@ -49,6 +50,15 @@ namespace Client.Pages
             AppDialogService.ShowSuccess($"{address} copied to clipboard.");
         }
 
+        private void InvokeAssetsPreviewerModal(string address)
+        {
+            var options = new DialogOptions() { CloseButton = true };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(AssetsPreviewerModal.Address), address},
+            };
 
+            DialogService.Show<AssetsPreviewerModal>("Account", parameters, options);
+        }
     }
 }

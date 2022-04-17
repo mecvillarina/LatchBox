@@ -32,12 +32,12 @@
                     <MudTh>@PlatformToken.Symbol</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd><span class="cursor-pointer">@context.Address</span></MudTd>
+                    <MudTd><span class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">@context.Address</span></MudTd>
                     <MudTd>
                         <span>
                             @if (!IsBalanceLoaded)
                             {
-                                <MudSkeleton Height="200" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {
@@ -49,7 +49,7 @@
                         <span>
                             @if (!IsBalanceLoaded)
                             {
-                                <MudSkeleton Height="200" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {
@@ -61,7 +61,7 @@
                         <span>
                             @if (!IsBalanceLoaded)
                             {
-                                <MudSkeleton Height="200" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {

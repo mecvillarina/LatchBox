@@ -2,6 +2,8 @@
 using Neo;
 using Neo.SmartContract.Native;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Client.Infrastructure.Managers
@@ -63,6 +65,21 @@ namespace Client.Infrastructure.Managers
                     Balance = balance,
                 };
             }
+        }
+
+        public async Task<List<AssetToken>> GetTokensAsync(string address)
+        {
+            var assetBalances = await ManagerToolkit.NeoRpcClient.GetNep17BalancesAsync(address).ConfigureAwait(false);
+            var assets = new List<AssetToken>();
+
+            foreach (var assetBalance in assetBalances.Balances)
+            {
+                var asset = await GetTokenAsync(assetBalance.AssetHash, address).ConfigureAwait(false);
+                assets.Add(asset);
+            }
+
+            assets = assets.OrderBy(x => x.Symbol).ToList();
+            return assets;
         }
     }
 }
