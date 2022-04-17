@@ -1,0 +1,45 @@
+﻿<MudContainer MaxWidth="MaxWidth.False" Style="max-height: 80vh; overflow-y: scroll">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+        <DialogContent>
+            <MudGrid Class="pt-0 pb-4">
+
+                <MudItem xs="12">
+                    <div>
+                        <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Address:</b></MudText>
+                        <MudText Typo="Typo.body1" Class="text-white">@Address</MudText>
+                    </div>
+                </MudItem>
+
+                @if (!IsLoaded)
+                {
+                    <MudItem xs="12">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="12">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Assets:</b></MudText>
+
+                            @if (!Assets.Any())
+                            {
+                                <MudText Typo="Typo.body1" Class="text-white">No assets found.</MudText>
+                            }
+                            else
+                            {
+                                @foreach (var asset in Assets)
+                                {
+                                    <div class="d-flex justify-space-between mb-2">
+                                        <MudText Typo="Typo.body1" Class="text-white">@asset.Symbol</MudText>
+                                        <MudText Typo="Typo.body1" Class="text-white">@(asset.Balance.ToBalanceDisplay(asset.Decimals))</MudText>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </MudItem>
+                }
+            </MudGrid>
+        </DialogContent>
+    </MudDialog>
+</MudContainer>
