@@ -14,7 +14,7 @@ namespace Client.Infrastructure.Managers
     public class ManagerToolkit : IManagerToolkit
     {
         private readonly ILocalStorageService _localStorageService;
-        private readonly NeoSettings _neoSettings;
+        public NeoSettings NeoSettings { get; }
 
         public RpcClient NeoRpcClient { get; }
         public ProtocolSettings NeoProtocolSettings { get; }
@@ -28,10 +28,10 @@ namespace Client.Infrastructure.Managers
         public ManagerToolkit(ILocalStorageService localStorageService, IOptions<NeoSettings> neoSettingsOption)
         {
             _localStorageService = localStorageService;
-            _neoSettings = neoSettingsOption.Value;
+            NeoSettings = neoSettingsOption.Value;
 
-            NeoProtocolSettings = ProtocolSettings.Load(_neoSettings.ProtocolSettingsConfigFile);
-            NeoRpcClient = new RpcClient(new Uri(_neoSettings.RpcUrl), null, null, NeoProtocolSettings);
+            NeoProtocolSettings = ProtocolSettings.Load(NeoSettings.ProtocolSettingsConfigFile);
+            NeoRpcClient = new RpcClient(new Uri(NeoSettings.RpcUrl), null, null, NeoProtocolSettings);
             NeoWalletApi = new WalletAPI(NeoRpcClient);
             NeoNep17Api = new Nep17API(NeoRpcClient);
             Init();
@@ -64,21 +64,6 @@ namespace Client.Infrastructure.Managers
         public async Task<WalletInformation> GetWalletAsync()
         {
             return await _localStorageService.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
-        }
-
-        public async Task<AssetToken> GetPlatformTokenAsync()
-        {
-            var tokenHash = _neoSettings.PlatformTokenHash;
-            var scriptHash = Neo.Network.RPC.Utility.GetScriptHash(tokenHash, ProtocolSettings.Default);
-            var symbol = await NeoNep17Api.SymbolAsync(scriptHash).ConfigureAwait(false);
-            var decimals = await NeoNep17Api.DecimalsAsync(scriptHash).ConfigureAwait(false);
-
-            return new AssetToken()
-            {
-                AssetHash = scriptHash,
-                Symbol = symbol,
-                Decimals = decimals,
-            };
         }
 
         public async Task ClearLocalStorageAsync()

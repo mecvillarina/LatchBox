@@ -8,6 +8,8 @@ namespace Client.Infrastructure.Managers
 {
     public interface IManagerToolkit : IManager
     {
+        NeoSettings NeoSettings { get; }
+
         RpcClient NeoRpcClient { get; }
         ProtocolSettings NeoProtocolSettings { get; }
         WalletAPI NeoWalletApi { get; }
@@ -19,7 +21,6 @@ namespace Client.Infrastructure.Managers
 
         Task SaveWalletAsync(string filename, List<string> addresses);
         Task<WalletInformation> GetWalletAsync();
-        Task<AssetToken> GetPlatformTokenAsync();
         Task ClearLocalStorageAsync();
     }
 }
