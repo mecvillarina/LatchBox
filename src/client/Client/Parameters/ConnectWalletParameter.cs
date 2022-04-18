@@ -2,12 +2,12 @@
 
 namespace Client.Parameters
 {
-    public class LoginParameter
+    public class ConnectWalletParameter
     {
         public string Password { get; set; } = string.Empty;
     }
 
-    public class LoginParameterValidator : AbstractValidator<LoginParameter>
+    public class LoginParameterValidator : AbstractValidator<ConnectWalletParameter>
     {
         public LoginParameterValidator()
         {

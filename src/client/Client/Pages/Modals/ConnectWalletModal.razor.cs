@@ -1,24 +1,37 @@
 ﻿using Blazored.FluentValidation;
-using Client.Infrastructure.Managers;
+using Client.Infrastructure.Exceptions;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 
-namespace Client.Pages.Auth
+namespace Client.Pages.Modals
 {
-    public partial class Login
+    public partial class ConnectWalletModal
     {
+        private ConnectWalletParameter Model { get; set; } = new();
+        [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-        private LoginParameter Model { get; set; } = new();
         public bool IsProcessing { get; set; }
-
         private string WalletFilename = "Please select file location";
         private IBrowserFile WalletBrowserFile;
         private bool PasswordVisibility;
         private InputType PasswordInput = InputType.Password;
         private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+        public string RpcUrl { get; set; }
+        public string Network { get; set; }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Network = RpcManager.GetNetwork();
+                RpcUrl = RpcManager.GetRpcUrl();
+                StateHasChanged();
+            }
+        }
 
         private async Task SubmitAsync()
         {
@@ -37,12 +50,12 @@ namespace Client.Pages.Auth
 
                 if (isAuthenticated)
                 {
-                    await Task.Delay(1000);
                     NavigationManager.NavigateTo("/", true);
                     return;
                 }
                 else
                 {
+                    Model.Password = string.Empty;
                     AppDialogService.ShowError("Open wallet error, please check wallet file or password and retry");
                 }
 
@@ -66,7 +79,7 @@ namespace Client.Pages.Auth
             }
         }
 
-        private async Task OnWalletFileChanged(InputFileChangeEventArgs e)
+        private void OnWalletFileChanged(InputFileChangeEventArgs e)
         {
             foreach (var file in e.GetMultipleFiles(1))
             {
@@ -81,5 +94,11 @@ namespace Client.Pages.Auth
                 }
             }
         }
+
+        public void Cancel()
+        {
+            MudDialog.Cancel();
+        }
+
     }
 }

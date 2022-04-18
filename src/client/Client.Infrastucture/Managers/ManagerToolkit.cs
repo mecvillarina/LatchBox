@@ -21,6 +21,7 @@ namespace Client.Infrastructure.Managers
         public ProtocolSettings NeoProtocolSettings { get; }
         public WalletAPI NeoWalletApi { get; }
         public Nep17API NeoNep17Api { get; }
+        public ContractClient NeoContractClient { get; }
 
         public string FilePathRoot => Directory.GetCurrentDirectory();
         public string FilePathTemp => Path.Combine(Directory.GetCurrentDirectory(), "..", "temp");
@@ -35,6 +36,7 @@ namespace Client.Infrastructure.Managers
             NeoRpcClient = new RpcClient(new Uri(NeoSettings.RpcUrl), null, null, NeoProtocolSettings);
             NeoWalletApi = new WalletAPI(NeoRpcClient);
             NeoNep17Api = new Nep17API(NeoRpcClient);
+            NeoContractClient = new ContractClient(NeoRpcClient);
             Init();
         }
 

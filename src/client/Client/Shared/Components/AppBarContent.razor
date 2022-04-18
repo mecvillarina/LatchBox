@@ -1,3 +1,51 @@
-﻿<MudSpacer />
+﻿@if (IsLoaded)
+{
+    @if (!IsAuthenticated)
+    {
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                @Network
+            </MudChip>
 
-<MudIconButton Icon="@Icons.Material.Filled.Logout" OnClick="@(() => Logout())" Color="Color.Primary"  Variant="Variant.Filled" Size="Size.Small" />
+            <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                @RpcUrl
+            </MudChip>
+        </MudHidden>
+    }
+
+    <MudSpacer />
+    if (!IsAuthenticated)
+    {
+        <MudButton OnClick="InvokeConnectWalletModal" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Connect NEP6 Wallet</MudButton>
+    }
+    else
+    {
+        @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
+        {
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                    1 NEO ≈ @PlatformTokensPerNEO @PlatformTokenSymbol
+                </MudChip>
+                <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                    1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol
+                </MudChip>
+                <MudChip Class="cursor-pointer" Color="Color.Info">Buy @PlatformTokenSymbol</MudChip>
+            </MudHidden>
+        }
+
+        <MudMenu Class="ml-3" AnchorOrigin="Origin.BottomRight" Label="Connected" TransformOrigin="Origin.TopRight" StartIcon="@Icons.Material.Filled.ConnectedTv" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Filled" Color="Color.Primary">
+            <ChildContent>
+                <MudMenuItem Class="cursor-default">@RpcUrl <span>(@Network)</span></MudMenuItem>
+                @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
+                {
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                        <MudMenuItem>1 NEO ≈ @PlatformTokensPerNEO @PlatformTokenSymbol</MudMenuItem>
+                        <MudMenuItem>1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol</MudMenuItem>
+                        <MudMenuItem>Buy @PlatformTokenSymbol</MudMenuItem>
+                    </MudHidden>
+                }
+                <MudMenuItem OnClick="@(() => Logout())">Disconnect Wallet</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    }
+}
