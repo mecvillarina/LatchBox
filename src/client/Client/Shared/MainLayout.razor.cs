@@ -7,7 +7,7 @@ namespace Client.Shared
 {
     public partial class MainLayout : IAsyncDisposable
     {
-        private bool IsAuthVerified { get; set; }
+        private bool IsAuthenticated { get; set; }
         private bool DrawerOpen { get; set; } = true;
         private MudTheme CurrentTheme { get; set; }
 
@@ -16,30 +16,16 @@ namespace Client.Shared
             CurrentTheme = ClientPreferenceManager.GetCurrentTheme();
         }
 
-        private async Task<bool> CheckAuthorization()
-        {
-            var isAuthenticated = await AuthManager.IsAuthenticated();
-
-            if (!isAuthenticated)
-            {
-                NavigationManager.NavigateTo("/auth/login", true);
-            }
-
-            return isAuthenticated;
-        }
-
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                var isAuthenticated = await CheckAuthorization();
-
-                if (isAuthenticated)
+                await InvokeAsync(async () =>
                 {
+                    IsAuthenticated = await AuthManager.IsAuthenticated();
                     await AppBreakpointService.InitAsync();
-                    IsAuthVerified = true;
-                    await InvokeAsync(StateHasChanged);
-                }
+                    StateHasChanged();
+                });
             }
         }
 

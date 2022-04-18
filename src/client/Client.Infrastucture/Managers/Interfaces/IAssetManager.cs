@@ -7,8 +7,7 @@ namespace Client.Infrastructure.Managers.Interfaces
 {
     public interface IAssetManager : IManager
     {
-        Task<AssetToken> GetPlatformTokenAsync();
-        Task<AssetToken> GetTokenAsync(UInt160 assetHash, string address);
+        Task<AssetToken> GetTokenAsync(UInt160 assetHash, string address = null);
         Task<List<AssetToken>> GetTokensAsync(string address);
     }
 }

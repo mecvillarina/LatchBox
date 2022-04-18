@@ -1,10 +1,12 @@
-﻿namespace Client.Infrastructure.Extensions
+﻿using System.Numerics;
+
+namespace Client.Infrastructure.Extensions
 {
     public static class StringExtensions
     {
-        public static string ToBalanceDisplay(this decimal balance, int decimals)
+        public static string ToAmountDisplay(this decimal amount, int decimals)
         {
-            return balance.ToString($"0.{new string('#', decimals)}");
+            return amount.ToString($"0.{new string('#', decimals)}");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Client.Pages
                 {
                     var addresses = await WalletManager.GetAddressesAsync();
                     AddressBalances = addresses.Select(x => new AssetPageAddressBalance() { Address = x }).ToList();
-                    PlatformToken = await AssetManager.GetPlatformTokenAsync();
+                    PlatformToken = await PlatformTokenManager.GetTokenAsync();
 
                     IsLoaded = true;
                     StateHasChanged();
@@ -47,9 +47,9 @@ namespace Client.Pages
                 var neo = await AssetManager.GetTokenAsync(NativeContract.NEO.Hash, addressBalance.Address);
                 var gas = await AssetManager.GetTokenAsync(NativeContract.GAS.Hash, addressBalance.Address);
                 var platformToken = await AssetManager.GetTokenAsync(PlatformToken.AssetHash, addressBalance.Address);
-                addressBalance.NEOBalanceDisplay = neo.Balance.ToBalanceDisplay(neo.Decimals);
-                addressBalance.GASBalanceDisplay = gas.Balance.ToBalanceDisplay(gas.Decimals);
-                addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToBalanceDisplay(platformToken.Decimals);
+                addressBalance.NEOBalanceDisplay = neo.Balance.ToAmountDisplay(neo.Decimals);
+                addressBalance.GASBalanceDisplay = gas.Balance.ToAmountDisplay(gas.Decimals);
+                addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToAmountDisplay(platformToken.Decimals);
                 StateHasChanged();
             }
         }

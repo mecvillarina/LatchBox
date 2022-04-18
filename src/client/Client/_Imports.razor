@@ -28,8 +28,10 @@
 @using Client.Infrastructure.Extensions
 
 @inject IAuthManager AuthManager
-@inject IWalletManager WalletManager
 @inject IAssetManager AssetManager
+@inject IPlatformTokenManager PlatformTokenManager
+@inject IRpcManager RpcManager
+@inject IWalletManager WalletManager
 
 @inject ClientPreferenceManager ClientPreferenceManager
 @inject NavigationManager NavigationManager

@@ -15,5 +15,15 @@ namespace Client.Infrastructure.Managers
             uint blockCount = await ManagerToolkit.NeoRpcClient.GetBlockCountAsync().ConfigureAwait(false);
             return blockCount;
         }
+
+        public string GetRpcUrl()
+        {
+            return ManagerToolkit.NeoSettings.RpcUrl;
+        }
+
+        public string GetNetwork()
+        {
+            return ManagerToolkit.NeoSettings.Network;
+        }
     }
 }

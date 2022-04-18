@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Managers.Interfaces;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Neo;
 using Neo.SmartContract.Native;
@@ -15,57 +16,28 @@ namespace Client.Infrastructure.Managers
         {
         }
 
-        public async Task<AssetToken> GetPlatformTokenAsync()
+        public async Task<AssetToken> GetTokenAsync(UInt160 assetHash, string address = null)
         {
-            var tokenHash = ManagerToolkit.NeoSettings.PlatformTokenHash;
-            var scriptHash = Neo.Network.RPC.Utility.GetScriptHash(tokenHash, ProtocolSettings.Default);
-            var symbol = await ManagerToolkit.NeoNep17Api.SymbolAsync(scriptHash).ConfigureAwait(false);
-            var decimals = await ManagerToolkit.NeoNep17Api.DecimalsAsync(scriptHash).ConfigureAwait(false);
+            var tokenInfo = await ManagerToolkit.NeoNep17Api.GetTokenInfoAsync(assetHash).ConfigureAwait(false);
+
+            decimal balance = 0;
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                var bal = await ManagerToolkit.NeoWalletApi.GetTokenBalanceAsync(assetHash.ToString(), address).ConfigureAwait(false);
+                balance = bal.ToAmount(tokenInfo.Decimals);
+            }
 
             return new AssetToken()
             {
-                AssetHash = scriptHash,
-                Symbol = symbol,
-                Decimals = decimals,
+                Name = tokenInfo.Name,
+                Symbol = tokenInfo.Symbol,
+                Decimals = tokenInfo.Decimals,
+                TotalSupply = tokenInfo.TotalSupply,
+                AssetHash = assetHash,
+                Balance = balance,
             };
-        }
 
-        public async Task<AssetToken> GetTokenAsync(UInt160 assetHash, string address)
-        {
-            if (assetHash == NativeContract.NEO.Hash)
-            {
-                return new AssetToken()
-                {
-                    AssetHash = NativeContract.NEO.Hash,
-                    Balance = await ManagerToolkit.NeoWalletApi.GetNeoBalanceAsync(address).ConfigureAwait(false),
-                    Symbol = NativeContract.NEO.Symbol,
-                    Decimals = NativeContract.NEO.Decimals
-                };
-            }
-            else if (assetHash == NativeContract.GAS.Hash)
-            {
-                return new AssetToken()
-                {
-                    AssetHash = NativeContract.GAS.Hash,
-                    Balance = await ManagerToolkit.NeoWalletApi.GetGasBalanceAsync(address).ConfigureAwait(false),
-                    Symbol = NativeContract.GAS.Symbol,
-                    Decimals = NativeContract.GAS.Decimals
-                };
-            }
-            else
-            {
-                var symbol = await ManagerToolkit.NeoNep17Api.SymbolAsync(assetHash).ConfigureAwait(false);
-                var decimals = await ManagerToolkit.NeoNep17Api.DecimalsAsync(assetHash).ConfigureAwait(false);
-                var balance = Convert.ToDecimal(((double)(await ManagerToolkit.NeoWalletApi.GetTokenBalanceAsync(assetHash.ToString(), address).ConfigureAwait(false))) / Math.Pow(10, (int)decimals));
-
-                return new AssetToken()
-                {
-                    AssetHash = assetHash,
-                    Symbol = symbol,
-                    Decimals = decimals,
-                    Balance = balance,
-                };
-            }
         }
 
         public async Task<List<AssetToken>> GetTokensAsync(string address)

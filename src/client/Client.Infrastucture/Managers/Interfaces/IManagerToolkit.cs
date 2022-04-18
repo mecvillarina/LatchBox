@@ -14,6 +14,7 @@ namespace Client.Infrastructure.Managers.Interfaces
         ProtocolSettings NeoProtocolSettings { get; }
         WalletAPI NeoWalletApi { get; }
         Nep17API NeoNep17Api { get; }
+        ContractClient NeoContractClient { get; }
 
         string FilePathRoot { get; }
         string FilePathTemp { get; }
