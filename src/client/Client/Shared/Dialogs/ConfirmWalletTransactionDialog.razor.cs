@@ -3,9 +3,9 @@ using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Client.Pages.Modals
+namespace Client.Shared.Dialogs
 {
-    public partial class ConfirmWalletTransactionModal
+    public partial class ConfirmWalletTransactionDialog
     {
         [Parameter] public ConfirmWalletTransactionParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
