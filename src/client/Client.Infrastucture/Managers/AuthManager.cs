@@ -24,6 +24,12 @@ namespace Client.Infrastructure.Managers
 
         public async Task DisconnectWalletAsync()
         {
+            var wallet = await ManagerToolkit.GetWalletAsync();
+            var walletFilePath = $"{ManagerToolkit.FilePathWallet}/{wallet.Filename}";
+            if (File.Exists(walletFilePath))
+            {
+                File.Delete(walletFilePath);
+            }
             await ManagerToolkit.ClearLocalStorageAsync();
         }
 
