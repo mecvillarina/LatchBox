@@ -45,7 +45,7 @@ namespace Client.Pages.Modals
 
                 IsProcessing = true;
 
-                await AuthManager.Login(WalletBrowserFile, Model.Password);
+                await AuthManager.ConnectWallet(WalletBrowserFile, Model.Password);
                 var isAuthenticated = await AuthManager.IsAuthenticated();
 
                 if (isAuthenticated)

@@ -29,22 +29,29 @@
                 <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
                     1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol
                 </MudChip>
-                <MudChip Class="cursor-pointer" Color="Color.Info">Buy @PlatformTokenSymbol</MudChip>
+                <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                    <ActivatorContent>
+                        <MudChip Class="cursor-pointer" Color="Color.Info">Buy @PlatformTokenSymbol</MudChip>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem OnClick="@(() => InvokeBuyPlatformTokenModal("NEO"))">Buy with NEO</MudMenuItem>
+                        <MudMenuItem OnClick="@(() => InvokeBuyPlatformTokenModal("GAS"))">Buy with GAS</MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
             </MudHidden>
         }
 
         <MudMenu Class="ml-3" AnchorOrigin="Origin.BottomRight" Label="Connected" TransformOrigin="Origin.TopRight" StartIcon="@Icons.Material.Filled.ConnectedTv" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Filled" Color="Color.Primary">
             <ChildContent>
-                <MudMenuItem Class="cursor-default">@RpcUrl <span>(@Network)</span></MudMenuItem>
+                <MudMenuItem Class="cursor-default"><span>@Network</span> <span>(@RpcUrl)</span></MudMenuItem>
                 @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
                 {
                     <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                        <MudMenuItem>1 NEO ≈ @PlatformTokensPerNEO @PlatformTokenSymbol</MudMenuItem>
-                        <MudMenuItem>1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol</MudMenuItem>
-                        <MudMenuItem>Buy @PlatformTokenSymbol</MudMenuItem>
+                        <MudMenuItem OnClick="@(() => InvokeBuyPlatformTokenModal("NEO"))">Buy with NEO (1 NEO ≈ @PlatformTokensPerNEO @PlatformTokenSymbol)</MudMenuItem>
+                        <MudMenuItem OnClick="@(() => InvokeBuyPlatformTokenModal("GAS"))">Buy with GAS (1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol)</MudMenuItem>
                     </MudHidden>
                 }
-                <MudMenuItem OnClick="@(() => Logout())">Disconnect Wallet</MudMenuItem>
+                <MudMenuItem OnClick="@(() => InvokeDisconnectWalletDialog())">Disconnect Wallet</MudMenuItem>
             </ChildContent>
         </MudMenu>
     }

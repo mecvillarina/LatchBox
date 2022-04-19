@@ -1,7 +1,9 @@
 ﻿using Client.Infrastructure.Managers.Interfaces;
 using Microsoft.AspNetCore.Components.Forms;
+using Neo.Wallets;
 using Neo.Wallets.NEP6;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,12 +22,12 @@ namespace Client.Infrastructure.Managers
             return wallet != null;
         }
 
-        public async Task LogoutAsync()
+        public async Task DisconnectWalletAsync()
         {
             await ManagerToolkit.ClearLocalStorageAsync();
         }
 
-        public async Task Login(IBrowserFile walletFile, string password)
+        public async Task ConnectWallet(IBrowserFile walletFile, string password)
         {
             string filename = $"{Guid.NewGuid()}.json";
             var tempFilePath = $"{ManagerToolkit.FilePathTemp}/{filename}";
@@ -59,5 +61,7 @@ namespace Client.Infrastructure.Managers
                 }
             }
         }
+
+       
     }
 }

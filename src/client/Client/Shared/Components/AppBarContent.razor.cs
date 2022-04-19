@@ -1,6 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Pages.Modals;
+using Client.Parameters;
 using Client.Shared.Dialogs;
 using MudBlazor;
 using Neo.SmartContract.Native;
@@ -14,7 +15,7 @@ namespace Client.Shared.Components
         public bool IsAuthenticated { get; set; }
         public string Network { get; set; }
         public string RpcUrl { get; set; }
-        
+
         public AssetToken PlatformToken { get; set; }
         public string PlatformTokenSymbol { get; set; }
 
@@ -52,16 +53,37 @@ namespace Client.Shared.Components
             DialogService.Show<ConnectWalletModal>("Connect NEP6 Wallet", options);
         }
 
-        private void Logout()
+        private void InvokeBuyPlatformTokenModal(string currency)
+        {
+            var options = new DialogOptions() { MaxWidth = MaxWidth.Small };
+            var parameters = new DialogParameters();
+
+            if (currency == "NEO")
+            {
+                parameters.Add(nameof(BuyPlatformTokenModal.Model), new BuyPlatformTokenParameter() { Currency = "NEO", CurrencyDecimals = NativeContract.NEO.Decimals, CurrencyHash = NativeContract.NEO.Hash });
+                parameters.Add(nameof(BuyPlatformTokenModal.BuyConversationDisplay), $"1 NEO ≈ {PlatformTokensPerNEO} {PlatformTokenSymbol}");
+            }
+            else if (currency == "GAS")
+            {
+                parameters.Add(nameof(BuyPlatformTokenModal.Model), new BuyPlatformTokenParameter() { Currency = "GAS", CurrencyDecimals = NativeContract.GAS.Decimals, CurrencyHash = NativeContract.GAS.Hash });
+                parameters.Add(nameof(BuyPlatformTokenModal.BuyConversationDisplay), $"1 GAS ≈ {PlatformTokensPerGAS} {PlatformTokenSymbol}");
+            }
+
+            if (parameters.Any())
+            {
+                DialogService.Show<BuyPlatformTokenModal>($"Buy {PlatformTokenSymbol}", parameters, options);
+            }
+        }
+        private void InvokeDisconnectWalletDialog()
         {
             var parameters = new DialogParameters
             {
-                {nameof(LogoutDialog.ContentText), "Are you sure you want to logout?"},
-                {nameof(LogoutDialog.ButtonText), "Logout"},
-                {nameof(LogoutDialog.Color), Color.Error},
+                {nameof(DisconnectWalletDialog.ContentText), "Are you sure you want to disconnect your wallet?"},
+                {nameof(DisconnectWalletDialog.ButtonText), "Disconnect"},
+                {nameof(DisconnectWalletDialog.Color), Color.Error},
             };
 
-            DialogService.Show<LogoutDialog>("Logout", parameters);
+            DialogService.Show<DisconnectWalletDialog>("Logout", parameters);
         }
     }
 }
