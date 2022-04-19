@@ -3,7 +3,7 @@ using MudBlazor;
 
 namespace Client.Shared.Dialogs
 {
-    public partial class LogoutDialog
+    public partial class DisconnectWalletDialog
     {
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
@@ -15,7 +15,7 @@ namespace Client.Shared.Dialogs
 
         private async Task Submit()
         {
-            await AuthManager.LogoutAsync();
+            await AuthManager.DisconnectWalletAsync();
             NavigationManager.NavigateTo("/", true);
             MudDialog.Close(DialogResult.Ok(true));
         }

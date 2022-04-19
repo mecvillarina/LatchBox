@@ -1,0 +1,43 @@
+﻿<EditForm Model="@Model" OnValidSubmit="SubmitAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+        <DialogContent>
+            <MudContainer MaxWidth="MaxWidth.False">
+                <MudGrid Class="pt-0 pb-4" Spacing="2">
+                    <MudItem xs="12">
+                            <MudText Typo="Typo.body1" Class="text-white"><b>@BuyConversationDisplay</b></MudText>
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudSelect T="string" Disabled="IsProcessing" Label="Address" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.WalletAddress">
+                            @foreach (var walletAddress in WalletAddresses)
+                            {
+                                <MudSelectItem Value="@walletAddress">@walletAddress</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudTextField Label="@(string.Concat("Amount ", Model.Currency))" Variant="Variant.Filled" Disabled="IsProcessing"
+                                      @bind-Value="Model.Amount" For="@(() => Model.Amount)" T="double" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Paid" />
+                    </MudItem>
+
+                </MudGrid>
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                @if (IsProcessing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                }
+                else
+                {
+                    <span>BUY</span>
+                }
+            </MudButton>
+
+        </DialogActions>
+    </MudDialog>
+</EditForm>

@@ -7,9 +7,9 @@ namespace Client.Parameters
         public string Password { get; set; } = string.Empty;
     }
 
-    public class LoginParameterValidator : AbstractValidator<ConnectWalletParameter>
+    public class ConnectWalletParameterValidator : AbstractValidator<ConnectWalletParameter>
     {
-        public LoginParameterValidator()
+        public ConnectWalletParameterValidator()
         {
             CascadeMode = CascadeMode.Stop;
 

@@ -6,7 +6,7 @@ namespace Client.Infrastructure.Managers.Interfaces
     public interface IAuthManager : IManager
     {
         Task<bool> IsAuthenticated();
-        Task Login(IBrowserFile walletFile, string password);
-        Task LogoutAsync();
+        Task ConnectWallet(IBrowserFile walletFile, string password);
+        Task DisconnectWalletAsync();
     }
 }

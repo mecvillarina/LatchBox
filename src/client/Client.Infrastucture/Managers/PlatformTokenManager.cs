@@ -1,7 +1,11 @@
 ﻿using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Neo;
+using Neo.Network.P2P.Payloads;
+using Neo.SmartContract;
+using Neo.SmartContract.Native;
 using Neo.VM;
+using Neo.Wallets;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -44,8 +48,8 @@ namespace Client.Infrastructure.Managers
             return new PlatformTokenSaleInfo
             {
                 IsTokenOnSale = stack[0].GetBoolean(),
-                TokensPerNEO = Convert.ToDecimal(((double)stack[1].GetInteger()) / Math.Pow(10, tokenInfo.Decimals)),
-                TokensPerGAS = Convert.ToDecimal(((double)stack[2].GetInteger()) / Math.Pow(10, tokenInfo.Decimals))
+                TokensPerNEO = Convert.ToDecimal(((double)stack[1].GetInteger()) * Math.Pow(10, NativeContract.NEO.Decimals) / Math.Pow(10, tokenInfo.Decimals)),
+                TokensPerGAS = Convert.ToDecimal(((double)stack[2].GetInteger()) * Math.Pow(10, NativeContract.GAS.Decimals) / Math.Pow(10, tokenInfo.Decimals))
             };
         }
 
@@ -67,5 +71,15 @@ namespace Client.Infrastructure.Managers
             return result.Stack.Single().GetInteger();
         }
 
+        public async Task<bool> BuyPlatformTokenAsync(UInt160 scriptHash, KeyPair fromKey, BigInteger amount)
+        {
+            var tx = await ManagerToolkit.NeoWalletApi.TransferAsync(scriptHash, fromKey, TokenScriptHash, amount, null);
+
+            var rpcTx = await ManagerToolkit.NeoWalletApi.WaitTransactionAsync(tx);
+            var appLog = await ManagerToolkit.NeoRpcClient.GetApplicationLogAsync(tx.Hash.ToString());
+
+            var exec = appLog.Executions.Single();
+            return exec.VMState == Neo.VM.VMState.HALT && exec.Stack.Single().GetBoolean();
+        }
     }
 }
