@@ -1,14 +1,11 @@
 ﻿<EditForm Model="@Model" OnValidSubmit="SubmitAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
-    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 pb-4" ClassContent="pt-0">
         <DialogContent>
             <MudContainer MaxWidth="MaxWidth.False">
-                <MudGrid Class="pt-0 pb-4">
-
+                <MudGrid Class="pt-0" Spacing="1">
                     <MudItem xs="12">
-                        <div>
-                            <MudText Typo="Typo.body1" Class="text-white"><b>Address:</b> @Model.WalletAddress</MudText>
-                        </div>
+                        <MudText Typo="Typo.body2" Class="text-white"><b>Address:</b> @Model.WalletAddress</MudText>
                     </MudItem>
 
                     <MudItem xs="12">

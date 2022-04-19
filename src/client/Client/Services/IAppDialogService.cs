@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Neo.Wallets;
 
 namespace Client.Services
 {
@@ -8,5 +8,6 @@ namespace Client.Services
         void ShowWarning(string message);
         void ShowError(string message);
         void ShowErrors(List<string> messages);
+        Task<KeyPair> ShowConfirmWalletTransaction(string walletAddress);
     }
 }

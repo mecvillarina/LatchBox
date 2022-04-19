@@ -2,6 +2,7 @@
 using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Parameters;
+using Client.Shared.Dialogs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
@@ -38,7 +39,14 @@ namespace Client.Pages.Modals
 
                 if (Model.Amount.CountDecimalPlaces() > Model.CurrencyDecimals)
                 {
-                    AppDialogService.ShowError($"Amount field decimal places must be less than or equal to {Model.CurrencyDecimals}");
+                    if (Model.CurrencyDecimals > 0)
+                    {
+                        AppDialogService.ShowError($"Amount field decimal places must be less than or equal to {Model.CurrencyDecimals}");
+                    }
+                    else
+                    {
+                        AppDialogService.ShowError($"Amount field decimal places must be equal to {Model.CurrencyDecimals}");
+                    }
                 }
                 else
                 {
@@ -54,7 +62,7 @@ namespace Client.Pages.Modals
                     }
                     else
                     {
-                        var fromKey = await InvokeConfirmWalletTransactionModal(Model.WalletAddress);
+                        var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.WalletAddress);
 
                         if (fromKey != null)
                         {
@@ -85,21 +93,21 @@ namespace Client.Pages.Modals
             }
         }
 
-        private async Task<KeyPair> InvokeConfirmWalletTransactionModal(string walletAddress)
-        {
-            var options = new DialogOptions() { MaxWidth = MaxWidth.Small };
-            var parameters = new DialogParameters();
-            parameters.Add(nameof(ConfirmWalletTransactionModal.Model), new ConfirmWalletTransactionParameter() { WalletAddress = walletAddress });
-            var dialog = DialogService.Show<ConfirmWalletTransactionModal>($"Confirmation Wallet Transaction", parameters, options);
-            var dialogResult = await dialog.Result;
+        //private async Task<KeyPair> InvokeConfirmWalletTransactionModal(string walletAddress)
+        //{
+        //    var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, Position = DialogPosition.TopRight };
+        //    var parameters = new DialogParameters();
+        //    parameters.Add(nameof(ConfirmWalletTransactionModal.Model), new ConfirmWalletTransactionParameter() { WalletAddress = walletAddress });
+        //    var dialog = DialogService.Show<ConfirmWalletTransactionModal>($"Confirm Wallet Transaction", parameters, options);
+        //    var dialogResult = await dialog.Result;
 
-            if (!dialogResult.Cancelled)
-            {
-                return ((WalletAccountKeyPair)dialogResult.Data).KeyPair;
-            }
+        //    if (!dialogResult.Cancelled)
+        //    {
+        //        return ((WalletAccountKeyPair)dialogResult.Data).KeyPair;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public void Cancel()
         {

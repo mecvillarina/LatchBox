@@ -28,11 +28,11 @@ builder.Services.Configure<NeoSettings>(builder.Configuration.GetSection("NEO"))
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
 {
-    configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopRight;
+    configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter;
     configuration.SnackbarConfiguration.HideTransitionDuration = 100;
     configuration.SnackbarConfiguration.ShowTransitionDuration = 100;
     configuration.SnackbarConfiguration.VisibleStateDuration = 5000;
-    configuration.SnackbarConfiguration.ShowCloseIcon = false;
+    configuration.SnackbarConfiguration.ShowCloseIcon = true;
 });
 builder.Services.AddScoped<ClientPreferenceManager>();
 builder.Services.AddScoped<IAppDialogService, AppDialogService>();
