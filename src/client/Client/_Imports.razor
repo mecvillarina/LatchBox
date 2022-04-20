@@ -27,11 +27,13 @@
 @using Client.Infrastructure.Settings
 @using Client.Infrastructure.Extensions
 
+@inject IManagerToolkit ManagerToolkit
 @inject IAuthManager AuthManager
 @inject IAssetManager AssetManager
 @inject IPlatformTokenManager PlatformTokenManager
 @inject IRpcManager RpcManager
 @inject IWalletManager WalletManager
+@inject ILockTokenVaultManager LockTokenVaultManager
 
 @inject ClientPreferenceManager ClientPreferenceManager
 @inject NavigationManager NavigationManager
