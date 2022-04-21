@@ -46,7 +46,7 @@ namespace Client.Pages
             {
                 var neo = await AssetManager.GetTokenAsync(NativeContract.NEO.Hash, addressBalance.Address);
                 var gas = await AssetManager.GetTokenAsync(NativeContract.GAS.Hash, addressBalance.Address);
-                var platformToken = await AssetManager.GetTokenAsync(PlatformToken.AssetHash, addressBalance.Address);
+                var platformToken = await AssetManager.GetTokenAsync(PlatformToken.AssetScriptHash, addressBalance.Address);
                 addressBalance.NEOBalanceDisplay = neo.Balance.ToAmountDisplay(neo.Decimals);
                 addressBalance.GASBalanceDisplay = gas.Balance.ToAmountDisplay(gas.Decimals);
                 addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToAmountDisplay(platformToken.Decimals);

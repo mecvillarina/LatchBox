@@ -1,5 +1,6 @@
 ﻿using Client.Infrastructure.Models;
 using Neo;
+using Neo.Network.RPC.Models;
 using Neo.Wallets;
 using System.Collections.Generic;
 using System.Numerics;
@@ -11,6 +12,8 @@ namespace Client.Infrastructure.Managers.Interfaces
     {
         UInt160 ContractScriptHash { get; }
         Task<BigInteger> GetLatchBoxLocksLength();
-        Task AddLock(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receivers, bool isRevocable);
+        Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
+        Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
+        Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
     }
 }

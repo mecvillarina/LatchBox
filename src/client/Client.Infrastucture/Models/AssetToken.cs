@@ -6,7 +6,7 @@ namespace Client.Infrastructure.Models
 {
     public class AssetToken : RpcNep17TokenInfo
     {
-        public UInt160 AssetHash { get; set; }
+        public UInt160 AssetScriptHash { get; set; }
         public decimal Balance { get; set; }
     }
 }

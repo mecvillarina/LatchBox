@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Numerics;
 
 namespace Client.Infrastructure.Extensions
@@ -27,7 +28,11 @@ namespace Client.Infrastructure.Extensions
 
         public static int CountDecimalPlaces(this double dec)
         {
-            string[] digits = dec.ToString().Split('.');
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+            nfi.NumberGroupSeparator = ",";
+
+            string[] digits = dec.ToString().Split(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
             return digits.Length == 2 ? digits[1].Length : 0;
         }
     }

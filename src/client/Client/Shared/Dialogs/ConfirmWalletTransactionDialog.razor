@@ -9,7 +9,7 @@
                     </MudItem>
 
                     <MudItem xs="12">
-                        <MudTextField Label="Wallet Password" Placeholder="Please input password" Variant="Variant.Filled" Disabled="IsProcessing"
+                        <MudTextField Label="Wallet Password" Placeholder="Please input password" Variant="Variant.Outlined" Disabled="IsProcessing"
                                       @bind-Value="Model.Password" For="@(() => Model.Password)"
                                       InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
                     </MudItem>

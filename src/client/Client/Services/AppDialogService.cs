@@ -28,6 +28,15 @@ namespace Client.Services
 
         public void ShowError(string message)
         {
+            if (message.Contains("[LatchBoxLockTokenVaultContract]"))
+            {
+                var messages = message.Split("[LatchBoxLockTokenVaultContract]", StringSplitOptions.RemoveEmptyEntries);
+                if(messages.Length == 2)
+                {
+                    message = messages.Last().Trim();
+                }
+            }
+
             _snackbar.Add(message, Severity.Error);
         }
 

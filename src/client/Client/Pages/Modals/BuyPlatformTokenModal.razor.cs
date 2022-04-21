@@ -2,18 +2,16 @@
 using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Parameters;
-using Client.Shared.Dialogs;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using Neo.Network.RPC;
-using Neo.Wallets;
 using System.Numerics;
 
 namespace Client.Pages.Modals
 {
     public partial class BuyPlatformTokenModal
     {
+        [Parameter] public AssetToken AssetToken { get; set; }
         [Parameter] public string BuyConversationDisplay { get; set; }
         [Parameter] public BuyPlatformTokenParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -37,28 +35,28 @@ namespace Client.Pages.Modals
             if (Validated)
             {
 
-                if (Model.Amount.CountDecimalPlaces() > Model.CurrencyDecimals)
+                if (Model.Amount.CountDecimalPlaces() > AssetToken.Decimals)
                 {
-                    if (Model.CurrencyDecimals > 0)
+                    if (AssetToken.Decimals > 0)
                     {
-                        AppDialogService.ShowError($"Amount field decimal places must be less than or equal to {Model.CurrencyDecimals}");
+                        AppDialogService.ShowError($"Allowable decimal places for 'Amount' less than or equal to {AssetToken.Decimals}");
                     }
                     else
                     {
-                        AppDialogService.ShowError($"Amount field decimal places must be equal to {Model.CurrencyDecimals}");
+                        AppDialogService.ShowError($"{AssetToken.Name} doesn't allow 'Amount' to have decimal places.");
                     }
                 }
                 else
                 {
                     IsProcessing = true;
 
-                    var actualAmount = Convert.ToDecimal(Model.Amount).ToBigInteger((uint)Model.CurrencyDecimals);
-
-                    var buyToken = await AssetManager.GetTokenAsync(Model.CurrencyHash, Model.WalletAddress);
+                    BigInteger actualAmount = Convert.ToDecimal(Model.Amount).ToBigInteger((uint)AssetToken.Decimals);
+                 
+                    var buyToken = await AssetManager.GetTokenAsync(AssetToken.AssetScriptHash, Model.WalletAddress);
 
                     if (buyToken.Balance < Convert.ToDecimal(Model.Amount))
                     {
-                        AppDialogService.ShowError($"Insufficient {Model.Currency}.");
+                        AppDialogService.ShowError($"Insufficient {AssetToken.Symbol}.");
                     }
                     else
                     {
@@ -69,7 +67,7 @@ namespace Client.Pages.Modals
                             try
                             {
                                 IsProcessing = true;
-                                var buySucceeded = await PlatformTokenManager.BuyPlatformTokenAsync(Model.CurrencyHash, fromKey, actualAmount);
+                                var buySucceeded = await PlatformTokenManager.BuyPlatformTokenAsync(AssetToken.AssetScriptHash, fromKey, actualAmount);
 
                                 if (buySucceeded)
                                 {

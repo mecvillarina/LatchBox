@@ -60,12 +60,12 @@ namespace Client.Shared.Components
 
             if (currency == "NEO")
             {
-                parameters.Add(nameof(BuyPlatformTokenModal.Model), new BuyPlatformTokenParameter() { Currency = "NEO", CurrencyDecimals = NativeContract.NEO.Decimals, CurrencyHash = NativeContract.NEO.Hash });
+                parameters.Add(nameof(BuyPlatformTokenModal.AssetToken), new AssetToken() { AssetScriptHash = NativeContract.NEO.Hash, Decimals = NativeContract.NEO.Decimals, Name = NativeContract.NEO.Name, Symbol = NativeContract.NEO.Symbol  });
                 parameters.Add(nameof(BuyPlatformTokenModal.BuyConversationDisplay), $"1 NEO ≈ {PlatformTokensPerNEO} {PlatformTokenSymbol}");
             }
             else if (currency == "GAS")
             {
-                parameters.Add(nameof(BuyPlatformTokenModal.Model), new BuyPlatformTokenParameter() { Currency = "GAS", CurrencyDecimals = NativeContract.GAS.Decimals, CurrencyHash = NativeContract.GAS.Hash });
+                parameters.Add(nameof(BuyPlatformTokenModal.AssetToken), new AssetToken() { AssetScriptHash = NativeContract.GAS.Hash, Decimals = NativeContract.GAS.Decimals, Name = NativeContract.GAS.Name, Symbol = NativeContract.GAS.Symbol });
                 parameters.Add(nameof(BuyPlatformTokenModal.BuyConversationDisplay), $"1 GAS ≈ {PlatformTokensPerGAS} {PlatformTokenSymbol}");
             }
 
