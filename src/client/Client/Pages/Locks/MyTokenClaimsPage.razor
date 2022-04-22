@@ -48,7 +48,7 @@
                     {
                     <MudTd DataLabel="Lock Index">@context.Transaction.LockIndex</MudTd>
                     <MudTd DataLabel="Initiator">@context.Transaction.InitiatorAddress.ToMask(6)</MudTd>
-                    <MudTd DataLabel="Initiator">@context.Receiver.ReceiverAddress.ToMask(6)</MudTd>
+                    <MudTd DataLabel="Receiver">@context.Receiver.ReceiverAddress.ToMask(6)</MudTd>
                     <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                     <MudTd DataLabel="Total Amount">
                         <div class="d-flex">
