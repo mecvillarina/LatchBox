@@ -126,7 +126,7 @@ namespace Client.Pages.Modals
 
                 if (Model.Receivers.Any(x => x.ReceiverAddress == receiver.ReceiverAddress))
                 {
-                    var currentReceiver = Model.Receivers.First();
+                    var currentReceiver = Model.Receivers.First(x => x.ReceiverAddress == receiver.ReceiverAddress);
                     currentReceiver.Amount += receiver.Amount;
                 }
                 else

@@ -19,8 +19,10 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
         Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
         Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
-        Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 sender, BigInteger lockIndex);
-        Task<RpcApplicationLog> RevokeLockAsync(KeyPair fromKey, BigInteger lockIndex);
+        Task<RpcInvokeResult> ValidateClaimLockAsync(UInt160 account, BigInteger lockIndex);
+        Task<RpcApplicationLog> ClaimLockAsync(KeyPair accountKey, BigInteger lockIndex);
+        Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 account, BigInteger lockIndex);
+        Task<RpcApplicationLog> RevokeLockAsync(KeyPair accountKey, BigInteger lockIndex);
         Task<RpcInvokeResult> ValidateClaimRefundAsync(UInt160 account, UInt160 tokenAddress);
         Task<RpcApplicationLog> ClaimRefundAsync(KeyPair fromKey, UInt160 tokenAddress);
     }

@@ -19,34 +19,32 @@ namespace Client.Models
 
             Receiver = transaction.Receivers.First(x => x.ReceiverAddress == receiverAddress);
 
-            if (Transaction.IsActive)
-            {
-                if (DateTime.UtcNow < Transaction.UnlockTime)
-                {
-                    Status = "Locked";
-                    StatusColor = Color.Primary;
-                }
-                else if(!Receiver.DateClaimed.HasValue)
-                {
-                    Status = "Unlocked";
-                    StatusColor = Color.Info;
-                    CanClaim = true;
-                }
-                else
-                {
-                    Status = "Claimed";
-                    StatusColor = Color.Info;
-                }
-            }
-            else if (Receiver.DateRevoked.HasValue)
+            if (Receiver.DateRevoked.HasValue)
             {
                 Status = "Revoked";
                 StatusColor = Color.Error;
             }
-            else
+            else if (Receiver.DateClaimed.HasValue)
             {
                 Status = "Claimed";
                 StatusColor = Color.Info;
+            }
+            else
+            {
+                if (Transaction.IsActive)
+                {
+                    if (DateTime.UtcNow < Transaction.UnlockTime)
+                    {
+                        Status = "Locked";
+                        StatusColor = Color.Primary;
+                    }
+                    else
+                    {
+                        Status = "Unlocked";
+                        StatusColor = Color.Info;
+                        CanClaim = true;
+                    }
+                }
             }
         }
 
