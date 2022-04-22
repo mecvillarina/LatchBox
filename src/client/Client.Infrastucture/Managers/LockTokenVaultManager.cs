@@ -77,6 +77,30 @@ namespace Client.Infrastructure.Managers
             return transactions;
         }
 
+        public async Task<List<AssetRefund>> GetRefundsAsync(string accountAddress)
+        {
+            List<AssetRefund> refunds = new();
+
+            var account = Neo.Network.RPC.Utility.GetScriptHash(accountAddress, ManagerToolkit.NeoProtocolSettings);
+
+            byte[] script = ContractScriptHash.MakeScript("getRefunds");
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            var result = await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Map)stack;
+
+                foreach(var map in maps)
+                {
+                    refunds.Add(new AssetRefund(map, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+            return refunds;
+        }
+
         public async Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash)
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "validateNEP17Token", tokenScriptHash).ConfigureAwait(false);

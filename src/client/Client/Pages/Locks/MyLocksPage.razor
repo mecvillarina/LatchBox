@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        <MudTd DataLabel="Lock Id">@context.Transaction.LockIndex</MudTd>
+                        <MudTd DataLabel="Lock Index">@context.Transaction.LockIndex</MudTd>
                         <MudTd DataLabel="Initiator">@context.Transaction.InitiatorAddress.ToMask(6)</MudTd>
                         <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                         <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
@@ -76,7 +76,7 @@
                         </MudTd>
                         <MudTd DataLabel="Actions">
                             <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                                <MudMenuItem Disabled="@(!context.IsRevocable)" OnClick="(() => InvokeRevokeLockModalAsync(context))">Revoke Lock</MudMenuItem>
+                                <MudMenuItem Disabled="@(!context.IsRevocable || !context.Transaction.IsActive)" OnClick="(() => InvokeRevokeLockModalAsync(context))">Revoke Lock</MudMenuItem>
                             </MudMenu>
                         </MudTd>
                     }
