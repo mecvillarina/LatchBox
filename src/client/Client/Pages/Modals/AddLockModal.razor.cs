@@ -28,7 +28,7 @@ namespace Client.Pages.Modals
         {
             if (firstRender)
             {
-                await FetchPaymentTokenAsync();
+                await FetchFeeAsync();
                 Model.TokenScriptHash = AssetToken.AssetScriptHash.ToString();
                 WalletAddresses = await WalletManager.GetAddressesAsync();
                 Model.WalletAddress = WalletAddresses.First();
@@ -55,7 +55,7 @@ namespace Client.Pages.Modals
 
                     if (token.Balance < Convert.ToDecimal(Model.Receivers.Sum(x => x.Amount)))
                     {
-                        AppDialogService.ShowError($"Insufficient {AssetToken.Symbol}.");
+                        AppDialogService.ShowError($"Insufficient {AssetToken.Symbol} balance.");
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace Client.Pages.Modals
             }
         }
 
-        private async Task FetchPaymentTokenAsync()
+        private async Task FetchFeeAsync()
         {
             var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
             PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);

@@ -62,9 +62,15 @@ namespace Client.Pages.Locks
             var lockIndex = lockModel.Transaction.LockIndex;
 
             var parameters = new DialogParameters();
-            parameters.Add(nameof(ClaimLockModal.Model), new ClaimLockParameter() { LockIndex = lockIndex, ReceiverAddress = lockModel.Receiver.ReceiverAddress, ReceiverHash160 = lockModel.Receiver.ReceiverHash160 });
+            parameters.Add(nameof(ClaimLockModal.Model), new ClaimLockParameter()
+            {
+                LockIndex = lockIndex,
+                ReceiverAddress = lockModel.Receiver.ReceiverAddress,
+                ReceiverHash160 = lockModel.Receiver.ReceiverHash160,
+                AmountDisplay = lockModel.AmountDisplay
+            });
 
-            var dialog = DialogService.Show<ClaimLockModal>($"Claim Lock #{lockIndex} as {lockModel.Receiver.ReceiverAddress.ToMask(6)}", parameters);
+            var dialog = DialogService.Show<ClaimLockModal>($"Claim from Lock #{lockIndex} as {lockModel.Receiver.ReceiverAddress.ToMask(6)}", parameters);
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)

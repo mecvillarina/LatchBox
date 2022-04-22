@@ -80,7 +80,14 @@
                                             </MudTd>
                                         </RowTemplate>
                                         <FooterContent>
-                                            <MudTd colspan="3"><b><span>Total Amount: </span><span>@Model.Receivers.Sum(x => x.Amount)</span> <span>@AssetToken.Symbol (RECEIVER)</span> + <span>@AddLockPaymentFeeDisplay (FEE)</span></b></MudTd>
+                                            <MudTd colspan="3" align="right">
+                                                <MudText Typo="Typo.body1" Color="Color.Primary">
+                                                    <b>
+                                                        Total Amount Locked: @Model.Receivers.Sum(x => x.Amount) @AssetToken.Symbol  <br />
+                                                        Add Lock Fee: @AddLockPaymentFeeDisplay
+                                                    </b>
+                                                </MudText>
+                                            </MudTd>
                                         </FooterContent>
                                     </MudTable>
                                 </MudItem>
@@ -92,18 +99,20 @@
                 </MudContainer>
             </DialogContent>
             <DialogActions>
-                <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
-                <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
-                    @if (IsProcessing)
-                    {
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    }
-                    else
-                    {
-                        <span>ADD LOCK</span>
-                    }
-                </MudButton>
-
+                @if (IsLoaded)
+                {
+                    <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                    <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                        @if (IsProcessing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <span>ADD LOCK</span>
+                        }
+                    </MudButton>
+                }
             </DialogActions>
         </MudDialog>
     </EditForm>

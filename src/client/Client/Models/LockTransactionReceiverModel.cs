@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Models;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Models;
 using MudBlazor;
 
 namespace Client.Models
@@ -12,6 +13,7 @@ namespace Client.Models
         public Color StatusColor { get; private set; }
 
         public bool CanClaim { get; private set; }
+        public string AmountDisplay { get; set; }
 
         public LockTransactionReceiverModel(string receiverAddress, LockTransaction transaction)
         {
@@ -51,6 +53,7 @@ namespace Client.Models
         public void SetAssetToken(AssetToken assetToken)
         {
             AssetToken = assetToken;
+            AmountDisplay = $"{Receiver.Amount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals)} {AssetToken.Symbol}";
         }
     }
 }

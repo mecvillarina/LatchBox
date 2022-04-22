@@ -52,7 +52,7 @@
                     <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                     <MudTd DataLabel="Total Amount">
                         <div class="d-flex">
-                            @context.Receiver.Amount.ToAmount(@context.AssetToken.Decimals).ToAmountDisplay(@context.AssetToken.Decimals) @context.AssetToken.Symbol
+                            @context.AmountDisplay
                         </div>
                     </MudTd>
                     <MudTd DataLabel="Status">
@@ -62,7 +62,9 @@
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                            <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
+                            @*<MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>*@
+                            <MudMenuItem OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
+
                         </MudMenu>
                     </MudTd>
                     }

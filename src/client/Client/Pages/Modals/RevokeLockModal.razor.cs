@@ -1,4 +1,5 @@
 ﻿using Blazored.FluentValidation;
+using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
@@ -15,6 +16,19 @@ namespace Client.Pages.Modals
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         public bool IsProcessing { get; set; }
+        public bool IsLoaded { get; set; }
+        public AssetToken PaymentToken { get; set; }
+        public string RevokeLockPaymentFeeDisplay { get; set; }
+
+        protected async override Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await FetchFeeAsync();
+                IsLoaded = true;
+                StateHasChanged();
+            }
+        }
 
         private async Task SubmitAsync()
         {
@@ -35,7 +49,7 @@ namespace Client.Pages.Modals
 
                             if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "RevokedLatchBoxLock"))
                             {
-                                AppDialogService.ShowSuccess($"Revoke Lock success.");
+                                AppDialogService.ShowSuccess($"Revoke Lock success. Go to My Refunds Page to claim your token refunds.");
                                 MudDialog.Close();
                             }
                             else
@@ -56,6 +70,14 @@ namespace Client.Pages.Modals
 
                 IsProcessing = false;
             }
+        }
+
+        private async Task FetchFeeAsync()
+        {
+            var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
+            var revokeLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenRevokeLockFee();
+            RevokeLockPaymentFeeDisplay = $"{revokeLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
         }
 
         public void Cancel()

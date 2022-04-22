@@ -5,27 +5,42 @@
             <DialogContent>
                 <MudContainer MaxWidth="MaxWidth.False">
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.body1" Class="text-white">
-                                <span>Are you sure you want to claim the lock <b>#@((long)Model.LockIndex)</b> as <b>@Model.ReceiverAddress</b>? This action is irrevocable.</span>
-                            </MudText>
-                        </MudItem>
+                        @if (!IsLoaded)
+                        {
+                            //skeleton
+                        }
+                        else
+                        {
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Class="text-white">
+                                    You are about to claim <b>@Model.AmountDisplay</b> from <b>Lock #@((long)Model.LockIndex)</b> as receiver address <b>@Model.ReceiverAddress</b>.
+                                </MudText>
+                            </MudItem>
+                            
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Color="Color.Primary">
+                                    <b>Claim Lock Fee: @ClaimLockPaymentFeeDisplay</b>
+                                </MudText>
+                            </MudItem>
+                        }
                     </MudGrid>
                 </MudContainer>
             </DialogContent>
             <DialogActions>
-                <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
-                <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
-                    @if (IsProcessing)
-                    {
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                    }
-                    else
-                    {
-                        <span>CLAIM LOCK</span>
-                    }
-                </MudButton>
-
+                @if (IsLoaded)
+                {
+                    <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                    <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                        @if (IsProcessing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <span>CLAIM LOCK</span>
+                        }
+                    </MudButton>
+                }
             </DialogActions>
         </MudDialog>
     </EditForm>
