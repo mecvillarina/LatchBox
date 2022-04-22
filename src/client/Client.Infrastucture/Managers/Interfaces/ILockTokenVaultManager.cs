@@ -21,5 +21,7 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
         Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 sender, BigInteger lockIndex);
         Task<RpcApplicationLog> RevokeLockAsync(KeyPair fromKey, BigInteger lockIndex);
+        Task<RpcInvokeResult> ValidateClaimRefundAsync(UInt160 account, UInt160 tokenAddress);
+        Task<RpcApplicationLog> ClaimRefundAsync(KeyPair fromKey, UInt160 tokenAddress);
     }
 }

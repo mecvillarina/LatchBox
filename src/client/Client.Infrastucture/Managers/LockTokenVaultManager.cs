@@ -160,5 +160,23 @@ namespace Client.Infrastructure.Managers
 
             return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
         }
+
+        public async Task<RpcInvokeResult> ValidateClaimRefundAsync(UInt160 account, UInt160 tokenAddress)
+        {
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> ClaimRefundAsync(KeyPair fromKey, UInt160 tokenAddress)
+        {
+            var account = Contract.CreateSignatureRedeemScript(fromKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
+        }
     }
 }

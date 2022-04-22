@@ -40,7 +40,7 @@
                     }
                     else
                     {
-                        <MudTd DataLabel="Wallet Address">@context.WalletAddress</MudTd>
+                        <MudTd DataLabel="Wallet Address">@context.WalletAddress.ToMask(6)</MudTd>
                         <MudTd DataLabel="Token">
                             <div class="d-flex">
                                 @context.AssetToken.Name (@context.AssetToken.Symbol)
@@ -53,6 +53,7 @@
                         </MudTd>
                         <MudTd DataLabel="Actions">
                             <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                                <MudMenuItem  OnClick="(() => InvokeClaimRefundModalAsync(context))">Claim</MudMenuItem>
                             </MudMenu>
                         </MudTd>
                      }
