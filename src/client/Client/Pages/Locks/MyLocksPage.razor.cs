@@ -30,13 +30,19 @@ namespace Client.Pages.Locks
             IsLoaded = false;
 
             Locks.Clear();
-            var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiator("NVh8ZCYi4rUsvBpMZgCb4gbm3bQVCMafWU");
 
-            foreach (var lockTransaction in lockTransactions)
+            var addresses = await WalletManager.GetAddressesAsync();
+
+            foreach (var address in addresses)
             {
-                Locks.Add(new LockTransactionInitiatorModel(lockTransaction));
-            }
+                var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiator(address);
 
+                foreach (var lockTransaction in lockTransactions)
+                {
+                    Locks.Add(new LockTransactionInitiatorModel(lockTransaction));
+                }
+            }
+           
             Locks = Locks.OrderByDescending(x => x.Transaction.StartTime).ToList();
 
             IsLoaded = true;

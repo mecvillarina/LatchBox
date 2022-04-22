@@ -48,7 +48,7 @@ namespace Client.Models
                 StatusColor = Color.Info;
             }
 
-            IsRevocable = Transaction.IsRevocable && Transaction.IsActive;
+            IsRevocable = Transaction.IsRevocable;
         }
 
         public void SetAssetToken(AssetToken assetToken)
