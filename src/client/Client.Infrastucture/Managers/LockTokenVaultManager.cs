@@ -22,12 +22,49 @@ namespace Client.Infrastructure.Managers
         {
         }
 
-        public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.LockTokenVaultContractHash, ProtocolSettings.Default);
+        public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.LockTokenVaultContractHash, ManagerToolkit.NeoProtocolSettings);
 
         public async Task<BigInteger> GetLatchBoxLocksLength()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksLength").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<LockTransaction> GetTransaction(BigInteger lockIdx)
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLockTransaction", lockIdx).ConfigureAwait(false);
+            var stack = result.Stack.First();
+            return new LockTransaction((Map)stack, ManagerToolkit.NeoProtocolSettings);
+        }
+
+        public async Task<List<LockTransaction>> GetTransactionsByInitiator(string initiatorAddress)
+        {
+            var initiator = Neo.Network.RPC.Utility.GetScriptHash(initiatorAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByInitiator", initiator).ConfigureAwait(false);
+            var maps = (Neo.VM.Types.Array)result.Stack.First();
+            List<LockTransaction> transactions = new();
+
+            foreach (var map in maps)
+            {
+                transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+            }
+
+            return transactions;
+        }
+
+        public async Task<List<LockTransaction>> GetTransactionsByReceiver(string receiverAddress)
+        {
+            var receiver = Neo.Network.RPC.Utility.GetScriptHash(receiverAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByReceiver", receiver).ConfigureAwait(false);
+            var maps = (Neo.VM.Types.Array)result.Stack.First();
+            List<LockTransaction> transactions = new();
+
+            foreach (var map in maps)
+            {
+                transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+            }
+
+            return transactions;
         }
 
         public async Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash)
@@ -50,7 +87,7 @@ namespace Client.Infrastructure.Managers
             byte[] script = ContractScriptHash.MakeScript("addLock", tokenAddress, totalAmount, durationInDays, receiverArr.ToParameter(), isRevocable);
             Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
-            return await ExecuteTestInvokeAsync(script, signers);
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
         }
 
         public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable)
@@ -72,16 +109,12 @@ namespace Client.Infrastructure.Managers
             return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
         }
 
-        //var json = "{\"type\":\"Array\",\"value\":[{\"type\":\"Array\",\"value\":[{\"type\":\"ByteString\",\"value\":\"a0Or+iPNnPTNqV5b0v4IbIyA810=\"},{\"type\":\"Integer\",\"value\":1000000000}]}]}";
-        //JObject jsonObj = JObject.Parse(json);
-        //var s = Neo.Network.RPC.Utility.StackItemFromJson(jsonObj);
+        public async Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 sender, BigInteger lockIndex)
+        {
+            byte[] script = ContractScriptHash.MakeScript("revokeLock", lockIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
-        //var base64 = Convert.ToBase64String(tokenAddress.ToArray());
-        //var @struct = new Neo.VM.Types.Array();
-        //@struct.Add(new ByteString(sender.ToArray()));
-        //@struct.Add(totalAmount);
-        //var array = new Neo.VM.Types.Array();
-        //array.Add(@struct);
-
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
     }
 }

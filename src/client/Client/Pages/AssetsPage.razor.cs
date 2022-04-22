@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
+using Client.Models;
 using Client.Pages.Modals;
-using Client.Parameters;
 using MudBlazor;
 using Neo.SmartContract.Native;
 

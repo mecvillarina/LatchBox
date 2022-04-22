@@ -1,15 +1,18 @@
 ﻿using Client.Infrastructure.Models;
+using Client.Models;
 using Client.Pages.Modals;
+using Client.Parameters;
 using MudBlazor;
 using Neo;
+using System.Numerics;
 
 namespace Client.Pages.Locks
 {
     public partial class MyLocksPage
     {
         public bool IsLoaded { get; set; }
-        public bool IsAssetLoaded { get; set; }
 
+        public List<LockTransactionInitiatorModel> Locks { get; set; } = new();
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -17,27 +20,38 @@ namespace Client.Pages.Locks
             {
                 await InvokeAsync(async () =>
                 {
-                    var length = await LockTokenVaultManager.GetLatchBoxLocksLength();
-                    var addressVersion = ManagerToolkit.NeoProtocolSettings.AddressVersion;
-                    var from = (await WalletManager.GetAddressesAsync()).First();
-                    //get wallet Account
-
-                    //try
-                    //{
-                    //    var s = Neo.Network.RPC.Utility.GetScriptHash("NVh8ZCYi4rUsvBpMZgCb4gbm3bQVCMafWU", ManagerToolkit.NeoProtocolSettings);
-                    //}
-                    //catch (Exception ex)
-                    //{
-
-                    //}
-                    //await LockTokenVaultManager.AddLock(walletAccount.KeyPair, PlatformTokenManager.TokenScriptHash, 1000000000, 1, new List<LatchBoxLockReceiverArg> { new LatchBoxLockReceiverArg() { ReceiverAddress = from.ToScriptHash(addressVersion), Amount = 1000000000 } }, true);
-                    IsAssetLoaded = true;
-                    StateHasChanged();
+                    await FetchDataAsync();
                 });
             }
         }
 
-        public async Task InvokeAddLockModalAsync()
+        private async Task FetchDataAsync()
+        {
+            IsLoaded = false;
+
+            Locks.Clear();
+            var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiator("NVh8ZCYi4rUsvBpMZgCb4gbm3bQVCMafWU");
+
+            foreach (var lockTransaction in lockTransactions)
+            {
+                Locks.Add(new LockTransactionInitiatorModel(lockTransaction));
+            }
+
+            Locks = Locks.OrderByDescending(x => x.Transaction.StartTime).ToList();
+
+            IsLoaded = true;
+            StateHasChanged();
+
+            foreach (var @lock in Locks)
+            {
+                var assetToken = await AssetManager.GetTokenAsync(@lock.Transaction.TokenScriptHash);
+                @lock.SetAssetToken(assetToken);
+            }
+
+            StateHasChanged();
+        }
+
+        private async Task InvokeAddLockModalAsync()
         {
             var assetToken = await InvokeSearchNEP17TokenAsync();
 
@@ -46,7 +60,13 @@ namespace Client.Pages.Locks
                 var parameters = new DialogParameters();
                 parameters.Add(nameof(AddLockModal.AssetToken), assetToken);
 
-                DialogService.Show<AddLockModal>($"Add New Lock", parameters);
+                var dialog = DialogService.Show<AddLockModal>($"Add New Lock", parameters);
+                var dialogResult = await dialog.Result;
+
+                if (!dialogResult.Cancelled)
+                {
+                    await FetchDataAsync();
+                }
             }
         }
 
@@ -63,6 +83,23 @@ namespace Client.Pages.Locks
             }
 
             return null;
+        }
+
+        private async Task InvokeRevokeLockModalAsync(LockTransactionInitiatorModel @lock)
+        {
+            var lockIndex = @lock.Transaction.LockIndex;
+
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(RevokeLockModal.LockTransaction), @lock.Transaction);
+            parameters.Add(nameof(RevokeLockModal.Model), new RevokeLockParameter() { LockIndex = lockIndex });
+
+            var dialog = DialogService.Show<RevokeLockModal>($"Revoke Lock #{lockIndex}", parameters);
+            var dialogResult = await dialog.Result;
+
+            if (!dialogResult.Cancelled)
+            {
+                await FetchDataAsync();
+            }
         }
     }
 }

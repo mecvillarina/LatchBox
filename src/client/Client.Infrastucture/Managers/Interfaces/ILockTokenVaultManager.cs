@@ -12,8 +12,12 @@ namespace Client.Infrastructure.Managers.Interfaces
     {
         UInt160 ContractScriptHash { get; }
         Task<BigInteger> GetLatchBoxLocksLength();
+        Task<LockTransaction> GetTransaction(BigInteger lockIdx);
+        Task<List<LockTransaction>> GetTransactionsByInitiator(string initiatorAddress);
+        Task<List<LockTransaction>> GetTransactionsByReceiver(string receiverAddress);
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
         Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
         Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable);
+        Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 sender, BigInteger lockIndex);
     }
 }

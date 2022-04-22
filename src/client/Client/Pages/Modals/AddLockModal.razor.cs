@@ -91,7 +91,7 @@ namespace Client.Pages.Modals
                                     }
                                     else
                                     {
-                                        AppDialogService.ShowError($"Add Failed. Reason: [{addLockResult.Executions.First().ExceptionMessage}]");
+                                        AppDialogService.ShowError($"Add Lock failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
                                     }
                                 }
                                 catch (Exception ex)

@@ -1,0 +1,33 @@
+﻿<MudContainer Class="pa-0 ma-0" MaxWidth="MaxWidth.False" style="max-height: 80vh; overflow-y: scroll">
+    <EditForm Model="@Model" OnValidSubmit="SubmitAsync">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+            <DialogContent>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    <MudGrid Class="pt-0 pb-4" Spacing="2">
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.body1" Class="text-white">
+                                <span>Are you sure you want to revoke lock <b>#@((long)Model.LockIndex)</b>? Only unclaimed amounts will be refunded to you. This action is irrevocable.</span>
+                            </MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudContainer>
+            </DialogContent>
+            <DialogActions>
+                <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                    @if (IsProcessing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    }
+                    else
+                    {
+                        <span>REVOKE LOCK</span>
+                    }
+                </MudButton>
+
+            </DialogActions>
+        </MudDialog>
+    </EditForm>
+</MudContainer>
+
