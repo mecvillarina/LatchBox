@@ -62,9 +62,7 @@
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                            @*<MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>*@
-                            <MudMenuItem OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
-
+                            <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
                         </MudMenu>
                     </MudTd>
                     }
