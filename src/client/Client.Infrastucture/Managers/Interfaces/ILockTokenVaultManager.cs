@@ -12,6 +12,10 @@ namespace Client.Infrastructure.Managers.Interfaces
     {
         UInt160 ContractScriptHash { get; }
         Task<BigInteger> GetLatchBoxLocksLength();
+        Task<UInt160> GetPaymentTokenScriptHashAsync();
+        Task<BigInteger> GetPaymentTokenAddLockFeeAsync();
+        Task<BigInteger> GetPaymentTokenClaimLockFee();
+        Task<BigInteger> GetPaymentTokenRevokeLockFee();
         Task<LockTransaction> GetTransaction(BigInteger lockIdx);
         Task<List<LockTransaction>> GetTransactionsByInitiator(string initiatorAddress);
         Task<List<LockTransaction>> GetTransactionsByReceiver(string receiverAddress);

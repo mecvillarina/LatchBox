@@ -5,78 +5,87 @@
             <DialogContent>
                 <MudContainer MaxWidth="MaxWidth.False">
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.body1" Class="text-white"><b>NEP-17 Token Information</b></MudText>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudTextField Label="ScriptHash" Variant="Variant.Outlined" Disabled="true"
-                                          @bind-Value="Model.TokenScriptHash" For="@(() => Model.TokenScriptHash)" />
-                        </MudItem>
 
-                        <MudItem xs="12">
-                            <MudTextField Label="Name" Variant="Variant.Outlined" Disabled="true"
-                                          @bind-Value="AssetToken.Name" For="@(() => AssetToken.Name)" />
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudTextField Label="Symbol" Variant="Variant.Outlined" Disabled="true"
-                                          @bind-Value="AssetToken.Symbol" For="@(() => AssetToken.Symbol)" />
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudTextField Label="Token Decimals" Variant="Variant.Outlined" Disabled="true"
-                                          @bind-Value="AssetToken.Decimals" For="@(() => AssetToken.Decimals)" />
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.body1" Class="text-white"><b>Lock Information</b></MudText>
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudSelect T="string" Disabled="IsProcessing" Label="Wallet Address" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.WalletAddress">
-                                @foreach (var walletAddress in WalletAddresses)
-                                {
-                                    <MudSelectItem Value="@walletAddress">@walletAddress</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudDatePicker Label="Unlock Date" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudSelect T="bool" Disabled="IsProcessing" Label="Revocable?" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.IsRevocable">
-                                <MudSelectItem Value="true">Yes</MudSelectItem>
-                                <MudSelectItem Value="false">No</MudSelectItem>
-                            </MudSelect>
-                        </MudItem>
-
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.body1" Class="text-white"><b>Receivers</b></MudText>
-                            <MudButton Class="mt-2" Color="Color.Secondary" Variant="Variant.Filled" OnClick="InvokeAddLockReceiverModalAsync" Disabled="IsProcessing">Add Receiver</MudButton>
-                        </MudItem>
-
-                        @if (Model.Receivers.Any())
+                        @if (!IsLoaded)
+                        {
+                            //skeleton
+                        }
+                        else
                         {
                             <MudItem xs="12">
-                                <MudTable Items="Model.Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.None">
-                                    <HeaderContent>
-                                        <MudTh>Receiver Address</MudTh>
-                                        <MudTh>Amount</MudTh>
-                                        <MudTh>Action</MudTh>
-                                    </HeaderContent>
-                                    <RowTemplate>
-                                        <MudTd>@receiverContext.ReceiverAddress</MudTd>
-                                        <MudTd>@receiverContext.Amount @AssetToken.Symbol</MudTd>
-                                        <MudTd>
-                                            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemoveReceiver(receiverContext.Id))" />
-                                        </MudTd>
-                                    </RowTemplate>
-                                    <FooterContent>
-                                        <MudTd colspan="3"><b><span>Total Amount: </span><span>@Model.Receivers.Sum(x => x.Amount)</span> <span>@AssetToken.Symbol</span></b></MudTd>
-                                    </FooterContent>
-                                </MudTable>
+                                <MudText Typo="Typo.body1" Class="text-white"><b>NEP-17 Token Information</b></MudText>
                             </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField Label="ScriptHash" Variant="Variant.Outlined" Disabled="true"
+                                          @bind-Value="Model.TokenScriptHash" For="@(() => Model.TokenScriptHash)" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudTextField Label="Name" Variant="Variant.Outlined" Disabled="true"
+                                          @bind-Value="AssetToken.Name" For="@(() => AssetToken.Name)" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudTextField Label="Symbol" Variant="Variant.Outlined" Disabled="true"
+                                          @bind-Value="AssetToken.Symbol" For="@(() => AssetToken.Symbol)" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudTextField Label="Token Decimals" Variant="Variant.Outlined" Disabled="true"
+                                          @bind-Value="AssetToken.Decimals" For="@(() => AssetToken.Decimals)" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Class="text-white"><b>Lock Information</b></MudText>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudSelect T="string" Disabled="IsProcessing" Label="Wallet Address" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.WalletAddress">
+                                    @foreach (var walletAddress in WalletAddresses)
+                                    {
+                                        <MudSelectItem Value="@walletAddress">@walletAddress</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudDatePicker Label="Unlock Date" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudSelect T="bool" Disabled="IsProcessing" Label="Revocable?" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.IsRevocable">
+                                    <MudSelectItem Value="true">Yes</MudSelectItem>
+                                    <MudSelectItem Value="false">No</MudSelectItem>
+                                </MudSelect>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Class="text-white"><b>Receivers</b></MudText>
+                                <MudButton Class="mt-2" Color="Color.Secondary" Variant="Variant.Filled" OnClick="InvokeAddLockReceiverModalAsync" Disabled="IsProcessing">Add Receiver</MudButton>
+                            </MudItem>
+
+                            @if (Model.Receivers.Any())
+                            {
+                                <MudItem xs="12">
+                                    <MudTable Items="Model.Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.None">
+                                        <HeaderContent>
+                                            <MudTh>Receiver Address</MudTh>
+                                            <MudTh>Amount</MudTh>
+                                            <MudTh>Action</MudTh>
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd>@receiverContext.ReceiverAddress</MudTd>
+                                            <MudTd>@receiverContext.Amount @AssetToken.Symbol</MudTd>
+                                            <MudTd>
+                                                <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemoveReceiver(receiverContext.Id))" />
+                                            </MudTd>
+                                        </RowTemplate>
+                                        <FooterContent>
+                                            <MudTd colspan="3"><b><span>Total Amount: </span><span>@Model.Receivers.Sum(x => x.Amount)</span> <span>@AssetToken.Symbol (RECEIVER)</span> + <span>@AddLockPaymentFeeDisplay (FEE)</span></b></MudTd>
+                                        </FooterContent>
+                                    </MudTable>
+                                </MudItem>
+                            }
+
                         }
 
                     </MudGrid>

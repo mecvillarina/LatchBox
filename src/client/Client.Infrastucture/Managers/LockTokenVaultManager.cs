@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Managers.Interfaces;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Neo;
 using Neo.IO;
@@ -27,6 +28,30 @@ namespace Client.Infrastructure.Managers
         public async Task<BigInteger> GetLatchBoxLocksLength()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksLength").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<UInt160> GetPaymentTokenScriptHashAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenScriptHash").ConfigureAwait(false);
+            return Neo.Network.RPC.Utility.GetScriptHash(result.Stack.Single().FromByteStringToAccount(), ManagerToolkit.NeoProtocolSettings);
+        }
+
+        public async Task<BigInteger> GetPaymentTokenAddLockFeeAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenAddLockFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenClaimLockFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenClaimLockFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenRevokeLockFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenRevokeLockFee").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
         }
 
@@ -93,7 +118,7 @@ namespace Client.Infrastructure.Managers
             {
                 var maps = (Map)stack;
 
-                foreach(var map in maps)
+                foreach (var map in maps)
                 {
                     refunds.Add(new AssetRefund(map, ManagerToolkit.NeoProtocolSettings));
                 }
