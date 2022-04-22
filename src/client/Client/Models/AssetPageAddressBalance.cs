@@ -1,4 +1,4 @@
-﻿namespace Client.Parameters
+﻿namespace Client.Models
 {
     public class AssetPageAddressBalance
     {

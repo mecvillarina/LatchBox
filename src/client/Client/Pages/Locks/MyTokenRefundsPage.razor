@@ -5,12 +5,12 @@
 <MudContainer MaxWidth="MaxWidth.False">
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Token Refunds</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Refunds</MudText>
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Token Refunds</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Refunds</MudText>
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
     </div>
 </MudContainer>
@@ -23,7 +23,41 @@
     else
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-
+            <MudTable Items="@Refunds" Class="mx-0 grey darken-4" FixedHeader="true">
+                <HeaderContent>
+                    <MudTh>Wallet Address</MudTh>
+                    <MudTh>Token</MudTh>
+                    <MudTh>Total Amount</MudTh>
+                    <MudTh>Actions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    @if (@context.AssetToken == null)
+                    {
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    }
+                    else
+                    {
+                        <MudTd DataLabel="Wallet Address">@context.WalletAddress</MudTd>
+                        <MudTd DataLabel="Token">
+                            <div class="d-flex">
+                                @context.AssetToken.Name (@context.AssetToken.Symbol)
+                            </div>
+                        </MudTd>
+                        <MudTd DataLabel="Total Amount">
+                            <div class="d-flex">
+                                @context.AssetRefund.Amount.ToAmount(@context.AssetToken.Decimals).ToAmountDisplay(@context.AssetToken.Decimals) @context.AssetToken.Symbol
+                            </div>
+                        </MudTd>
+                        <MudTd DataLabel="Actions">
+                            <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            </MudMenu>
+                        </MudTd>
+                     }
+                </RowTemplate>
+            </MudTable>
         </MudPaper>
     }
 

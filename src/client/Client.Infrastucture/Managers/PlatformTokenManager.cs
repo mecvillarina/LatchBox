@@ -31,7 +31,7 @@ namespace Client.Infrastructure.Managers
                 Symbol = tokenInfo.Symbol,
                 Decimals = tokenInfo.Decimals,
                 TotalSupply = tokenInfo.TotalSupply,
-                AssetHash = TokenScriptHash,
+                AssetScriptHash = TokenScriptHash,
             };
         }
 
