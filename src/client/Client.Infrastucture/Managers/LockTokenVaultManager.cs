@@ -39,14 +39,19 @@ namespace Client.Infrastructure.Managers
 
         public async Task<List<LockTransaction>> GetTransactionsByInitiator(string initiatorAddress)
         {
-            var initiator = Neo.Network.RPC.Utility.GetScriptHash(initiatorAddress, ManagerToolkit.NeoProtocolSettings);
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByInitiator", initiator).ConfigureAwait(false);
-            var maps = (Neo.VM.Types.Array)result.Stack.First();
             List<LockTransaction> transactions = new();
 
-            foreach (var map in maps)
+            var initiator = Neo.Network.RPC.Utility.GetScriptHash(initiatorAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByInitiator", initiator).ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
             {
-                transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                var maps = (Neo.VM.Types.Array)stack;
+                foreach (var map in maps)
+                {
+                    transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                }
             }
 
             return transactions;
@@ -54,14 +59,19 @@ namespace Client.Infrastructure.Managers
 
         public async Task<List<LockTransaction>> GetTransactionsByReceiver(string receiverAddress)
         {
-            var receiver = Neo.Network.RPC.Utility.GetScriptHash(receiverAddress, ManagerToolkit.NeoProtocolSettings);
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByReceiver", receiver).ConfigureAwait(false);
-            var maps = (Neo.VM.Types.Array)result.Stack.First();
             List<LockTransaction> transactions = new();
 
-            foreach (var map in maps)
+            var receiver = Neo.Network.RPC.Utility.GetScriptHash(receiverAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByReceiver", receiver).ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
             {
-                transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                var maps = (Neo.VM.Types.Array)stack;
+                foreach (var map in maps)
+                {
+                    transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                }
             }
 
             return transactions;
@@ -115,6 +125,16 @@ namespace Client.Infrastructure.Managers
             Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
             return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> RevokeLockAsync(KeyPair fromKey, BigInteger lockIndex)
+        {
+            var sender = Contract.CreateSignatureRedeemScript(fromKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("revokeLock", lockIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
         }
     }
 }

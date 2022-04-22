@@ -85,12 +85,12 @@ namespace Client.Pages.Locks
             return null;
         }
 
-        private async Task InvokeRevokeLockModalAsync(LockTransactionInitiatorModel @lock)
+        private async Task InvokeRevokeLockModalAsync(LockTransactionInitiatorModel lockModel)
         {
-            var lockIndex = @lock.Transaction.LockIndex;
+            var lockIndex = lockModel.Transaction.LockIndex;
 
             var parameters = new DialogParameters();
-            parameters.Add(nameof(RevokeLockModal.LockTransaction), @lock.Transaction);
+            parameters.Add(nameof(RevokeLockModal.LockTransaction), lockModel.Transaction);
             parameters.Add(nameof(RevokeLockModal.Model), new RevokeLockParameter() { LockIndex = lockIndex });
 
             var dialog = DialogService.Show<RevokeLockModal>($"Revoke Lock #{lockIndex}", parameters);

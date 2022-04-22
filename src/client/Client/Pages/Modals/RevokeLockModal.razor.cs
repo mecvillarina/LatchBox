@@ -31,7 +31,17 @@ namespace Client.Pages.Modals
                     {
                         try
                         {
+                            var addLockResult = await LockTokenVaultManager.RevokeLockAsync(fromKey, LockTransaction.LockIndex);
 
+                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "RevokedLatchBoxLock"))
+                            {
+                                AppDialogService.ShowSuccess($"Revoke Lock success.");
+                                MudDialog.Close();
+                            }
+                            else
+                            {
+                                AppDialogService.ShowError($"Revoke Lock failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
+                            }
                         }
                         catch (Exception ex)
                         {
