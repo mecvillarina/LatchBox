@@ -1,4 +1,5 @@
 ﻿using Blazored.FluentValidation;
+using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
@@ -17,19 +18,24 @@ namespace Client.Pages.Modals
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         public bool IsProcessing { get; set; }
+        public bool IsLoaded { get; set; }
         public List<string> WalletAddresses { get; set; } = new();
         public DateTime MinDateValue { get; set; }
+        public AssetToken PaymentToken { get; set; }
+        public string AddLockPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
+                await FetchFeeAsync();
                 Model.TokenScriptHash = AssetToken.AssetScriptHash.ToString();
                 WalletAddresses = await WalletManager.GetAddressesAsync();
                 Model.WalletAddress = WalletAddresses.First();
                 MinDateValue = DateTime.Now;
                 Model.UnlockDate = MinDateValue.AddDays(1);
                 Model.IsRevocable = true;
+                IsLoaded = true;
                 StateHasChanged();
             }
         }
@@ -49,7 +55,7 @@ namespace Client.Pages.Modals
 
                     if (token.Balance < Convert.ToDecimal(Model.Receivers.Sum(x => x.Amount)))
                     {
-                        AppDialogService.ShowError($"Insufficient {AssetToken.Symbol}.");
+                        AppDialogService.ShowError($"Insufficient {AssetToken.Symbol} balance.");
                     }
                     else
                     {
@@ -126,7 +132,7 @@ namespace Client.Pages.Modals
 
                 if (Model.Receivers.Any(x => x.ReceiverAddress == receiver.ReceiverAddress))
                 {
-                    var currentReceiver = Model.Receivers.First();
+                    var currentReceiver = Model.Receivers.First(x => x.ReceiverAddress == receiver.ReceiverAddress);
                     currentReceiver.Amount += receiver.Amount;
                 }
                 else
@@ -148,6 +154,14 @@ namespace Client.Pages.Modals
             {
                 Model.Receivers.Remove(receiver);
             }
+        }
+
+        private async Task FetchFeeAsync()
+        {
+            var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
+            var addLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenAddLockFeeAsync();
+            AddLockPaymentFeeDisplay = $"{addLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
         }
 
         public void Cancel()

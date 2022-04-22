@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Models;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Models;
 using MudBlazor;
 
 namespace Client.Models
@@ -12,6 +13,7 @@ namespace Client.Models
         public Color StatusColor { get; private set; }
 
         public bool CanClaim { get; private set; }
+        public string AmountDisplay { get; set; }
 
         public LockTransactionReceiverModel(string receiverAddress, LockTransaction transaction)
         {
@@ -19,40 +21,39 @@ namespace Client.Models
 
             Receiver = transaction.Receivers.First(x => x.ReceiverAddress == receiverAddress);
 
-            if (Transaction.IsActive)
-            {
-                if (DateTime.UtcNow < Transaction.UnlockTime)
-                {
-                    Status = "Locked";
-                    StatusColor = Color.Primary;
-                }
-                else if(!Receiver.DateClaimed.HasValue)
-                {
-                    Status = "Unlocked";
-                    StatusColor = Color.Info;
-                    CanClaim = true;
-                }
-                else
-                {
-                    Status = "Claimed";
-                    StatusColor = Color.Info;
-                }
-            }
-            else if (Receiver.DateRevoked.HasValue)
+            if (Receiver.DateRevoked.HasValue)
             {
                 Status = "Revoked";
                 StatusColor = Color.Error;
             }
-            else
+            else if (Receiver.DateClaimed.HasValue)
             {
                 Status = "Claimed";
                 StatusColor = Color.Info;
+            }
+            else
+            {
+                if (Transaction.IsActive)
+                {
+                    if (DateTime.UtcNow < Transaction.UnlockTime)
+                    {
+                        Status = "Locked";
+                        StatusColor = Color.Primary;
+                    }
+                    else
+                    {
+                        Status = "Unlocked";
+                        StatusColor = Color.Info;
+                        CanClaim = true;
+                    }
+                }
             }
         }
 
         public void SetAssetToken(AssetToken assetToken)
         {
             AssetToken = assetToken;
+            AmountDisplay = $"{Receiver.Amount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals)} {AssetToken.Symbol}";
         }
     }
 }

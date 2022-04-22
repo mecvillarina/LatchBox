@@ -13,13 +13,13 @@
                         {
                             <MudItem xs="12">
                                 <MudText Typo="Typo.body1" Class="text-white">
-                                    <span>Are you sure you want to revoke the lock <b>#@((long)Model.LockIndex)</b>? Only unclaimed amounts will be refunded to you. This action is irrevocable.</span>
+                                    You are about to claim <b>@Model.AmountDisplay</b> from <b>Lock #@((long)Model.LockIndex)</b> as receiver address <b>@Model.ReceiverAddress</b>.
                                 </MudText>
                             </MudItem>
                             
                             <MudItem xs="12">
-                                <MudText Typo="Typo.body1" Color="Color.Primary" >
-                                    <b>Revoke Lock Fee: @RevokeLockPaymentFeeDisplay</b>
+                                <MudText Typo="Typo.body1" Color="Color.Primary">
+                                    <b>Claim Lock Fee: @ClaimLockPaymentFeeDisplay</b>
                                 </MudText>
                             </MudItem>
                         }
@@ -37,7 +37,7 @@
                         }
                         else
                         {
-                            <span>REVOKE LOCK</span>
+                            <span>CLAIM LOCK</span>
                         }
                     </MudButton>
                 }

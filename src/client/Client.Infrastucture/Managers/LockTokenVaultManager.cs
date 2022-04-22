@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Managers.Interfaces;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Neo;
 using Neo.IO;
@@ -27,6 +28,30 @@ namespace Client.Infrastructure.Managers
         public async Task<BigInteger> GetLatchBoxLocksLength()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksLength").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<UInt160> GetPaymentTokenScriptHashAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenScriptHash").ConfigureAwait(false);
+            return Neo.Network.RPC.Utility.GetScriptHash(result.Stack.Single().FromByteStringToAccount(), ManagerToolkit.NeoProtocolSettings);
+        }
+
+        public async Task<BigInteger> GetPaymentTokenAddLockFeeAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenAddLockFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenClaimLockFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenClaimLockFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenRevokeLockFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenRevokeLockFee").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
         }
 
@@ -93,7 +118,7 @@ namespace Client.Infrastructure.Managers
             {
                 var maps = (Map)stack;
 
-                foreach(var map in maps)
+                foreach (var map in maps)
                 {
                     refunds.Add(new AssetRefund(map, ManagerToolkit.NeoProtocolSettings));
                 }
@@ -143,22 +168,58 @@ namespace Client.Infrastructure.Managers
             return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
         }
 
-        public async Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 sender, BigInteger lockIndex)
+        public async Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 account, BigInteger lockIndex)
         {
             byte[] script = ContractScriptHash.MakeScript("revokeLock", lockIndex);
-            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
 
             return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
         }
 
-        public async Task<RpcApplicationLog> RevokeLockAsync(KeyPair fromKey, BigInteger lockIndex)
+        public async Task<RpcApplicationLog> RevokeLockAsync(KeyPair accountKey, BigInteger lockIndex)
         {
-            var sender = Contract.CreateSignatureRedeemScript(fromKey.PublicKey).ToScriptHash();
+            var sender = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
 
             byte[] script = ContractScriptHash.MakeScript("revokeLock", lockIndex);
             Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
-            return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
+        }
+
+        public async Task<RpcInvokeResult> ValidateClaimLockAsync(UInt160 account, BigInteger lockIndex)
+        {
+            byte[] script = ContractScriptHash.MakeScript("claimLock", lockIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> ClaimLockAsync(KeyPair accountKey, BigInteger lockIndex)
+        {
+            var sender = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("claimLock", lockIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
+        }
+
+        public async Task<RpcInvokeResult> ValidateClaimRefundAsync(UInt160 account, UInt160 tokenAddress)
+        {
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> ClaimRefundAsync(KeyPair accountKey, UInt160 tokenAddress)
+        {
+            var account = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
         }
     }
 }

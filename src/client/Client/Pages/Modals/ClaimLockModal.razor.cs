@@ -7,10 +7,9 @@ using MudBlazor;
 
 namespace Client.Pages.Modals
 {
-    public partial class RevokeLockModal
+    public partial class ClaimLockModal
     {
-        [Parameter] public LockTransaction LockTransaction { get; set; }
-        [Parameter] public RevokeLockParameter Model { get; set; } = new();
+        [Parameter] public ClaimLockParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;
@@ -18,7 +17,7 @@ namespace Client.Pages.Modals
         public bool IsProcessing { get; set; }
         public bool IsLoaded { get; set; }
         public AssetToken PaymentToken { get; set; }
-        public string RevokeLockPaymentFeeDisplay { get; set; }
+        public string ClaimLockPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -35,26 +34,26 @@ namespace Client.Pages.Modals
             if (Validated)
             {
                 IsProcessing = true;
-                var validateResult = await LockTokenVaultManager.ValidateRevokeLockAsync(LockTransaction.InitiatorHash160, LockTransaction.LockIndex);
+                var validateResult = await LockTokenVaultManager.ValidateClaimLockAsync(Model.ReceiverHash160, Model.LockIndex);
 
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
-                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(LockTransaction.InitiatorAddress);
+                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.ReceiverAddress);
 
                     if (fromKey != null)
                     {
                         try
                         {
-                            var addLockResult = await LockTokenVaultManager.RevokeLockAsync(fromKey, LockTransaction.LockIndex);
+                            var addLockResult = await LockTokenVaultManager.ClaimLockAsync(fromKey, Model.LockIndex);
 
-                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "RevokedLatchBoxLock"))
+                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "ClaimedLatchBoxLock"))
                             {
-                                AppDialogService.ShowSuccess($"Revoke Lock success. Go to My Refunds Page to claim your token refunds.");
+                                AppDialogService.ShowSuccess($"Claim Lock success.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Revoke Lock failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Claim Lock failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)
@@ -76,8 +75,8 @@ namespace Client.Pages.Modals
         {
             var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
             PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
-            var revokeLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenRevokeLockFee();
-            RevokeLockPaymentFeeDisplay = $"{revokeLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
+            var claimLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenClaimLockFee();
+            ClaimLockPaymentFeeDisplay = $"{claimLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
         }
 
         public void Cancel()

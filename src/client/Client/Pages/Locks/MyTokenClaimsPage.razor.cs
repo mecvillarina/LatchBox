@@ -35,7 +35,7 @@ namespace Client.Pages.Locks
 
             foreach (var address in addresses)
             {
-                var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiator(address);
+                var lockTransactions = await LockTokenVaultManager.GetTransactionsByReceiver(address);
 
                 foreach (var lockTransaction in lockTransactions)
                 {
@@ -62,10 +62,15 @@ namespace Client.Pages.Locks
             var lockIndex = lockModel.Transaction.LockIndex;
 
             var parameters = new DialogParameters();
-            parameters.Add(nameof(RevokeLockModal.LockTransaction), lockModel.Transaction);
-            parameters.Add(nameof(RevokeLockModal.Model), new RevokeLockParameter() { LockIndex = lockIndex });
+            parameters.Add(nameof(ClaimLockModal.Model), new ClaimLockParameter()
+            {
+                LockIndex = lockIndex,
+                ReceiverAddress = lockModel.Receiver.ReceiverAddress,
+                ReceiverHash160 = lockModel.Receiver.ReceiverHash160,
+                AmountDisplay = lockModel.AmountDisplay
+            });
 
-            var dialog = DialogService.Show<RevokeLockModal>($"Claim Lock {lockIndex}", parameters);
+            var dialog = DialogService.Show<ClaimLockModal>($"Claim from Lock #{lockIndex} as {lockModel.Receiver.ReceiverAddress.ToMask(6)}", parameters);
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)

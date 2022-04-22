@@ -36,37 +36,37 @@
                 <RowTemplate>
                     @if (@context.AssetToken == null)
                     {
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
-                        <MudTd DataLabel="Lock Index">@context.Transaction.LockIndex</MudTd>
-                        <MudTd DataLabel="Initiator">@context.Transaction.InitiatorAddress.ToMask(6)</MudTd>
-                        <MudTd DataLabel="Initiator">@context.Receiver.ReceiverAddress.ToMask(6)</MudTd>
-                        <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                        <MudTd DataLabel="Total Amount">
-                            <div class="d-flex">
-                                @context.Receiver.Amount.ToAmount(@context.AssetToken.Decimals).ToAmountDisplay(@context.AssetToken.Decimals) @context.AssetToken.Symbol
-                            </div>
-                        </MudTd>
-                        <MudTd DataLabel="Status">
-                            <MudChip Color="@context.StatusColor" Size="Size.Small">
-                                <b>@context.Status</b>
-                            </MudChip>
-                        </MudTd>
-                        <MudTd DataLabel="Actions">
-                            <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                                <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
-                            </MudMenu>
-                        </MudTd>
-                     }
-                </RowTemplate>
+                    <MudTd DataLabel="Lock Index">@context.Transaction.LockIndex</MudTd>
+                    <MudTd DataLabel="Initiator">@context.Transaction.InitiatorAddress.ToMask(6)</MudTd>
+                    <MudTd DataLabel="Initiator">@context.Receiver.ReceiverAddress.ToMask(6)</MudTd>
+                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Total Amount">
+                        <div class="d-flex">
+                            @context.AmountDisplay
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Status">
+                        <MudChip Color="@context.StatusColor" Size="Size.Small">
+                            <b>@context.Status</b>
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Actions">
+                        <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
+                        </MudMenu>
+                    </MudTd>
+                    }
+            </RowTemplate>
         </MudTable>
     </MudPaper>
     }
