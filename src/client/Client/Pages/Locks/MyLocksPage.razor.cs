@@ -8,7 +8,7 @@ using System.Numerics;
 
 namespace Client.Pages.Locks
 {
-    public partial class MyLocksPage : IDisposable
+    public partial class MyLocksPage
     {
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }
@@ -21,7 +21,6 @@ namespace Client.Pages.Locks
             {
                 await InvokeAsync(async () =>
                 {
-                    AppBreakpointService.BreakpointChanged += AppBreakpointService_BreakpointChanged;
                     await FetchDataAsync();
                 });
             }
@@ -123,16 +122,6 @@ namespace Client.Pages.Locks
             };
 
             DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
-        }
-
-        private void AppBreakpointService_BreakpointChanged(object sender, Breakpoint e)
-        {
-            StateHasChanged();
-        }
-
-        public void Dispose()
-        {
-            AppBreakpointService.BreakpointChanged -= AppBreakpointService_BreakpointChanged;
         }
     }
 }

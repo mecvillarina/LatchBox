@@ -7,6 +7,7 @@ namespace Client.Pages.Locks
     public partial class MyTokenRefundsPage
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<AssetRefundModel> Refunds { get; set; } = new();
 
@@ -24,9 +25,10 @@ namespace Client.Pages.Locks
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
+            IsCompletelyLoaded = false;
+            StateHasChanged();
 
             Refunds.Clear();
-
             var addresses = await WalletManager.GetAddressesAsync();
 
             foreach (var address in addresses)
@@ -48,6 +50,7 @@ namespace Client.Pages.Locks
                 refund.SetAssetToken(assetToken);
             }
 
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 

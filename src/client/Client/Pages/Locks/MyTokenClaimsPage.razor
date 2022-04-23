@@ -6,29 +6,33 @@
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Claims</MudText>
-            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Claims</MudText>
-            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
+
+        @if (IsCompletelyLoaded)
+        {
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+        }
     </div>
 </MudContainer>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
     @if (!IsLoaded)
     {
-        //skeleton
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+        <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
-    else
+    else if (Locks.Any())
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-            <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true">
+            <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Lock Index</MudTh>
                     <MudTh>Receiver</MudTh>
                     <MudTh>Date Unlock</MudTh>
-                    <MudTh>Locked Amount</MudTh>
+                    <MudTh>Claimable Amount</MudTh>
                     <MudTh>Status</MudTh>
                     <MudTh>Actions</MudTh>
                 </HeaderContent>
@@ -49,7 +53,14 @@
                             <b>@context.Transaction.LockIndex</b>
                         </MudText>
                     </MudTd>
-                    <MudTd DataLabel="Receiver">@context.Receiver.ReceiverAddress.ToMask(6)</MudTd>
+                    <MudTd DataLabel="Receiver">
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            @context.Receiver.ReceiverAddress.ToMask(6)
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            @context.Receiver.ReceiverAddress
+                        </MudHidden>
+                    </MudTd>
                     <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                     <MudTd DataLabel="Total Amount">
                         <div class="d-flex">
@@ -70,6 +81,12 @@
             </RowTemplate>
         </MudTable>
     </MudPaper>
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+            You've no token claims.
+        </MudText>
     }
 
 </MudContainer>

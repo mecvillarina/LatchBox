@@ -24,7 +24,7 @@
         <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
         <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
-    else
+    else if(Locks.Any())
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
             <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
@@ -88,5 +88,10 @@
 
     </MudPaper>
     }
-
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+            No Locks found. You haven't created any locks.
+        </MudText>
+    }
 </MudContainer>

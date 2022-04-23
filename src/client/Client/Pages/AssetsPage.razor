@@ -18,13 +18,13 @@
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
     @if (!IsLoaded)
     {
-        //skeleton
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+        <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
     else
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-
-            <MudTable Items="@AddressBalances" Class="mx-0 grey darken-4" Breakpoint="Breakpoint.None" FixedHeader="true">
+            <MudTable Items="@AddressBalances" Class="mx-0 grey darken-4" FixedHeader="true">
                 <HeaderContent>
                     <MudTh>Address</MudTh>
                     <MudTh>NEO</MudTh>
@@ -32,12 +32,12 @@
                     <MudTh>@PlatformToken.Symbol</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd>
+                    <MudTd DataLabel="Address">
                         <MudText Typo="Typo.body2" Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">
                             <b>@context.Address</b>
                         </MudText>
                     </MudTd>
-                    <MudTd>
+                    <MudTd DataLabel="NEO">
                         <span>
                             @if (string.IsNullOrEmpty(@context.NEOBalanceDisplay))
                             {
@@ -49,7 +49,7 @@
                             }
                         </span>
                     </MudTd>
-                    <MudTd>
+                    <MudTd DataLabel="GAS">
                         <span>
                             @if (string.IsNullOrEmpty(@context.GASBalanceDisplay))
                             {
@@ -61,7 +61,7 @@
                             }
                         </span>
                     </MudTd>
-                    <MudTd>
+                    <MudTd DataLabel="@PlatformToken.Symbol">
                         <span>
                             @if (string.IsNullOrEmpty(@context.PlatformTokenBalanceDisplay))
                             {
