@@ -1,17 +1,13 @@
-﻿using Client.Infrastructure.Extensions;
-using Client.Infrastructure.Models;
-using Client.Pages.Modals;
-using Client.Parameters;
-using MudBlazor;
-using Neo.SmartContract.Native;
+﻿using Client.Infrastructure.Models;
+using Client.Models;
 
 namespace Client.Pages.Locks
 {
     public partial class AssetsLocksPage
     {
         public bool IsLoaded { get; set; }
-        public bool IsAssetLoaded { get; set; }
 
+        public List<AssetCounterModel> AssetCounters { get; set; } = new();
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -19,10 +15,35 @@ namespace Client.Pages.Locks
             {
                 await InvokeAsync(async () =>
                 {
-                    IsAssetLoaded = true;
-                    StateHasChanged();
+                    await FetchDataAsync();
                 });
             }
+        }
+
+        private async Task FetchDataAsync()
+        {
+            IsLoaded = false;
+
+            AssetCounters.Clear();
+
+            var assetCounters = await LockTokenVaultManager.GetAssetsCounterAsync();
+
+            foreach (var assetCounter in assetCounters)
+            {
+                AssetCounters.Add(new AssetCounterModel(assetCounter));
+            }
+
+            IsLoaded = true;
+            StateHasChanged();
+
+            foreach (var assetCounter in AssetCounters)
+            {
+                var assetToken = await AssetManager.GetTokenAsync(assetCounter.AssetCounter.TokenScriptHash);
+                assetCounter.SetAssetToken(assetToken);
+            }
+
+            AssetCounters = AssetCounters.OrderBy(x => x.AssetToken.Name).ToList();
+            StateHasChanged();
         }
     }
 }

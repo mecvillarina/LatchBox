@@ -35,7 +35,7 @@ namespace Client.Pages.Locks
 
             foreach (var address in addresses)
             {
-                var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiator(address);
+                var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiatorAsync(address);
 
                 foreach (var lockTransaction in lockTransactions)
                 {
@@ -106,6 +106,18 @@ namespace Client.Pages.Locks
             {
                 await FetchDataAsync();
             }
+        }
+
+
+        private void InvokeLockPreviewerModal(BigInteger lockIndex)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(LockPreviewerModal.LockIndex), lockIndex},
+            };
+
+            DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
         }
     }
 }

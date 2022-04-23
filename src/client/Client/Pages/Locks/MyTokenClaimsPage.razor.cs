@@ -5,6 +5,7 @@ using Client.Pages.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo.SmartContract.Native;
+using System.Numerics;
 
 namespace Client.Pages.Locks
 {
@@ -35,7 +36,7 @@ namespace Client.Pages.Locks
 
             foreach (var address in addresses)
             {
-                var lockTransactions = await LockTokenVaultManager.GetTransactionsByReceiver(address);
+                var lockTransactions = await LockTokenVaultManager.GetTransactionsByReceiverAsync(address);
 
                 foreach (var lockTransaction in lockTransactions)
                 {
@@ -77,6 +78,17 @@ namespace Client.Pages.Locks
             {
                 await FetchDataAsync();
             }
+        }
+
+        private void InvokeLockPreviewerModal(BigInteger lockIndex)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(LockPreviewerModal.LockIndex), lockIndex},
+            };
+
+            DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
         }
     }
 }

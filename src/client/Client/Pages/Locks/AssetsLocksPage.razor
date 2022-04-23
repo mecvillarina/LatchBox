@@ -23,8 +23,37 @@
     else
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-
-        </MudPaper>
+            <MudTable Items="@AssetCounters" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.None">
+                <HeaderContent>
+                    <MudTh>Asset</MudTh>
+                    <MudTh>Locked Amount</MudTh>
+                    <MudTh>Unlocked Amount</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    @if (@context.AssetToken == null)
+                    {
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    }
+                    else
+                    {
+                        <MudTd>
+                            <div>
+                                <MudText>@context.AssetToken.Name (@context.AssetToken.Symbol)</MudText>
+                                <MudText Typo="Typo.caption">@context.AssetToken.AssetScriptHash.ToString()</MudText>
+                            </div>
+                        </MudTd>
+                        <MudTd>
+                            @context.LockedAmountDisplay
+                        </MudTd>
+                        <MudTd>
+                            @context.UnlockedAmountDisplay
+                        </MudTd>
+                    }
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
     }
 
 </MudContainer>

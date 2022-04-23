@@ -13,7 +13,7 @@ namespace Client.Models
         public Color StatusColor { get; private set; }
 
         public bool CanClaim { get; private set; }
-        public string AmountDisplay { get; set; }
+        public string AmountDisplay { get; private set; }
 
         public LockTransactionReceiverModel(string receiverAddress, LockTransaction transaction)
         {
