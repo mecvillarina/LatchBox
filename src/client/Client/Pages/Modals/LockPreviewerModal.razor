@@ -13,14 +13,14 @@
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Initiator</b></MudText>
-                            @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
-                            {
+                            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                                 <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay.ToMask(6)</MudText>
-                            }
-                            else
-                            {
+
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                                 <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay</MudText>
-                            }
+
+                            </MudHidden>
                         </div>
                     </MudItem>
 
@@ -62,7 +62,7 @@
                     <MudItem xs="12">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Receivers</b></MudText>
-                            <MudTable Items="@Model.Transaction.Receivers" Class="mx-0 grey darken-4" Context="receiverContext" Elevation="10">
+                            <MudTable Items="@Model.Transaction.Receivers" Class="mx-0 grey darken-4" Context="receiverContext" Elevation="10" Breakpoint="Breakpoint.Sm">
                                 <HeaderContent>
                                     <MudTh>Address</MudTh>
                                     <MudTh>Amount</MudTh>
@@ -70,18 +70,16 @@
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd DataLabel="Address">
-                                        @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
-                                        {
-                                            <span>@receiverContext.ReceiverAddress.ToMask(6)</span>
-                                        }
-                                        else
-                                        {
-                                            <span>@receiverContext.ReceiverAddress</span>
-                                        }
-                                </MudTd>
-                                <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmount(Model.AssetToken.Decimals).ToAmountDisplay(Model.AssetToken.Decimals) @Model.AssetToken.Symbol</MudTd>
-                                <MudTd DataLabel="Status">
-                                    @if (Model.StatusDisplay == "Locked")
+                                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                                            @receiverContext.ReceiverAddress.ToMask(6)
+                                        </MudHidden>
+                                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                                            @receiverContext.ReceiverAddress
+                                        </MudHidden>
+                                    </MudTd>
+                                    <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmount(Model.AssetToken.Decimals).ToAmountDisplay(Model.AssetToken.Decimals) @Model.AssetToken.Symbol</MudTd>
+                                    <MudTd DataLabel="Status">
+                                        @if (Model.StatusDisplay == "Locked")
                                         {
                                         <MudChip Color="Color.Primary" Size="Size.Small"><b>Locked</b></MudChip>
                                         }

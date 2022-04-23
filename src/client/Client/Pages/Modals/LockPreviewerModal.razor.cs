@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace Client.Pages.Modals
 {
-    public partial class LockPreviewerModal : IDisposable
+    public partial class LockPreviewerModal
     {
         [Parameter] public BigInteger LockIndex { get; set; }
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -21,7 +21,6 @@ namespace Client.Pages.Modals
             {
                 await InvokeAsync(async () =>
                 {
-                    AppBreakpointService.BreakpointChanged += AppBreakpointService_BreakpointChanged;
                     await FetchDataAsync();
                 });
             }
@@ -43,18 +42,6 @@ namespace Client.Pages.Modals
             {
                 MudDialog.Cancel();
             }
-        }
-
-
-        private void AppBreakpointService_BreakpointChanged(object sender, Breakpoint e)
-        {
-            StateHasChanged();
-        }
-
-
-        public void Dispose()
-        {
-            AppBreakpointService.BreakpointChanged -= AppBreakpointService_BreakpointChanged;
         }
     }
 }

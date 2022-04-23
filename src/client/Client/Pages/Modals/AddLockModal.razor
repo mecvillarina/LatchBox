@@ -8,7 +8,9 @@
 
                         @if (!IsLoaded)
                         {
-                            //skeleton
+                            <MudItem xs="12">
+                                <MudSkeleton Height="600px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            </MudItem>
                         }
                         else
                         {

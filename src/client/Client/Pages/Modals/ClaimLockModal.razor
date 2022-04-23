@@ -7,7 +7,9 @@
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
                         @if (!IsLoaded)
                         {
-                            //skeleton
+                            <MudItem xs="12">
+                                <MudSkeleton Height="120px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            </MudItem>
                         }
                         else
                         {
@@ -16,7 +18,7 @@
                                     You are about to claim <b>@Model.AmountDisplay</b> from <b>Lock #@((long)Model.LockIndex)</b> as receiver address <b>@Model.ReceiverAddress</b>.
                                 </MudText>
                             </MudItem>
-                            
+
                             <MudItem xs="12">
                                 <MudText Typo="Typo.body1" Color="Color.Primary">
                                     <b>Claim Lock Fee: @ClaimLockPaymentFeeDisplay</b>
