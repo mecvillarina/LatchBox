@@ -17,7 +17,7 @@
                         </div>
                     </MudItem>
 
-                     <MudItem xs="12" md="6">
+                    <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1"><b>Token ScriptHash</b></MudText>
                             @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
@@ -49,9 +49,10 @@
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Locks</b></MudText>
 
-                            <MudTable Items="@Transactions" Class="mx-0 grey darken-4" Context="transactionContext" Elevation="10" Breakpoint="Breakpoint.None">
+                            <MudTable Items="@Transactions" Class="mx-0 grey darken-4" Context="transactionContext" Elevation="10">
                                 <HeaderContent>
                                     <MudTh>Lock Index</MudTh>
+                                    <MudTh>Initiator</MudTh>
                                     <MudTh>Total Amount</MudTh>
                                     <MudTh>Status</MudTh>
                                 </HeaderContent>
@@ -61,16 +62,26 @@
                                             <b>@transactionContext.Transaction.LockIndex</b>
                                         </MudText>
                                     </MudTd>
-                                    <MudTd>@transactionContext.TotalAmountDisplay</MudTd>
-                                    <MudTd>
-                                        <MudChip Size="Size.Small" Color="@transactionContext.StatusDisplayColor">
-                                            <b>@transactionContext.StatusDisplay</b>
-                                        </MudChip>
-                                    </MudTd>
-                                </RowTemplate>
-                            </MudTable>
-                        </div>
-                    </MudItem>
+                                    <MudTd DataLabel="Initiator">
+                                        @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
+                                        {
+                                        <span>@transactionContext.InitiatorAddressDisplay.ToMask(6)</span>
+                                        }
+                                        else
+                                        {
+                                        <span>@transactionContext.InitiatorAddressDisplay</span>
+                                        }
+                                </MudTd>
+                                <MudTd DataLabel="Total Amount">@transactionContext.TotalAmountDisplay</MudTd>
+                                <MudTd DataLabel="Status">
+                                    <MudChip Size="Size.Small" Color="@transactionContext.StatusDisplayColor">
+                                        <b>@transactionContext.StatusDisplay</b>
+                                    </MudChip>
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </div>
+                </MudItem>
                 }
             </MudGrid>
         </DialogContent>
