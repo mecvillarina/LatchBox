@@ -1,0 +1,114 @@
+﻿<MudContainer MaxWidth="MaxWidth.False" Style="max-height: 80vh; overflow-y: scroll">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+        <DialogContent>
+            <MudGrid Class="pt-0 pb-4" Spacing="2">
+                @if (!IsLoaded)
+                {
+                    <MudItem xs="12">
+                        <MudSkeleton Height="100px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Initiator</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@InitiatorAddressDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Status</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@StatusDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Date Start</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@DateStartDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Date Unlock</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@DateUnlockDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Revocable</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@RevocableDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Total Amount</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@TotalAmountDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <div>
+                            <MudTable Items="LockTransaction.Receivers" Class="mx-0 grey darken-4" Context="receiverContext" Elevation="10" Breakpoint="Breakpoint.None">
+                                <HeaderContent>
+                                    <MudTh>Receivers</MudTh>
+                                    <MudTh>Amount</MudTh>
+                                    <MudTh>Status</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd>@receiverContext.ReceiverAddress</MudTd>
+                                    <MudTd>@receiverContext.Amount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol</MudTd>
+                                    <MudTd>
+                                        @if(StatusDisplay == "Locked")
+                                        {
+                                            <MudChip Color="Color.Primary" Size="Size.Small"><b>Locked</b></MudChip>
+                                        }
+                                        else if(receiverContext.DateClaimed.HasValue)
+                                        {
+                                            <MudChip Color="Color.Info" Size="Size.Small"><b>Claimed</b></MudChip>
+                                        }
+                                        else if(receiverContext.DateRevoked.HasValue)
+                                        {
+                                            <MudChip Color="Color.Error" Size="Size.Small"><b>Revoked</b></MudChip>
+                                        }
+                                        else
+                                        {
+                                            <MudChip Color="Color.Info" Size="Size.Small"><b>Unlocked</b></MudChip>
+                                        }
+                                </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </div>
+                    </MudItem>
+                }
+
+
+                @*<MudItem xs="12">
+                <div>
+                <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Assets:</b></MudText>
+
+                @if (!Assets.Any())
+                {
+                <MudText Typo="Typo.body1" Class="text-white">No assets found.</MudText>
+                }
+                else
+                {
+                @foreach (var asset in Assets)
+                {
+                <div class="d-flex justify-space-between mb-2">
+                <MudText Typo="Typo.body1" Class="text-white">@asset.Symbol</MudText>
+                <MudText Typo="Typo.body1" Class="text-white">@(asset.Balance.ToAmountDisplay(asset.Decimals))</MudText>
+                </div>
+                }
+                }
+                </div>
+                </MudItem>*@
+            </MudGrid>
+        </DialogContent>
+    </MudDialog>
+</MudContainer>

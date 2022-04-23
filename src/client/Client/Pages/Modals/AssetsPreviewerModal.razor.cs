@@ -9,7 +9,6 @@ namespace Client.Pages.Modals
         [Parameter] public string Address { get; set; }
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
-        public bool IsProcessing { get; set; }
         public bool IsLoaded { get; set; }
 
         public List<AssetToken> Assets { get; set; }
@@ -20,17 +19,16 @@ namespace Client.Pages.Modals
             {
                 await InvokeAsync(async () =>
                 {
-                    await FetchData();
-                    IsLoaded = true;
-                    StateHasChanged();
+                    await FetchDataAsync();
                 });
             }
         }
 
-        private async Task FetchData()
+        private async Task FetchDataAsync()
         {
             Assets = await AssetManager.GetTokensAsync(Address);
-
+            IsLoaded = true;
+            StateHasChanged();
         }
     }
 }

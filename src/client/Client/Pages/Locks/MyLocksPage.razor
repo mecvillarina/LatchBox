@@ -28,7 +28,6 @@
             <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true">
                 <HeaderContent>
                     <MudTh>Lock Index</MudTh>
-                    <MudTh>Initiator</MudTh>
                     <MudTh>Date Start</MudTh>
                     <MudTh>Date Unlock</MudTh>
                     <MudTh>Revocable</MudTh>
@@ -46,12 +45,14 @@
                         <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                         <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                         <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
-                        <MudTd DataLabel="Lock Index">@context.Transaction.LockIndex</MudTd>
-                        <MudTd DataLabel="Initiator">@context.Transaction.InitiatorAddress.ToMask(6)</MudTd>
+                        <MudTd DataLabel="Lock Index">
+                            <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">
+                                <b>@context.Transaction.LockIndex</b>
+                            </MudText>
+                        </MudTd>
                         <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                         <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
                         <MudTd DataLabel="Revocable">

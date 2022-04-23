@@ -107,5 +107,17 @@ namespace Client.Pages.Locks
                 await FetchDataAsync();
             }
         }
+
+
+        private void InvokeLockPreviewerModal(BigInteger lockIndex)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(LockPreviewerModal.LockIndex), lockIndex},
+            };
+
+            DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
+        }
     }
 }

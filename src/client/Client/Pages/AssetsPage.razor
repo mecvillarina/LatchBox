@@ -32,7 +32,11 @@
                     <MudTh>@PlatformToken.Symbol</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd><span class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">@context.Address</span></MudTd>
+                    <MudTd>
+                        <MudText Typo="Typo.body2" Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">
+                            <b>@context.Address</b>
+                        </MudText>
+                    </MudTd>
                     <MudTd>
                         <span>
                             @if (string.IsNullOrEmpty(@context.NEOBalanceDisplay))
