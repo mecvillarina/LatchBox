@@ -10,6 +10,7 @@ namespace Client.Pages
     public partial class AssetsPage
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
         public List<AssetPageAddressBalance> AddressBalances { get; set; } = new();
 
         public AssetToken PlatformToken { get; set; }
@@ -33,6 +34,8 @@ namespace Client.Pages
 
         private async Task FetchAddressBalancesAsync()
         {
+            IsCompletelyLoaded = false;
+
             foreach (var addressBalance in AddressBalances)
             {
                 addressBalance.NEOBalanceDisplay = null;
@@ -52,6 +55,9 @@ namespace Client.Pages
                 addressBalance.PlatformTokenBalanceDisplay = platformToken.Balance.ToAmountDisplay(platformToken.Decimals);
                 StateHasChanged();
             }
+
+            IsCompletelyLoaded = true;
+            StateHasChanged();
         }
 
         private void InvokeAssetsPreviewerModal(string address)
