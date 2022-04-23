@@ -8,9 +8,10 @@ using System.Numerics;
 
 namespace Client.Pages.Locks
 {
-    public partial class MyLocksPage
+    public partial class MyLocksPage : IDisposable
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<LockTransactionInitiatorModel> Locks { get; set; } = new();
 
@@ -20,6 +21,7 @@ namespace Client.Pages.Locks
             {
                 await InvokeAsync(async () =>
                 {
+                    AppBreakpointService.BreakpointChanged += AppBreakpointService_BreakpointChanged;
                     await FetchDataAsync();
                 });
             }
@@ -28,6 +30,7 @@ namespace Client.Pages.Locks
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
+            IsCompletelyLoaded = false;
             StateHasChanged();
 
             Locks.Clear();
@@ -55,6 +58,7 @@ namespace Client.Pages.Locks
                 @lock.SetAssetToken(assetToken);
             }
 
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 
@@ -119,6 +123,16 @@ namespace Client.Pages.Locks
             };
 
             DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
+        }
+
+        private void AppBreakpointService_BreakpointChanged(object sender, Breakpoint e)
+        {
+            StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+            AppBreakpointService.BreakpointChanged -= AppBreakpointService_BreakpointChanged;
         }
     }
 }
