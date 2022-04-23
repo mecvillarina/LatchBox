@@ -1,0 +1,78 @@
+﻿<MudContainer MaxWidth="MaxWidth.False" Style="max-height: 80vh; overflow-y: scroll">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+        <DialogContent>
+            <MudGrid Class="pt-0 pb-4">
+                @if (!IsLoaded)
+                {
+                    <MudItem xs="12">
+                        <MudSkeleton Height="100px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1"><b>Token</b></MudText>
+                            <MudText Typo="Typo.body1">@AssetCounterModel.AssetToken.Name (@AssetCounterModel.AssetToken.Symbol)</MudText>
+                        </div>
+                    </MudItem>
+
+                     <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1"><b>Token ScriptHash</b></MudText>
+                            @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
+                            {
+                                <MudText Typo="Typo.body1">@AssetCounterModel.AssetToken.AssetScriptHash.ToString().ToMask(6)</MudText>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body1">@AssetCounterModel.AssetToken.AssetScriptHash.ToString()</MudText>
+                            }
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Locked Amount</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@AssetCounterModel.LockedAmountDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Unlocked Amount</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@AssetCounterModel.UnlockedAmountDisplay</MudText>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <div>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Locks</b></MudText>
+
+                            <MudTable Items="@Transactions" Class="mx-0 grey darken-4" Context="transactionContext" Elevation="10" Breakpoint="Breakpoint.None">
+                                <HeaderContent>
+                                    <MudTh>Lock Index</MudTh>
+                                    <MudTh>Total Amount</MudTh>
+                                    <MudTh>Status</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Lock Index">
+                                        <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(transactionContext.Transaction.LockIndex))">
+                                            <b>@transactionContext.Transaction.LockIndex</b>
+                                        </MudText>
+                                    </MudTd>
+                                    <MudTd>@transactionContext.TotalAmountDisplay</MudTd>
+                                    <MudTd>
+                                        <MudChip Size="Size.Small" Color="@transactionContext.StatusDisplayColor">
+                                            <b>@transactionContext.StatusDisplay</b>
+                                        </MudChip>
+                                    </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </div>
+                    </MudItem>
+                }
+            </MudGrid>
+        </DialogContent>
+    </MudDialog>
+</MudContainer>

@@ -1,5 +1,7 @@
 ﻿using Client.Infrastructure.Models;
 using Client.Models;
+using Client.Pages.Modals;
+using MudBlazor;
 
 namespace Client.Pages.Locks
 {
@@ -44,6 +46,17 @@ namespace Client.Pages.Locks
 
             AssetCounters = AssetCounters.OrderBy(x => x.AssetToken.Name).ToList();
             StateHasChanged();
+        }
+
+        private void InvokeAssetLockPreviewerModal(AssetCounterModel model)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(AssetLockPreviewerModal.AssetCounterModel), model},
+            };
+
+            DialogService.Show<AssetLockPreviewerModal>($"Asset Locks of {model.AssetToken.Symbol}", parameters, options);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<LockTransaction> GetTransactionAsync(BigInteger lockIdx);
         Task<List<LockTransaction>> GetTransactionsByInitiatorAsync(string initiatorAddress);
         Task<List<LockTransaction>> GetTransactionsByReceiverAsync(string receiverAddress);
+        Task<List<LockTransaction>> GetTransactionsByAssetAsync(UInt160 tokenScriptHash);
         Task<List<AssetRefund>> GetRefundsAsync(string accountAddress);
         Task<List<AssetCounter>> GetAssetsCounterAsync();
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
