@@ -8,6 +8,7 @@ namespace Client.Pages.Locks
     public partial class AssetsLocksPage
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<AssetCounterModel> AssetCounters { get; set; } = new();
 
@@ -25,7 +26,8 @@ namespace Client.Pages.Locks
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
-
+            IsCompletelyLoaded = false;
+            StateHasChanged();
             AssetCounters.Clear();
 
             var assetCounters = await LockTokenVaultManager.GetAssetsCounterAsync();
@@ -45,6 +47,7 @@ namespace Client.Pages.Locks
             }
 
             AssetCounters = AssetCounters.OrderBy(x => x.AssetToken.Name).ToList();
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 

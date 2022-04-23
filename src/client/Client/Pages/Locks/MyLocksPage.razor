@@ -6,26 +6,28 @@
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Locks</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddLockModalAsync" />
-            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Locks</MudText>
-            <MudIconButton Class="align-self-center " Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddLockModalAsync" />
-            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" />
         </MudHidden>
+        <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddLockModalAsync" />
+        @if (IsCompletelyLoaded)
+        {
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+        }
     </div>
 </MudContainer>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
     @if (!IsLoaded)
     {
-        //skeleton
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+        <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
-    else
+    else if(Locks.Any())
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-            <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true">
+            <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Lock Index</MudTh>
                     <MudTh>Date Start</MudTh>
@@ -38,53 +40,58 @@
                 <RowTemplate>
                     @if (@context.AssetToken == null)
                     {
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
-                        <MudTd DataLabel="Lock Index">
-                            <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">
-                                <b>@context.Transaction.LockIndex</b>
-                            </MudText>
-                        </MudTd>
-                        <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                        <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                        <MudTd DataLabel="Revocable">
-                            @if(context.IsRevocable)
+                    <MudTd DataLabel="Lock Index">
+                        <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">
+                            <b>@context.Transaction.LockIndex</b>
+                        </MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Revocable">
+                        @if (context.IsRevocable)
                             {
-                                <span>Yes</span>
+                            <span>Yes</span>
                             }
                             else
                             {
-                                <span>No</span>
+                            <span>No</span>
                             }
-                        </MudTd>
-                        <MudTd DataLabel="Total Amount">
-                            <div class="d-flex">
-                                @context.TotalAmountDisplay
-                            </div>
-                        </MudTd>
-                        <MudTd DataLabel="Status">
-                            <MudChip Color="@context.StatusColor" Size="Size.Small">
-                                <b>@context.Status</b>
-                            </MudChip>
-                        </MudTd>
-                        <MudTd DataLabel="Actions">
-                            <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                                <MudMenuItem Disabled="@(!context.IsRevocable || !context.Transaction.IsActive)" OnClick="(() => InvokeRevokeLockModalAsync(context))">Revoke Lock</MudMenuItem>
-                            </MudMenu>
-                        </MudTd>
+                    </MudTd>
+                    <MudTd DataLabel="Total Amount">
+                        <div class="d-flex">
+                            @context.TotalAmountDisplay
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Status">
+                        <MudChip Color="@context.StatusColor" Size="Size.Small">
+                            <b>@context.Status</b>
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Actions">
+                        <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            <MudMenuItem Disabled="@(!context.IsRevocable || !context.Transaction.IsActive)" OnClick="(() => InvokeRevokeLockModalAsync(context))">Revoke Lock</MudMenuItem>
+                        </MudMenu>
+                    </MudTd>
                     }
             </RowTemplate>
         </MudTable>
 
     </MudPaper>
     }
-
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+            No Locks found. You haven't created any locks.
+        </MudText>
+    }
 </MudContainer>

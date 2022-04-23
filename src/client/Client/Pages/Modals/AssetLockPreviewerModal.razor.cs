@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace Client.Pages.Modals
 {
-    public partial class AssetLockPreviewerModal : IDisposable
+    public partial class AssetLockPreviewerModal
     {
         [Parameter] public AssetCounterModel AssetCounterModel { get; set; }
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -23,7 +23,6 @@ namespace Client.Pages.Modals
                 await InvokeAsync(async () =>
                 {
                     AssetToken = AssetCounterModel.AssetToken;
-                    AppBreakpointService.BreakpointChanged += AppBreakpointService_BreakpointChanged;
                     await FetchDataAsync();
                 });
             }
@@ -58,16 +57,6 @@ namespace Client.Pages.Modals
             };
 
             DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
-        }
-
-        private void AppBreakpointService_BreakpointChanged(object sender, Breakpoint e)
-        {
-            StateHasChanged();
-        }
-
-        public void Dispose()
-        {
-            AppBreakpointService.BreakpointChanged -= AppBreakpointService_BreakpointChanged;
         }
     }
 }

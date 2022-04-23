@@ -12,6 +12,7 @@ namespace Client.Pages.Locks
     public partial class MyTokenClaimsPage
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<LockTransactionReceiverModel> Locks { get; set; } = new();
 
@@ -26,9 +27,12 @@ namespace Client.Pages.Locks
             }
         }
 
+
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
+            IsCompletelyLoaded = false;
+            StateHasChanged();
 
             Locks.Clear();
 
@@ -55,6 +59,7 @@ namespace Client.Pages.Locks
                 @lock.SetAssetToken(assetToken);
             }
 
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 

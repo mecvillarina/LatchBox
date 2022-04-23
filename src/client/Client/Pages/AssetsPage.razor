@@ -6,25 +6,28 @@
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Assets</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchAddressBalancesAsync" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Assets</MudText>
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchAddressBalancesAsync" />
         </MudHidden>
+
+        @if (IsCompletelyLoaded)
+        {
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchAddressBalancesAsync" />
+        }
     </div>
 </MudContainer>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
     @if (!IsLoaded)
     {
-        //skeleton
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+        <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
     else
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-
-            <MudTable Items="@AddressBalances" Class="mx-0 grey darken-4" Breakpoint="Breakpoint.None" FixedHeader="true">
+            <MudTable Items="@AddressBalances" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Address</MudTh>
                     <MudTh>NEO</MudTh>
@@ -32,47 +35,52 @@
                     <MudTh>@PlatformToken.Symbol</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd>
+                    <MudTd DataLabel="Address">
                         <MudText Typo="Typo.body2" Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetsPreviewerModal(context.Address))">
-                            <b>@context.Address</b>
+                            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                                <b>@context.Address.ToMask(6)</b>
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                                <b>@context.Address</b>
+                            </MudHidden>
                         </MudText>
                     </MudTd>
-                    <MudTd>
+                    <MudTd DataLabel="NEO">
                         <span>
                             @if (string.IsNullOrEmpty(@context.NEOBalanceDisplay))
                             {
-                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            <MudSkeleton Height="20px" Width="100px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {
-                                @context.NEOBalanceDisplay
+                            @context.NEOBalanceDisplay
                             }
-                        </span>
-                    </MudTd>
-                    <MudTd>
-                        <span>
-                            @if (string.IsNullOrEmpty(@context.GASBalanceDisplay))
+                    </span>
+                </MudTd>
+                <MudTd DataLabel="GAS">
+                    <span>
+                        @if (string.IsNullOrEmpty(@context.GASBalanceDisplay))
                             {
-                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            <MudSkeleton Height="20px" Width="100px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {
-                                @context.GASBalanceDisplay
+                            @context.GASBalanceDisplay
                             }
-                        </span>
-                    </MudTd>
-                    <MudTd>
-                        <span>
-                            @if (string.IsNullOrEmpty(@context.PlatformTokenBalanceDisplay))
+                    </span>
+                </MudTd>
+                <MudTd DataLabel="@PlatformToken.Symbol">
+                    <span>
+                        @if (string.IsNullOrEmpty(@context.PlatformTokenBalanceDisplay))
                             {
-                                <MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            <MudSkeleton Height="20px" Width="100px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                             }
                             else
                             {
-                                @context.PlatformTokenBalanceDisplay
+                            @context.PlatformTokenBalanceDisplay
                             }
-                        </span>
-                    </MudTd>
+                    </span>
+                </MudTd>
             </RowTemplate>
         </MudTable>
 

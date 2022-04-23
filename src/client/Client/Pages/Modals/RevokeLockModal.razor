@@ -7,7 +7,9 @@
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
                         @if (!IsLoaded)
                         {
-                            //skeleton
+                            <MudItem xs="12">
+                                <MudSkeleton Height="120px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            </MudItem>
                         }
                         else
                         {
@@ -16,9 +18,9 @@
                                     <span>Are you sure you want to revoke the lock <b>#@((long)Model.LockIndex)</b>? Only unclaimed amounts will be refunded to you. This action is irrevocable.</span>
                                 </MudText>
                             </MudItem>
-                            
+
                             <MudItem xs="12">
-                                <MudText Typo="Typo.body1" Color="Color.Primary" >
+                                <MudText Typo="Typo.body1" Color="Color.Primary">
                                     <b>Revoke Lock Fee: @RevokeLockPaymentFeeDisplay</b>
                                 </MudText>
                             </MudItem>

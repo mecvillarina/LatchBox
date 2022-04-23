@@ -11,6 +11,7 @@ namespace Client.Pages.Locks
     public partial class MyLocksPage
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<LockTransactionInitiatorModel> Locks { get; set; } = new();
 
@@ -28,6 +29,7 @@ namespace Client.Pages.Locks
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
+            IsCompletelyLoaded = false;
             StateHasChanged();
 
             Locks.Clear();
@@ -55,6 +57,7 @@ namespace Client.Pages.Locks
                 @lock.SetAssetToken(assetToken);
             }
 
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 

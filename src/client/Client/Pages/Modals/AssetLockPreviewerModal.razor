@@ -5,7 +5,7 @@
                 @if (!IsLoaded)
                 {
                     <MudItem xs="12">
-                        <MudSkeleton Height="100px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                        <MudSkeleton Height="200px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
                     </MudItem>
                 }
                 else
@@ -17,17 +17,15 @@
                         </div>
                     </MudItem>
 
-                     <MudItem xs="12" md="6">
+                    <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1"><b>Token ScriptHash</b></MudText>
-                            @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
-                            {
+                            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                                 <MudText Typo="Typo.body1">@AssetCounterModel.AssetToken.AssetScriptHash.ToString().ToMask(6)</MudText>
-                            }
-                            else
-                            {
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
                                 <MudText Typo="Typo.body1">@AssetCounterModel.AssetToken.AssetScriptHash.ToString()</MudText>
-                            }
+                            </MudHidden>
                         </div>
                     </MudItem>
 
@@ -49,9 +47,10 @@
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Locks</b></MudText>
 
-                            <MudTable Items="@Transactions" Class="mx-0 grey darken-4" Context="transactionContext" Elevation="10" Breakpoint="Breakpoint.None">
+                            <MudTable Items="@Transactions" Class="mx-0 grey darken-4" Context="transactionContext" Elevation="10" Breakpoint="Breakpoint.Sm">
                                 <HeaderContent>
                                     <MudTh>Lock Index</MudTh>
+                                    <MudTh>Initiator</MudTh>
                                     <MudTh>Total Amount</MudTh>
                                     <MudTh>Status</MudTh>
                                 </HeaderContent>
@@ -61,16 +60,24 @@
                                             <b>@transactionContext.Transaction.LockIndex</b>
                                         </MudText>
                                     </MudTd>
-                                    <MudTd>@transactionContext.TotalAmountDisplay</MudTd>
-                                    <MudTd>
-                                        <MudChip Size="Size.Small" Color="@transactionContext.StatusDisplayColor">
-                                            <b>@transactionContext.StatusDisplay</b>
-                                        </MudChip>
-                                    </MudTd>
-                                </RowTemplate>
-                            </MudTable>
-                        </div>
-                    </MudItem>
+                                    <MudTd DataLabel="Initiator">
+                                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                                            @transactionContext.InitiatorAddressDisplay.ToMask(6)
+                                        </MudHidden>
+                                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                                            @transactionContext.InitiatorAddressDisplay
+                                        </MudHidden>
+                                </MudTd>
+                                <MudTd DataLabel="Total Amount">@transactionContext.TotalAmountDisplay</MudTd>
+                                <MudTd DataLabel="Status">
+                                    <MudChip Size="Size.Small" Color="@transactionContext.StatusDisplayColor">
+                                        <b>@transactionContext.StatusDisplay</b>
+                                    </MudChip>
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </div>
+                </MudItem>
                 }
             </MudGrid>
         </DialogContent>
