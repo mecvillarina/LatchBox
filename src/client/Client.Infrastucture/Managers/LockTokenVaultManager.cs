@@ -25,7 +25,7 @@ namespace Client.Infrastructure.Managers
 
         public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.LockTokenVaultContractHash, ManagerToolkit.NeoProtocolSettings);
 
-        public async Task<BigInteger> GetLatchBoxLocksLength()
+        public async Task<BigInteger> GetLatchBoxLocksLengthAsync()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksLength").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
@@ -55,14 +55,14 @@ namespace Client.Infrastructure.Managers
             return result.Stack.Single().GetInteger();
         }
 
-        public async Task<LockTransaction> GetTransaction(BigInteger lockIdx)
+        public async Task<LockTransaction> GetTransactionAsync(BigInteger lockIdx)
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLockTransaction", lockIdx).ConfigureAwait(false);
             var stack = result.Stack.First();
             return new LockTransaction((Map)stack, ManagerToolkit.NeoProtocolSettings);
         }
 
-        public async Task<List<LockTransaction>> GetTransactionsByInitiator(string initiatorAddress)
+        public async Task<List<LockTransaction>> GetTransactionsByInitiatorAsync(string initiatorAddress)
         {
             List<LockTransaction> transactions = new();
 
@@ -82,7 +82,7 @@ namespace Client.Infrastructure.Managers
             return transactions;
         }
 
-        public async Task<List<LockTransaction>> GetTransactionsByReceiver(string receiverAddress)
+        public async Task<List<LockTransaction>> GetTransactionsByReceiverAsync(string receiverAddress)
         {
             List<LockTransaction> transactions = new();
 
@@ -126,13 +126,32 @@ namespace Client.Infrastructure.Managers
             return refunds;
         }
 
+        public async Task<List<AssetCounter>> GetAssetsCounterAsync()
+        {
+            List<AssetCounter> assetsCounter = new();
+
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getAssetsCounter").ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Map)stack;
+                foreach (var map in maps)
+                {
+                    assetsCounter.Add(new AssetCounter(map, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+
+            return assetsCounter;
+        }
+
         public async Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash)
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "validateNEP17Token", tokenScriptHash).ConfigureAwait(false);
             return result.State == Neo.VM.VMState.HALT && result.Exception == null;
         }
 
-        public async Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable)
+        public async Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable)
         {
             var receiverArr = new Neo.VM.Types.Array();
             foreach (var receiver in receiversArg)
@@ -149,7 +168,7 @@ namespace Client.Infrastructure.Managers
             return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
         }
 
-        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LatchBoxLockReceiverArg> receiversArg, bool isRevocable)
+        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable)
         {
             var receiverArr = new Neo.VM.Types.Array();
             foreach (var receiver in receiversArg)

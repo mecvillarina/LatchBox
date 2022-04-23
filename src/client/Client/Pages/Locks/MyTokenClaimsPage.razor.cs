@@ -35,7 +35,7 @@ namespace Client.Pages.Locks
 
             foreach (var address in addresses)
             {
-                var lockTransactions = await LockTokenVaultManager.GetTransactionsByReceiver(address);
+                var lockTransactions = await LockTokenVaultManager.GetTransactionsByReceiverAsync(address);
 
                 foreach (var lockTransaction in lockTransactions)
                 {

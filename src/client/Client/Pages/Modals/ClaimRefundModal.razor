@@ -7,7 +7,7 @@
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
                         <MudItem xs="12">
                             <MudText Typo="Typo.body1" Class="text-white">
-                                <span>Are you sure you want to claim the refund of <b>@Model.AssetRefund.Amount.ToAmount(Model.AssetToken.Decimals).ToAmountDisplay(Model.AssetToken.Decimals) @Model.AssetToken.Symbol</b>? This action is irrevocable.</span>
+                                <span>Are you sure you want to claim the refund of <b>@Model.AmountDisplay</b>? This action is irrevocable.</span>
                             </MudText>
                         </MudItem>
                     </MudGrid>

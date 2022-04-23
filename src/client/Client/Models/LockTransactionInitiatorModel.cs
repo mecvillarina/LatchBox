@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Models;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Models;
 using MudBlazor;
 using System.Numerics;
 
@@ -9,7 +10,8 @@ namespace Client.Models
         public AssetToken AssetToken { get; private set; }
         public LockTransaction Transaction { get; private set; }
         public BigInteger TotalAmount { get; private set; }
-        
+        public string TotalAmountDisplay { get; private set; }
+
         public string Status { get; private set; }
         public Color StatusColor { get; private set; }
 
@@ -54,6 +56,7 @@ namespace Client.Models
         public void SetAssetToken(AssetToken assetToken)
         {
             AssetToken = assetToken;
+            TotalAmountDisplay = $"{TotalAmount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals)} {AssetToken.Symbol}";
         }
     }
 }
