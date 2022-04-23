@@ -5,9 +5,10 @@ using MudBlazor;
 
 namespace Client.Pages.Locks
 {
-    public partial class AssetsLocksPage
+    public partial class AssetsLocksPage : IDisposable
     {
         public bool IsLoaded { get; set; }
+        public bool IsCompletelyLoaded { get; set; }
 
         public List<AssetCounterModel> AssetCounters { get; set; } = new();
 
@@ -17,15 +18,22 @@ namespace Client.Pages.Locks
             {
                 await InvokeAsync(async () =>
                 {
+                    AppBreakpointService.BreakpointChanged += AppBreakpointService_BreakpointChanged;
                     await FetchDataAsync();
                 });
             }
         }
 
+        private void AppBreakpointService_BreakpointChanged(object sender, Breakpoint e)
+        {
+            StateHasChanged();
+        }
+
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
-
+            IsCompletelyLoaded = false;
+            StateHasChanged();
             AssetCounters.Clear();
 
             var assetCounters = await LockTokenVaultManager.GetAssetsCounterAsync();
@@ -45,6 +53,7 @@ namespace Client.Pages.Locks
             }
 
             AssetCounters = AssetCounters.OrderBy(x => x.AssetToken.Name).ToList();
+            IsCompletelyLoaded = true;
             StateHasChanged();
         }
 
@@ -58,5 +67,11 @@ namespace Client.Pages.Locks
 
             DialogService.Show<AssetLockPreviewerModal>($"Asset Locks of {model.AssetToken.Symbol}", parameters, options);
         }
+
+        public void Dispose()
+        {
+            AppBreakpointService.BreakpointChanged -= AppBreakpointService_BreakpointChanged;
+        }
+
     }
 }
