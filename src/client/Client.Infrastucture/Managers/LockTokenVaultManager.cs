@@ -102,6 +102,25 @@ namespace Client.Infrastructure.Managers
             return transactions;
         }
 
+        public async Task<List<LockTransaction>> GetTransactionsByAssetAsync(UInt160 tokenScriptHash)
+        {
+            List<LockTransaction> transactions = new();
+
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByAsset", tokenScriptHash).ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Neo.VM.Types.Array)stack;
+                foreach (var map in maps)
+                {
+                    transactions.Add(new LockTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+
+            return transactions;
+        }
+
         public async Task<List<AssetRefund>> GetRefundsAsync(string accountAddress)
         {
             List<AssetRefund> refunds = new();

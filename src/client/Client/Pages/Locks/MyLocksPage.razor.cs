@@ -28,6 +28,7 @@ namespace Client.Pages.Locks
         private async Task FetchDataAsync()
         {
             IsLoaded = false;
+            StateHasChanged();
 
             Locks.Clear();
 

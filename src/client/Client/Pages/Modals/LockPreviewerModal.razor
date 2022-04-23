@@ -13,78 +13,95 @@
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Initiator</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@InitiatorAddressDisplay</MudText>
+                            @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
+                            {
+                                <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay.ToMask(6)</MudText>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay</MudText>
+                            }
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Status</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@StatusDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.StatusDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Date Start</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@DateStartDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.DateStartDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Date Unlock</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@DateUnlockDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.DateUnlockDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Revocable</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@RevocableDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.RevocableDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Total Amount</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@TotalAmountDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.TotalAmountDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12">
                         <div>
-                            <MudTable Items="LockTransaction.Receivers" Class="mx-0 grey darken-4" Context="receiverContext" Elevation="10" Breakpoint="Breakpoint.None">
+                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Receivers</b></MudText>
+                            <MudTable Items="@Model.Transaction.Receivers" Class="mx-0 grey darken-4" Context="receiverContext" Elevation="10">
                                 <HeaderContent>
-                                    <MudTh>Receivers</MudTh>
+                                    <MudTh>Address</MudTh>
                                     <MudTh>Amount</MudTh>
                                     <MudTh>Status</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
-                                    <MudTd>@receiverContext.ReceiverAddress</MudTd>
-                                    <MudTd>@receiverContext.Amount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol</MudTd>
-                                    <MudTd>
-                                        @if(StatusDisplay == "Locked")
+                                    <MudTd DataLabel="Address">
+                                        @if (AppBreakpointService.CurrentBreakpoint == Breakpoint.Xs)
                                         {
-                                            <MudChip Color="Color.Primary" Size="Size.Small"><b>Locked</b></MudChip>
-                                        }
-                                        else if(receiverContext.DateClaimed.HasValue)
-                                        {
-                                            <MudChip Color="Color.Info" Size="Size.Small"><b>Claimed</b></MudChip>
-                                        }
-                                        else if(receiverContext.DateRevoked.HasValue)
-                                        {
-                                            <MudChip Color="Color.Error" Size="Size.Small"><b>Revoked</b></MudChip>
+                                            <span>@receiverContext.ReceiverAddress.ToMask(6)</span>
                                         }
                                         else
                                         {
-                                            <MudChip Color="Color.Info" Size="Size.Small"><b>Unlocked</b></MudChip>
+                                            <span>@receiverContext.ReceiverAddress</span>
                                         }
                                 </MudTd>
-                                </RowTemplate>
-                            </MudTable>
-                        </div>
-                    </MudItem>
+                                <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmount(Model.AssetToken.Decimals).ToAmountDisplay(Model.AssetToken.Decimals) @Model.AssetToken.Symbol</MudTd>
+                                <MudTd DataLabel="Status">
+                                    @if (Model.StatusDisplay == "Locked")
+                                        {
+                                        <MudChip Color="Color.Primary" Size="Size.Small"><b>Locked</b></MudChip>
+                                        }
+                                        else if (receiverContext.DateClaimed.HasValue)
+                                        {
+                                        <MudChip Color="Color.Info" Size="Size.Small"><b>Claimed</b></MudChip>
+                                        }
+                                        else if (receiverContext.DateRevoked.HasValue)
+                                        {
+                                        <MudChip Color="Color.Error" Size="Size.Small"><b>Revoked</b></MudChip>
+                                        }
+                                        else
+                                        {
+                                        <MudChip Color="Color.Info" Size="Size.Small"><b>Unlocked</b></MudChip>
+                                        }
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </div>
+                </MudItem>
                 }
 
 

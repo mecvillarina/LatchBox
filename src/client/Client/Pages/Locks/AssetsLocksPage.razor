@@ -40,7 +40,11 @@
                     {
                         <MudTd>
                             <div>
-                                <MudText>@context.AssetToken.Name (@context.AssetToken.Symbol)</MudText>
+                                <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
+                                    <b>
+                                    @context.AssetToken.Name (@context.AssetToken.Symbol)
+                                    </b>
+                                 </MudText>
                                 <MudText Typo="Typo.caption">@context.AssetToken.AssetScriptHash.ToString()</MudText>
                             </div>
                         </MudTd>
