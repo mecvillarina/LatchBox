@@ -5,7 +5,7 @@ using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
     public partial class AddLockReceiverModal
     {

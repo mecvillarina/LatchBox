@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Numerics;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
     public partial class LockPreviewerModal
     {

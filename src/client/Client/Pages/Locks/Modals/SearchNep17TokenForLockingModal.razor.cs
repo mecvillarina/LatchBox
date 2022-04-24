@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
-    public partial class SearchNep17TokenForVestingModal
+    public partial class SearchNep17TokenForLockingModal
     {
         [Parameter] public SearchNep17TokenParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -22,7 +22,7 @@ namespace Client.Pages.Modals
                 IsProcessing = true;
 
                 var tokenScriptHash = Utility.GetScriptHash(Model.TokenScriptHash, ManagerToolkit.NeoProtocolSettings);
-                var success = await VestingTokenVaultManager.ValidateNEP17TokenAsync(tokenScriptHash);
+                var success = await LockTokenVaultManager.ValidateNEP17TokenAsync(tokenScriptHash);
 
                 if (success)
                 {

@@ -1,20 +1,21 @@
-﻿@page "/vestings/claims"
+﻿@page "/vestings/refunds"
 
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Claims</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Refunds</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Claims</MudText>
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Refunds</MudText>
         </MudHidden>
 
         @if (IsCompletelyLoaded)
         {
             <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
         }
+
     </div>
 </MudContainer>
 
@@ -24,17 +25,14 @@
         <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
         <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
-    else if (Vestings.Any())
+    else if (Refunds.Any())
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
-            <MudTable Items="@Vestings" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
+            <MudTable Items="@Refunds" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
-                    <MudTh>Vesting Index</MudTh>
-                    <MudTh>Receiver</MudTh>
-                    <MudTh>Period</MudTh>
-                    <MudTh>Date Unlock</MudTh>
-                    <MudTh>Claimable Amount</MudTh>
-                    <MudTh>Status</MudTh>
+                    <MudTh>Wallet Address</MudTh>
+                    <MudTh>Token</MudTh>
+                    <MudTh>Total Amount</MudTh>
                     <MudTh>Actions</MudTh>
                 </HeaderContent>
                 <RowTemplate>
@@ -44,40 +42,30 @@
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
-                    <MudTd DataLabel="Vesting Index">
-                        <MudText Color="Color.Primary">
-                            <b class="cursor-pointer">@context.Transaction.VestingIndex</b>
-                        </MudText>
-                    </MudTd>
-                    <MudTd DataLabel="Receiver">
+                    <MudTd DataLabel="Wallet Address">
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                            @context.Receiver.ReceiverAddress.ToMask(6)
+                            @context.WalletAddress.ToMask(6)
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                            @context.Receiver.ReceiverAddress
+                            @context.WalletAddress
                         </MudHidden>
                     </MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Period.Name</MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Period.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                    <MudTd DataLabel="Claimable Amount">
+                    <MudTd DataLabel="Token">
+                        <div class="d-flex">
+                            @context.AssetToken.Name (@context.AssetToken.Symbol)
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Total Amount">
                         <div class="d-flex">
                             @context.AmountDisplay
                         </div>
                     </MudTd>
-                    <MudTd DataLabel="Status">
-                        <MudChip Color="@context.StatusColor" Size="Size.Small">
-                            <b>@context.StatusDisplay</b>
-                        </MudChip>
-                    </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                            <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimVestingModalAsync(context))">Claim Vesting</MudMenuItem>
+                            <MudMenuItem OnClick="(() => InvokeClaimRefundModalAsync(context))">Claim</MudMenuItem>
                         </MudMenu>
                     </MudTd>
                     }
@@ -88,7 +76,7 @@
     else
     {
         <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
-            You've no token vesting claims.
+            You've no refunds.
         </MudText>
     }
 

@@ -102,6 +102,30 @@ namespace Client.Infrastructure.Managers
             return transactions;
         }
 
+        public async Task<List<AssetRefund>> GetRefundsAsync(string accountAddress)
+        {
+            List<AssetRefund> refunds = new();
+
+            var account = Neo.Network.RPC.Utility.GetScriptHash(accountAddress, ManagerToolkit.NeoProtocolSettings);
+
+            byte[] script = ContractScriptHash.MakeScript("getRefunds");
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            var result = await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Map)stack;
+
+                foreach (var map in maps)
+                {
+                    refunds.Add(new AssetRefund(map, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+            return refunds;
+        }
+
         public async Task<RpcInvokeResult> ValidateAddVestingAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, bool isRevocable, List<VestingPeriodParameter> periods)
         {
             var periodArr = new Neo.VM.Types.Array();
@@ -201,5 +225,24 @@ namespace Client.Infrastructure.Managers
 
             return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
         }
+        public async Task<RpcInvokeResult> ValidateClaimRefundAsync(UInt160 account, UInt160 tokenAddress)
+        {
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> ClaimRefundAsync(KeyPair accountKey, UInt160 tokenAddress)
+        {
+            var account = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("claimRefund", tokenAddress);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
+        }
+
+        
     }
 }

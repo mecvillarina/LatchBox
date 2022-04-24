@@ -7,7 +7,7 @@ using MudBlazor;
 using Neo.Network.RPC;
 using System.Numerics;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Vestings.Modals
 {
     public partial class AddVestingModal
     {

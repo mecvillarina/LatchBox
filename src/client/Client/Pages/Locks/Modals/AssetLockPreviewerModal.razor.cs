@@ -5,7 +5,7 @@ using MudBlazor;
 using Neo;
 using System.Numerics;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
     public partial class AssetLockPreviewerModal
     {

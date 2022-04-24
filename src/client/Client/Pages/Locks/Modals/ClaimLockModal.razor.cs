@@ -5,11 +5,11 @@ using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
-    public partial class ClaimVestingModal
+    public partial class ClaimLockModal
     {
-        [Parameter] public ClaimVestingParameter Model { get; set; } = new();
+        [Parameter] public ClaimLockParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;
@@ -17,13 +17,13 @@ namespace Client.Pages.Modals
         public bool IsProcessing { get; set; }
         public bool IsLoaded { get; set; }
         public AssetToken PaymentToken { get; set; }
-        //public string ClaimLockPaymentFeeDisplay { get; set; }
+        public string ClaimLockPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                //await FetchFeeAsync();
+                await FetchFeeAsync();
                 IsLoaded = true;
                 StateHasChanged();
             }
@@ -34,7 +34,7 @@ namespace Client.Pages.Modals
             if (Validated)
             {
                 IsProcessing = true;
-                var validateResult = await VestingTokenVaultManager.ValidateClaimVestingAsync(Model.ReceiverHash160, Model.VestingIdx, Model.PeriodIdx);
+                var validateResult = await LockTokenVaultManager.ValidateClaimLockAsync(Model.ReceiverHash160, Model.LockIndex);
 
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
@@ -44,16 +44,16 @@ namespace Client.Pages.Modals
                     {
                         try
                         {
-                            var result = await VestingTokenVaultManager.ClaimVestingAsync(fromKey, Model.VestingIdx, Model.PeriodIdx);
+                            var result = await LockTokenVaultManager.ClaimLockAsync(fromKey, Model.LockIndex);
 
-                            if (result.Executions.First().Notifications.Any(x => x.EventName == "ClaimedLatchBoxVesting"))
+                            if (result.Executions.First().Notifications.Any(x => x.EventName == "ClaimedLatchBoxLock"))
                             {
-                                AppDialogService.ShowSuccess($"Claim Vesting success.");
+                                AppDialogService.ShowSuccess($"Claim Lock success.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Claim Vesting failed. Reason: {result.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Claim Lock failed. Reason: {result.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)
@@ -71,13 +71,13 @@ namespace Client.Pages.Modals
             }
         }
 
-        //private async Task FetchFeeAsync()
-        //{
-        //    var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
-        //    PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
-        //    var claimLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenClaimLockFee();
-        //    ClaimLockPaymentFeeDisplay = $"{claimLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
-        //}
+        private async Task FetchFeeAsync()
+        {
+            var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
+            var claimLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenClaimLockFee();
+            ClaimLockPaymentFeeDisplay = $"{claimLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
+        }
 
         public void Cancel()
         {

@@ -1,6 +1,6 @@
 ﻿using Client.Infrastructure.Models;
 using Client.Models;
-using Client.Pages.Modals;
+using Client.Pages.Locks.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo;
