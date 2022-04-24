@@ -4,7 +4,7 @@ using MudBlazor;
 
 namespace Client.Pages.Locks
 {
-    public partial class MyTokenRefundsPage
+    public partial class MyLockRefundsPage
     {
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }

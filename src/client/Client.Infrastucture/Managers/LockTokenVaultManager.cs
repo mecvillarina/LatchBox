@@ -25,9 +25,9 @@ namespace Client.Infrastructure.Managers
 
         public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.LockTokenVaultContractHash, ManagerToolkit.NeoProtocolSettings);
 
-        public async Task<BigInteger> GetLatchBoxLocksLengthAsync()
+        public async Task<BigInteger> GetLocksCountAsync()
         {
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksLength").ConfigureAwait(false);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLocksCount").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
         }
 
@@ -57,7 +57,7 @@ namespace Client.Infrastructure.Managers
 
         public async Task<LockTransaction> GetTransactionAsync(BigInteger lockIdx)
         {
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLockTransaction", lockIdx).ConfigureAwait(false);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLockTransaction", lockIdx).ConfigureAwait(false);
             var stack = result.Stack.First();
             return new LockTransaction((Map)stack, ManagerToolkit.NeoProtocolSettings);
         }
@@ -67,7 +67,7 @@ namespace Client.Infrastructure.Managers
             List<LockTransaction> transactions = new();
 
             var initiator = Neo.Network.RPC.Utility.GetScriptHash(initiatorAddress, ManagerToolkit.NeoProtocolSettings);
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByInitiator", initiator).ConfigureAwait(false);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLocksByInitiator", initiator).ConfigureAwait(false);
             var stack = result.Stack.FirstOrDefault();
 
             if (stack != null)
@@ -87,7 +87,7 @@ namespace Client.Infrastructure.Managers
             List<LockTransaction> transactions = new();
 
             var receiver = Neo.Network.RPC.Utility.GetScriptHash(receiverAddress, ManagerToolkit.NeoProtocolSettings);
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByReceiver", receiver).ConfigureAwait(false);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLocksByReceiver", receiver).ConfigureAwait(false);
             var stack = result.Stack.FirstOrDefault();
 
             if (stack != null)
@@ -106,7 +106,7 @@ namespace Client.Infrastructure.Managers
         {
             List<LockTransaction> transactions = new();
 
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLatchBoxLocksByAsset", tokenScriptHash).ConfigureAwait(false);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLocksByAsset", tokenScriptHash).ConfigureAwait(false);
             var stack = result.Stack.FirstOrDefault();
 
             if (stack != null)
@@ -170,10 +170,10 @@ namespace Client.Infrastructure.Managers
             return result.State == Neo.VM.VMState.HALT && result.Exception == null;
         }
 
-        public async Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable)
+        public async Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable)
         {
             var receiverArr = new Neo.VM.Types.Array();
-            foreach (var receiver in receiversArg)
+            foreach (var receiver in receivers)
             {
                 var data = new Neo.VM.Types.Array();
                 data.Add(new ByteString(receiver.ReceiverAddress.ToArray()));
@@ -187,10 +187,10 @@ namespace Client.Infrastructure.Managers
             return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
         }
 
-        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable)
+        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable)
         {
             var receiverArr = new Neo.VM.Types.Array();
-            foreach (var receiver in receiversArg)
+            foreach (var receiver in receivers)
             {
                 var data = new Neo.VM.Types.Array();
                 data.Add(new ByteString(receiver.ReceiverAddress.ToArray()));

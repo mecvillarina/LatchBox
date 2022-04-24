@@ -7,5 +7,6 @@
         public string ProtocolSettingsConfigFile { get; set; }
         public string PlatformTokenHash { get; set; }
         public string LockTokenVaultContractHash { get; set; }
+        public string VestingTokenVaultContractHash { get; set; }
     }
 }

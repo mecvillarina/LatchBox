@@ -9,7 +9,7 @@ using System.Numerics;
 
 namespace Client.Pages.Locks
 {
-    public partial class MyTokenClaimsPage
+    public partial class MyLockClaimsPage
     {
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }

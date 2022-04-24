@@ -59,14 +59,14 @@ namespace Client.Pages.Modals
                     }
                     else
                     {
-                        List<LockReceiverArg> receiversArg = new();
+                        List<LockReceiverParameter> receiversArg = new();
                         BigInteger totalAmount = 0;
                         foreach (var receiver in Model.Receivers)
                         {
                             var address = Utility.GetScriptHash(receiver.ReceiverAddress, ManagerToolkit.NeoProtocolSettings);
                             var actualAmount = Convert.ToDecimal(receiver.Amount).ToBigInteger((uint)AssetToken.Decimals);
 
-                            receiversArg.Add(new LockReceiverArg()
+                            receiversArg.Add(new LockReceiverParameter()
                             {
                                 ReceiverAddress = address,
                                 Amount = actualAmount
