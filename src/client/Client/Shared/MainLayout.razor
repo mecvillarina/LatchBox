@@ -20,7 +20,25 @@
         else
         {
             <MudDrawerHeader>
-                <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
+                <div>
+                    <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
+
+                    @if (!string.IsNullOrEmpty(Network))
+                    {
+                        <div class="mt-4 mb-0">
+                            <MudChip Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">NETWORK: @Network</MudChip>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(RpcUrl))
+                    {
+                        <div>
+                            <MudChip Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">RPC: @RpcUrl</MudChip>
+                        </div>
+                    }
+
+
+                </div>
             </MudDrawerHeader>
         }
 

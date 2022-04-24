@@ -1,5 +1,6 @@
 ﻿@if (IsLoaded)
 {
+    @*    
     @if (!IsAuthenticated)
     {
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -12,7 +13,7 @@
             </MudChip>
         </MudHidden>
     }
-
+    *@
     <MudSpacer />
     if (!IsAuthenticated)
     {
@@ -43,7 +44,7 @@
 
         <MudMenu Class="ml-3" Label="Connected" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" StartIcon="@Icons.Material.Filled.ConnectedTv" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Filled" Color="Color.Primary">
             <ChildContent>
-                <MudMenuItem Class="cursor-default"><span>@Network</span> <span>(@RpcUrl)</span></MudMenuItem>
+                @*<MudMenuItem Class="cursor-default"><span>@Network</span> <span>(@RpcUrl)</span></MudMenuItem>*@
                 @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
                 {
                     <MudHidden Breakpoint="Breakpoint.MdAndUp">

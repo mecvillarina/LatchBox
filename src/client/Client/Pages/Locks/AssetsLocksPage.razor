@@ -5,7 +5,7 @@
 <MudContainer MaxWidth="MaxWidth.False">
     <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Locks</MudText>
 
-    <div class="d-flex my-2">
+    <div class="d-flex mt-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Locked Assets</MudText>
         </MudHidden>
@@ -19,7 +19,16 @@
         }
     </div>
 
+    <div class="my-2">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+                @ManagerToolkit.NeoSettings.LockTokenVaultContractHash
+            </MudChip>
+        </MudHidden>
+    </div>
+
     <MudText Class="mud-text-secondary" Typo="Typo.caption" GutterBottom="false">List of NEP-17 Tokens that has been locked and unlocked (claimed) from LatchBoxLockTokenVaultContract.</MudText>
+
 </MudContainer>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
