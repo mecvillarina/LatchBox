@@ -1,0 +1,94 @@
+﻿<MudContainer Class="pa-0 ma-0" MaxWidth="MaxWidth.False" style="max-height: 80vh; overflow-y: scroll">
+    <EditForm Model="@Model" OnValidSubmit="Submit">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+            <DialogContent>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    <MudGrid Class="pt-0 pb-4" Spacing="2">
+
+                        @if (!IsLoaded)
+                        {
+                            <MudItem xs="12">
+                                <MudSkeleton Height="600px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="12">
+                                <MudTextField Label="Period Name" Variant="Variant.Outlined"
+                                          @bind-Value="Model.Name" For="@(() => Model.Name)" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudDatePicker Label="Period Unlock Date" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Class="text-white"><b>Receivers</b></MudText>
+                                <MudButton Class="mt-2" Color="Color.Secondary" Variant="Variant.Filled" Disabled="IsProcessing" OnClick="InvokeAddVestingReceiverModalAsync">Add Receiver</MudButton>
+                            </MudItem>
+
+                            @if (Model.Receivers.Any())
+                            {
+                                <MudItem xs="12">
+                                    <MudTable Items="Model.Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.Sm">
+                                        <HeaderContent>
+                                            <MudTh>Name</MudTh>
+                                            <MudTh>Address</MudTh>
+                                            <MudTh>Amount</MudTh>
+                                            <MudTh>Action</MudTh>
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Name">@receiverContext.Name</MudTd>
+                                            <MudTd DataLabel="Address">
+                                               @receiverContext.ReceiverAddress.ToMask(6)
+                                            </MudTd>
+                                            <MudTd DataLabel="Amount">@receiverContext.Amount @AssetToken.Symbol</MudTd>
+                                            <MudTd DataLabel="Action">
+                                                <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemoveReceiver(receiverContext.Id))" />
+                                            </MudTd>
+                                        </RowTemplate>
+                                        <FooterContent>
+                                            <MudTd colspan="4" align="right">
+                                                <MudText Typo="Typo.body1" Color="Color.Primary">
+                                                    <b>
+                                                        Total Amount to be Vested: @Model.Receivers.Sum(x => x.Amount) @AssetToken.Symbol  <br />
+                                                    </b>
+                                                </MudText>
+                                            </MudTd>
+                                        </FooterContent>
+                                    </MudTable>
+                                </MudItem>
+                            }
+                        }
+
+                    </MudGrid>
+                </MudContainer>
+            </DialogContent>
+            <DialogActions>
+                @if (IsLoaded)
+                {
+                    <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                    <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                        @if (IsProcessing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            @if (IsAdd)
+                            {
+                                <span>ADD PERIOD</span>
+                            }
+                            else
+                            {
+                                <span>UPDATE PERIOD</span>
+                            }
+                        }
+                    </MudButton>
+                }
+            </DialogActions>
+        </MudDialog>
+    </EditForm>
+</MudContainer>
+

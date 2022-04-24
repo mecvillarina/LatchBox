@@ -6,7 +6,7 @@ using Neo.Network.RPC;
 
 namespace Client.Pages.Modals
 {
-    public partial class SearchNep17TokenModal
+    public partial class SearchNep17TokenForVestingModal
     {
         [Parameter] public SearchNep17TokenParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -22,7 +22,7 @@ namespace Client.Pages.Modals
                 IsProcessing = true;
 
                 var tokenScriptHash = Utility.GetScriptHash(Model.TokenScriptHash, ManagerToolkit.NeoProtocolSettings);
-                var success = await LockTokenVaultManager.ValidateNEP17TokenAsync(tokenScriptHash);
+                var success = await VestingTokenVaultManager.ValidateNEP17TokenAsync(tokenScriptHash);
 
                 if (success)
                 {

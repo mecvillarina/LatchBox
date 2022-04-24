@@ -82,7 +82,7 @@ namespace Client.Pages.Locks
 
         private async Task<AssetToken> InvokeSearchNEP17TokenAsync()
         {
-            var dialog = DialogService.Show<SearchNep17TokenModal>($"Search NEP-17 Token");
+            var dialog = DialogService.Show<SearchNep17TokenForLockingModal>($"Search NEP-17 Token");
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)

@@ -68,16 +68,23 @@
                             @if (Model.Receivers.Any())
                             {
                                 <MudItem xs="12">
-                                    <MudTable Items="Model.Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.None">
+                                    <MudTable Items="Model.Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.Sm">
                                         <HeaderContent>
-                                            <MudTh>Receiver Address</MudTh>
+                                            <MudTh>Address</MudTh>
                                             <MudTh>Amount</MudTh>
                                             <MudTh>Action</MudTh>
                                         </HeaderContent>
                                         <RowTemplate>
-                                            <MudTd>@receiverContext.ReceiverAddress</MudTd>
-                                            <MudTd>@receiverContext.Amount @AssetToken.Symbol</MudTd>
-                                            <MudTd>
+                                            <MudTd DataLabel="Address">
+                                                <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                                                    @receiverContext.ReceiverAddress.ToMask(6)
+                                                </MudHidden>
+                                                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                                                    @receiverContext.ReceiverAddress
+                                                </MudHidden>
+                                            </MudTd>
+                                            <MudTd DataLabel="Amount">@receiverContext.Amount @AssetToken.Symbol</MudTd>
+                                            <MudTd DataLabel="Action">
                                                 <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemoveReceiver(receiverContext.Id))" />
                                             </MudTd>
                                         </RowTemplate>
@@ -85,7 +92,7 @@
                                             <MudTd colspan="3" align="right">
                                                 <MudText Typo="Typo.body1" Color="Color.Primary">
                                                     <b>
-                                                        Total Amount Locked: @Model.Receivers.Sum(x => x.Amount) @AssetToken.Symbol  <br />
+                                                        Total Amount to be Locked: @Model.Receivers.Sum(x => x.Amount) @AssetToken.Symbol  <br />
                                                         Add Lock Fee: @AddLockPaymentFeeDisplay
                                                     </b>
                                                 </MudText>

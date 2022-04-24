@@ -36,6 +36,14 @@ namespace Client.Services
                     message = messages.Last().Trim();
                 }
             }
+            else if (message.Contains("[LatchBoxVestingTokenVaultContract]"))
+            {
+                var messages = message.Split("[LatchBoxVestingTokenVaultContract]", StringSplitOptions.RemoveEmptyEntries);
+                if (messages.Length == 2)
+                {
+                    message = messages.Last().Trim();
+                }
+            }
 
             _snackbar.Add(message, Severity.Error);
         }

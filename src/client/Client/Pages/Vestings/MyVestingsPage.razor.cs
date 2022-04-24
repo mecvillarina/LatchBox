@@ -67,10 +67,11 @@ namespace Client.Pages.Vestings
 
             if (assetToken != null)
             {
+                var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
                 var parameters = new DialogParameters();
-                parameters.Add(nameof(AddLockModal.AssetToken), assetToken);
+                parameters.Add(nameof(AddVestingModal.AssetToken), assetToken);
 
-                var dialog = DialogService.Show<AddLockModal>($"Add New Vesting", parameters);
+                var dialog = DialogService.Show<AddVestingModal>($"Add New Vesting", parameters, options);
                 var dialogResult = await dialog.Result;
 
                 if (!dialogResult.Cancelled)
@@ -82,7 +83,7 @@ namespace Client.Pages.Vestings
 
         private async Task<AssetToken> InvokeSearchNEP17TokenAsync()
         {
-            var dialog = DialogService.Show<SearchNep17TokenModal>($"Search NEP-17 Token");
+            var dialog = DialogService.Show<SearchNep17TokenForVestingModal>($"Search NEP-17 Token");
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)
