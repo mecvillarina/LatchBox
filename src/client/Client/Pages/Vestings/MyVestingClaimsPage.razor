@@ -3,7 +3,9 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <div class="d-flex">
+    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
+
+    <div class="d-flex my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Claims</MudText>
         </MudHidden>
@@ -79,7 +81,7 @@
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
                             @*<MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimVestingModalAsync(context))">Claim Vesting</MudMenuItem>*@
                             <MudMenuItem OnClick="(() => InvokeClaimVestingModalAsync(context))">Claim Vesting</MudMenuItem>
-                        
+
                         </MudMenu>
                     </MudTd>
                     }
@@ -89,7 +91,7 @@
     }
     else
     {
-        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
             You've no token vesting claims.
         </MudText>
     }

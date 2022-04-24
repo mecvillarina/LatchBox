@@ -3,7 +3,9 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <div class="d-flex">
+    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Locks</MudText>
+
+    <div class="d-flex my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Locks</MudText>
         </MudHidden>
@@ -24,7 +26,7 @@
         <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
         <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
     }
-    else if(Locks.Any())
+    else if (Locks.Any())
     {
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
             <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
@@ -90,7 +92,7 @@
     }
     else
     {
-        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
             No Locks found. You haven't created any locks.
         </MudText>
     }

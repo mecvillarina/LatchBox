@@ -3,7 +3,9 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <div class="d-flex">
+    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Locks</MudText>
+
+    <div class="d-flex my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Claims</MudText>
         </MudHidden>
@@ -84,7 +86,7 @@
     }
     else
     {
-        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
+        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
             You've no token claims.
         </MudText>
     }
