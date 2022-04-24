@@ -34,16 +34,16 @@ namespace Client.Pages.Modals
                     {
                         try
                         {
-                            var addLockResult = await LockTokenVaultManager.ClaimRefundAsync(fromKey, Model.AssetRefund.TokenScriptHash);
+                            var result = await LockTokenVaultManager.ClaimRefundAsync(fromKey, Model.AssetRefund.TokenScriptHash);
 
-                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "ClaimedRefund"))
+                            if (result.Executions.First().Notifications.Any(x => x.EventName == "ClaimedRefund"))
                             {
                                 AppDialogService.ShowSuccess($"Claim Refund success.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Claim Refund failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Claim Refund failed. Reason: {result.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)

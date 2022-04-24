@@ -44,16 +44,16 @@ namespace Client.Pages.Modals
                     {
                         try
                         {
-                            var addLockResult = await LockTokenVaultManager.ClaimLockAsync(fromKey, Model.LockIndex);
+                            var result = await LockTokenVaultManager.ClaimLockAsync(fromKey, Model.LockIndex);
 
-                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "ClaimedLatchBoxLock"))
+                            if (result.Executions.First().Notifications.Any(x => x.EventName == "ClaimedLatchBoxLock"))
                             {
                                 AppDialogService.ShowSuccess($"Claim Lock success.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Claim Lock failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Claim Lock failed. Reason: {result.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)

@@ -1,7 +1,7 @@
 ﻿using Neo;
 using System.Numerics;
 
-namespace Client.Infrastructure.Models
+namespace Client.Infrastructure.Models.Parameters
 {
     public class VestingReceiverParameter
     {

@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Neo;
 using Neo.Network.RPC.Models;
 using Neo.Wallets;

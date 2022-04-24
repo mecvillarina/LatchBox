@@ -13,7 +13,7 @@ namespace Client.Pages.Vestings
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }
 
-        //public List<LockTransactionInitiatorModel> Locks { get; set; } = new();
+        public List<VestingTransactionInitiatorModel> Vestings { get; set; } = new();
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -32,30 +32,30 @@ namespace Client.Pages.Vestings
             IsCompletelyLoaded = false;
             StateHasChanged();
 
-            //Locks.Clear();
+            Vestings.Clear();
 
-            //var addresses = await WalletManager.GetAddressesAsync();
+            var addresses = await WalletManager.GetAddressesAsync();
 
-            //foreach (var address in addresses)
-            //{
-            //    var lockTransactions = await LockTokenVaultManager.GetTransactionsByInitiatorAsync(address);
+            foreach (var address in addresses)
+            {
+                var lockTransactions = await VestingTokenVaultManager.GetTransactionsByInitiatorAsync(address);
 
-            //    foreach (var lockTransaction in lockTransactions)
-            //    {
-            //        Locks.Add(new LockTransactionInitiatorModel(lockTransaction));
-            //    }
-            //}
-           
-            //Locks = Locks.OrderByDescending(x => x.Transaction.StartTime).ToList();
+                foreach (var lockTransaction in lockTransactions)
+                {
+                    Vestings.Add(new VestingTransactionInitiatorModel(lockTransaction));
+                }
+            }
+
+            Vestings = Vestings.OrderByDescending(x => x.Transaction.CreationTime).ToList();
 
             IsLoaded = true;
             StateHasChanged();
 
-            //foreach (var @lock in Locks)
-            //{
-            //    var assetToken = await AssetManager.GetTokenAsync(@lock.Transaction.TokenScriptHash);
-            //    @lock.SetAssetToken(assetToken);
-            //}
+            foreach (var vesting in Vestings)
+            {
+                var assetToken = await AssetManager.GetTokenAsync(vesting.Transaction.TokenScriptHash);
+                vesting.SetAssetToken(assetToken);
+            }
 
             IsCompletelyLoaded = true;
             StateHasChanged();
@@ -96,22 +96,22 @@ namespace Client.Pages.Vestings
             return null;
         }
 
-        //private async Task InvokeRevokeLockModalAsync(LockTransactionInitiatorModel lockModel)
-        //{
-        //    var lockIndex = lockModel.Transaction.LockIndex;
+        private async Task InvokeRevokeVestingModalAsync(VestingTransactionInitiatorModel lockModel)
+        {
+            var vestingIndex = lockModel.Transaction.VestingIndex;
 
-        //    var parameters = new DialogParameters();
-        //    parameters.Add(nameof(RevokeLockModal.LockTransaction), lockModel.Transaction);
-        //    parameters.Add(nameof(RevokeLockModal.Model), new RevokeLockParameter() { LockIndex = lockIndex });
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(RevokeVestingModal.VestingTransaction), lockModel.Transaction);
+            parameters.Add(nameof(RevokeVestingModal.Model), new RevokeVestingParameter() { VestingIndex = vestingIndex });
 
-        //    var dialog = DialogService.Show<RevokeLockModal>($"Revoke Lock #{lockIndex}", parameters);
-        //    var dialogResult = await dialog.Result;
+            var dialog = DialogService.Show<RevokeVestingModal>($"Revoke Vesting #{vestingIndex}", parameters);
+            var dialogResult = await dialog.Result;
 
-        //    if (!dialogResult.Cancelled)
-        //    {
-        //        await FetchDataAsync();
-        //    }
-        //}
+            if (!dialogResult.Cancelled)
+            {
+                await FetchDataAsync();
+            }
+        }
 
         //private void InvokeLockPreviewerModal(BigInteger lockIndex)
         //{

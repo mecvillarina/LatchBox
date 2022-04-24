@@ -45,8 +45,8 @@
                     <MudTd DataLabel="Asset">
                         <div>
                             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                                <MudText Color="Color.Primary" Align="Align.Right" Class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
-                                    <b>
+                                <MudText Color="Color.Primary" Align="Align.Right">
+                                    <b class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
                                         <span>@context.AssetToken.Symbol</span>
                                     </b>
                                 </MudText>
@@ -56,8 +56,8 @@
                             </MudHidden>
 
                             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                                <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
-                                    <b>
+                                <MudText Color="Color.Primary">
+                                    <b class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
                                         <span>@context.AssetToken.Name (@context.AssetToken.Symbol)</span>
                                     </b>
                                 </MudText>

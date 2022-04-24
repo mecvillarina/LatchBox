@@ -1,5 +1,7 @@
-﻿using Client.Infrastructure.Managers.Interfaces;
+﻿using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Neo;
 using Neo.IO;
 using Neo.Network.P2P.Payloads;
@@ -9,6 +11,7 @@ using Neo.VM;
 using Neo.VM.Types;
 using Neo.Wallets;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -26,6 +29,77 @@ namespace Client.Infrastructure.Managers
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "validateNEP17Token", tokenScriptHash).ConfigureAwait(false);
             return result.State == Neo.VM.VMState.HALT && result.Exception == null;
+        }
+
+        public async Task<UInt160> GetPaymentTokenScriptHashAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenScriptHash").ConfigureAwait(false);
+            return Neo.Network.RPC.Utility.GetScriptHash(result.Stack.Single().FromByteStringToAccount(), ManagerToolkit.NeoProtocolSettings);
+        }
+
+        public async Task<BigInteger> GetPaymentTokenAddVestingFeeAsync()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenAddVestingFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenClaimVestingFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenClaimVestingFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<BigInteger> GetPaymentTokenRevokeVestingFee()
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenRevokeVestingFee").ConfigureAwait(false);
+            return result.Stack.Single().GetInteger();
+        }
+
+        public async Task<VestingTransaction> GetTransactionAsync(BigInteger vestingIdx)
+        {
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getVestingTransaction", vestingIdx).ConfigureAwait(false);
+            var stack = result.Stack.First();
+            return new VestingTransaction((Map)stack, ManagerToolkit.NeoProtocolSettings);
+        }
+
+        public async Task<List<VestingTransaction>> GetTransactionsByInitiatorAsync(string initiatorAddress)
+        {
+            List<VestingTransaction> transactions = new();
+
+            var initiator = Neo.Network.RPC.Utility.GetScriptHash(initiatorAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getVestingsByInitiator", initiator).ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Neo.VM.Types.Array)stack;
+                foreach (var map in maps)
+                {
+                    transactions.Add(new VestingTransaction((Map)map, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+
+            return transactions;
+        }
+
+        public async Task<List<VestingTransaction>> GetTransactionsByReceiverAsync(string receiverAddress)
+        {
+            List<VestingTransaction> transactions = new();
+
+            var receiver = Neo.Network.RPC.Utility.GetScriptHash(receiverAddress, ManagerToolkit.NeoProtocolSettings);
+            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getVestingsByReceiver", receiver).ConfigureAwait(false);
+            var stack = result.Stack.FirstOrDefault();
+
+            if (stack != null)
+            {
+                var maps = (Neo.VM.Types.Map)stack;
+                foreach (var map in maps)
+                {
+                    transactions.Add(new VestingTransaction((Map)map.Value, ManagerToolkit.NeoProtocolSettings));
+                }
+            }
+
+            return transactions;
         }
 
         public async Task<RpcInvokeResult> ValidateAddVestingAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, bool isRevocable, List<VestingPeriodParameter> periods)
@@ -90,6 +164,24 @@ namespace Client.Infrastructure.Managers
             Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
             return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);
+        }
+
+        public async Task<RpcInvokeResult> ValidateRevokeVestingAsync(UInt160 account, BigInteger vestingIndex)
+        {
+            byte[] script = ContractScriptHash.MakeScript("revokeVesting", vestingIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> RevokeVestingAsync(KeyPair accountKey, BigInteger vestingIndex)
+        {
+            var sender = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("revokeVesting", vestingIndex);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
         }
     }
 }

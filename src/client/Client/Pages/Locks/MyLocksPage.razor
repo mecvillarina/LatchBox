@@ -51,8 +51,8 @@
                     else
                     {
                     <MudTd DataLabel="Lock Index">
-                        <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">
-                            <b>@context.Transaction.LockIndex</b>
+                        <MudText Color="Color.Primary">
+                            <b class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">@context.Transaction.LockIndex</b>
                         </MudText>
                     </MudTd>
                     <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>

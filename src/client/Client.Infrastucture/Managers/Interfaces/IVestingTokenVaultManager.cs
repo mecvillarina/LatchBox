@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Neo;
 using Neo.Network.RPC.Models;
 using Neo.Wallets;
@@ -12,7 +13,16 @@ namespace Client.Infrastructure.Managers.Interfaces
     {
         UInt160 ContractScriptHash { get; }
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
+        Task<UInt160> GetPaymentTokenScriptHashAsync();
+        Task<BigInteger> GetPaymentTokenAddVestingFeeAsync();
+        Task<BigInteger> GetPaymentTokenClaimVestingFee();
+        Task<BigInteger> GetPaymentTokenRevokeVestingFee();
+        Task<VestingTransaction> GetTransactionAsync(BigInteger vestingIdx);
+        Task<List<VestingTransaction>> GetTransactionsByInitiatorAsync(string initiatorAddress);
+        Task<List<VestingTransaction>> GetTransactionsByReceiverAsync(string receiverAddress);
         Task<RpcInvokeResult> ValidateAddVestingAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, bool isRevocable, List<VestingPeriodParameter> periods);
         Task<RpcApplicationLog> AddVestingAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, bool isRevocable, List<VestingPeriodParameter> periods);
+        Task<RpcInvokeResult> ValidateRevokeVestingAsync(UInt160 account, BigInteger vestingIndex);
+        Task<RpcApplicationLog> RevokeVestingAsync(KeyPair accountKey, BigInteger vestingIndex);
     }
 }

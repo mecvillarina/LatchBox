@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 
-namespace Client.Infrastructure.Models
+namespace Client.Infrastructure.Models.Parameters
 {
     public class VestingPeriodParameter
     {

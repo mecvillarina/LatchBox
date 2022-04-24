@@ -1,5 +1,6 @@
 ﻿using Blazored.FluentValidation;
 using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -133,36 +134,39 @@ namespace Client.Pages.Modals
 
         private async Task InvokeUpsetVestingPeriodModalAsync(UpsetVestingPeriodParameter periodModel = null)
         {
-            string title = "Add Vesting Period";
-            var parameters = new DialogParameters();
-            parameters.Add(nameof(UpsetVestingPeriodModal.AssetToken), AssetToken);
-
-            if (periodModel != null)
+            if (!IsProcessing)
             {
-                parameters.Add(nameof(UpsetVestingPeriodModal.Model), periodModel);
-                title = "Update Vesting Period";
-            }
+                string title = "Add Vesting Period";
+                var parameters = new DialogParameters();
+                parameters.Add(nameof(UpsetVestingPeriodModal.AssetToken), AssetToken);
 
-            var dialog = DialogService.Show<UpsetVestingPeriodModal>(title, parameters);
-            var dialogResult = await dialog.Result;
-
-            if (!dialogResult.Cancelled)
-            {
-                var period = (UpsetVestingPeriodParameter)dialogResult.Data;
-
-                if(period.Id == Guid.Empty)
+                if (periodModel != null)
                 {
-                    period.Id = Guid.NewGuid();
-                    Model.Periods.Add(period);
+                    parameters.Add(nameof(UpsetVestingPeriodModal.Model), periodModel);
+                    title = "Update Vesting Period";
                 }
-                else
+
+                var dialog = DialogService.Show<UpsetVestingPeriodModal>(title, parameters);
+                var dialogResult = await dialog.Result;
+
+                if (!dialogResult.Cancelled)
                 {
-                    var currentPeriodIndex = Model.Periods.FindIndex(x => x.Id == period.Id);
-                    Model.Periods[currentPeriodIndex] = period;
+                    var period = (UpsetVestingPeriodParameter)dialogResult.Data;
+
+                    if (period.Id == Guid.Empty)
+                    {
+                        period.Id = Guid.NewGuid();
+                        Model.Periods.Add(period);
+                    }
+                    else
+                    {
+                        var currentPeriodIndex = Model.Periods.FindIndex(x => x.Id == period.Id);
+                        Model.Periods[currentPeriodIndex] = period;
+                    }
+
+                    Model.Periods = Model.Periods.OrderBy(x => x.UnlockDate).ToList();
                 }
             }
-
-            Model.Periods = Model.Periods.OrderBy(x => x.UnlockDate).ToList();
         }
 
 

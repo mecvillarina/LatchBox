@@ -1,6 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Neo;
 using Neo.IO;
 using Neo.Network.P2P.Payloads;

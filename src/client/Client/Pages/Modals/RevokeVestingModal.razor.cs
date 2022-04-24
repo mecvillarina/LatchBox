@@ -7,10 +7,10 @@ using MudBlazor;
 
 namespace Client.Pages.Modals
 {
-    public partial class RevokeLockModal
+    public partial class RevokeVestingModal
     {
-        [Parameter] public LockTransaction LockTransaction { get; set; }
-        [Parameter] public RevokeLockParameter Model { get; set; } = new();
+        [Parameter] public VestingTransaction VestingTransaction { get; set; }
+        [Parameter] public RevokeVestingParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;
@@ -24,7 +24,7 @@ namespace Client.Pages.Modals
         {
             if (firstRender)
             {
-                await FetchFeeAsync();
+                //await FetchFeeAsync();
                 IsLoaded = true;
                 StateHasChanged();
             }
@@ -35,26 +35,26 @@ namespace Client.Pages.Modals
             if (Validated)
             {
                 IsProcessing = true;
-                var validateResult = await LockTokenVaultManager.ValidateRevokeLockAsync(LockTransaction.InitiatorHash160, LockTransaction.LockIndex);
+                var validateResult = await VestingTokenVaultManager.ValidateRevokeVestingAsync(VestingTransaction.InitiatorHash160, VestingTransaction.VestingIndex);
 
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
-                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(LockTransaction.InitiatorAddress);
+                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(VestingTransaction.InitiatorAddress);
 
                     if (fromKey != null)
                     {
                         try
                         {
-                            var result = await LockTokenVaultManager.RevokeLockAsync(fromKey, LockTransaction.LockIndex);
+                            var result = await VestingTokenVaultManager.RevokeVestingAsync(fromKey, VestingTransaction.VestingIndex);
 
-                            if (result.Executions.First().Notifications.Any(x => x.EventName == "RevokedLatchBoxLock"))
+                            if (result.Executions.First().Notifications.Any(x => x.EventName == "RevokedLatchBoxVesting"))
                             {
-                                AppDialogService.ShowSuccess($"Revoke Lock success. Go to My Refunds Page to claim your token refunds.");
+                                AppDialogService.ShowSuccess($"Revoke Vesting success. Go to My Refunds Page to claim your token refunds.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Revoke Lock failed. Reason: {result.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Revoke Vesting failed. Reason: {result.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)
