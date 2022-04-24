@@ -17,13 +17,13 @@ namespace Client.Pages.Vestings.Modals
         public bool IsProcessing { get; set; }
         public bool IsLoaded { get; set; }
         public AssetToken PaymentToken { get; set; }
-        //public string ClaimLockPaymentFeeDisplay { get; set; }
+        public string ClaimVestingPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                //await FetchFeeAsync();
+                await FetchFeeAsync();
                 IsLoaded = true;
                 StateHasChanged();
             }
@@ -71,13 +71,13 @@ namespace Client.Pages.Vestings.Modals
             }
         }
 
-        //private async Task FetchFeeAsync()
-        //{
-        //    var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
-        //    PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
-        //    var claimLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenClaimLockFee();
-        //    ClaimLockPaymentFeeDisplay = $"{claimLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
-        //}
+        private async Task FetchFeeAsync()
+        {
+            var tokenScriptHash = await VestingTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
+            var payment = await VestingTokenVaultManager.GetPaymentTokenClaimVestingFeeAsync();
+            ClaimVestingPaymentFeeDisplay = $"{payment.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
+        }
 
         public void Cancel()
         {

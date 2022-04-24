@@ -54,6 +54,7 @@
                                     <MudText Typo="Typo.body1" Color="Color.Primary">
                                         <b>
                                             Total Amount to be Vested: @Model.Periods.Sum(x => x.Receivers.Sum(y => y.Amount)) @AssetToken.Symbol  <br />
+                                            Add Vesting Fee: @AddVestingPaymentFeeDisplay
                                         </b>
                                     </MudText>
                                 </MudItem>

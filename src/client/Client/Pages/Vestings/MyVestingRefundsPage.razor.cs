@@ -1,5 +1,4 @@
 ﻿using Client.Models;
-using Client.Pages.Locks.Modals;
 using Client.Pages.Vestings.Modals;
 using MudBlazor;
 

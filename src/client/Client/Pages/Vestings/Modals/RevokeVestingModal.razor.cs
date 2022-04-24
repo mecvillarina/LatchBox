@@ -18,13 +18,13 @@ namespace Client.Pages.Vestings.Modals
         public bool IsProcessing { get; set; }
         public bool IsLoaded { get; set; }
         public AssetToken PaymentToken { get; set; }
-        public string RevokeLockPaymentFeeDisplay { get; set; }
+        public string RevokeVestingPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                //await FetchFeeAsync();
+                await FetchFeeAsync();
                 IsLoaded = true;
                 StateHasChanged();
             }
@@ -74,10 +74,10 @@ namespace Client.Pages.Vestings.Modals
 
         private async Task FetchFeeAsync()
         {
-            var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            var tokenScriptHash = await VestingTokenVaultManager.GetPaymentTokenScriptHashAsync();
             PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
-            var revokeLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenRevokeLockFee();
-            RevokeLockPaymentFeeDisplay = $"{revokeLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
+            var paymentFee = await VestingTokenVaultManager.GetPaymentTokenRevokeVestingFeeAsync();
+            RevokeVestingPaymentFeeDisplay = $"{paymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
         }
 
         public void Cancel()

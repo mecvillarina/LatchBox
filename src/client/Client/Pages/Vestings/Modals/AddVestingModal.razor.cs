@@ -1,4 +1,5 @@
 ﻿using Blazored.FluentValidation;
+using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Infrastructure.Models.Parameters;
 using Client.Parameters;
@@ -21,13 +22,13 @@ namespace Client.Pages.Vestings.Modals
         public bool IsLoaded { get; set; }
         public List<string> WalletAddresses { get; set; } = new();
         public AssetToken PaymentToken { get; set; }
-        public string AddLockPaymentFeeDisplay { get; set; }
+        public string AddVestingPaymentFeeDisplay { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                //await FetchFeeAsync();
+                await FetchFeeAsync();
                 Model.TokenScriptHash = AssetToken.AssetScriptHash.ToString();
                 WalletAddresses = await WalletManager.GetAddressesAsync();
                 Model.WalletAddress = WalletAddresses.First();
@@ -179,13 +180,13 @@ namespace Client.Pages.Vestings.Modals
             }
         }
 
-        //private async Task FetchFeeAsync()
-        //{
-        //    var tokenScriptHash = await LockTokenVaultManager.GetPaymentTokenScriptHashAsync();
-        //    PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
-        //    var addLockPaymentFee = await LockTokenVaultManager.GetPaymentTokenAddLockFeeAsync();
-        //    AddLockPaymentFeeDisplay = $"{addLockPaymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
-        //}
+        private async Task FetchFeeAsync()
+        {
+            var tokenScriptHash = await VestingTokenVaultManager.GetPaymentTokenScriptHashAsync();
+            PaymentToken = await AssetManager.GetTokenAsync(tokenScriptHash);
+            var paymentFee = await VestingTokenVaultManager.GetPaymentTokenAddVestingFeeAsync();
+            AddVestingPaymentFeeDisplay = $"{paymentFee.ToAmount(PaymentToken.Decimals).ToAmountDisplay(PaymentToken.Decimals)} {PaymentToken.Symbol}";
+        }
 
         public void Cancel()
         {

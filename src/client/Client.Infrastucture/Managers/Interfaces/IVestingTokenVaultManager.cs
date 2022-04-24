@@ -15,8 +15,8 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
         Task<UInt160> GetPaymentTokenScriptHashAsync();
         Task<BigInteger> GetPaymentTokenAddVestingFeeAsync();
-        Task<BigInteger> GetPaymentTokenClaimVestingFee();
-        Task<BigInteger> GetPaymentTokenRevokeVestingFee();
+        Task<BigInteger> GetPaymentTokenClaimVestingFeeAsync();
+        Task<BigInteger> GetPaymentTokenRevokeVestingFeeAsync();
         Task<VestingTransaction> GetTransactionAsync(BigInteger vestingIdx);
         Task<List<VestingTransaction>> GetTransactionsByInitiatorAsync(string initiatorAddress);
         Task<List<VestingTransaction>> GetTransactionsByReceiverAsync(string receiverAddress);

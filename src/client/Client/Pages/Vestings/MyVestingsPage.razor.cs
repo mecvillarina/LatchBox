@@ -37,11 +37,11 @@ namespace Client.Pages.Vestings
 
             foreach (var address in addresses)
             {
-                var lockTransactions = await VestingTokenVaultManager.GetTransactionsByInitiatorAsync(address);
+                var transactions = await VestingTokenVaultManager.GetTransactionsByInitiatorAsync(address);
 
-                foreach (var lockTransaction in lockTransactions)
+                foreach (var transaction in transactions)
                 {
-                    Vestings.Add(new VestingTransactionInitiatorModel(lockTransaction));
+                    Vestings.Add(new VestingTransactionInitiatorModel(transaction));
                 }
             }
 
@@ -95,12 +95,12 @@ namespace Client.Pages.Vestings
             return null;
         }
 
-        private async Task InvokeRevokeVestingModalAsync(VestingTransactionInitiatorModel lockModel)
+        private async Task InvokeRevokeVestingModalAsync(VestingTransactionInitiatorModel vestingModel)
         {
-            var vestingIndex = lockModel.Transaction.VestingIndex;
+            var vestingIndex = vestingModel.Transaction.VestingIndex;
 
             var parameters = new DialogParameters();
-            parameters.Add(nameof(RevokeVestingModal.VestingTransaction), lockModel.Transaction);
+            parameters.Add(nameof(RevokeVestingModal.VestingTransaction), vestingModel.Transaction);
             parameters.Add(nameof(RevokeVestingModal.Model), new RevokeVestingParameter() { VestingIndex = vestingIndex });
 
             var dialog = DialogService.Show<RevokeVestingModal>($"Revoke Vesting #{vestingIndex}", parameters);

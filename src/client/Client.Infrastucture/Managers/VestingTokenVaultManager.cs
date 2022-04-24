@@ -43,13 +43,13 @@ namespace Client.Infrastructure.Managers
             return result.Stack.Single().GetInteger();
         }
 
-        public async Task<BigInteger> GetPaymentTokenClaimVestingFee()
+        public async Task<BigInteger> GetPaymentTokenClaimVestingFeeAsync()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenClaimVestingFee").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
         }
 
-        public async Task<BigInteger> GetPaymentTokenRevokeVestingFee()
+        public async Task<BigInteger> GetPaymentTokenRevokeVestingFeeAsync()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getPaymentTokenRevokeVestingFee").ConfigureAwait(false);
             return result.Stack.Single().GetInteger();
