@@ -5,12 +5,12 @@ using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Vestings.Modals
 {
-    public partial class AddLockReceiverModal
+    public partial class AddVestingReceiverModal
     {
         [Parameter] public AssetToken AssetToken { get; set; } = new();
-        [Parameter] public AddLockReceiverParameter Model { get; set; } = new();
+        [Parameter] public AddVestingReceiverParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;

@@ -6,9 +6,8 @@
                 <MudContainer MaxWidth="MaxWidth.False">
                     <MudGrid Class="pt-0 pb-4" Spacing="2">
                         <MudItem xs="12">
-                            <MudText Typo="Typo.body1" Class="text-white">
-                                <span>Are you sure you want to claim the refund of <b>@Model.AmountDisplay</b>? This action is irrevocable.</span>
-                            </MudText>
+                            <MudTextField Label="NEP-17 Token ScriptHash" Placeholder="0x..." Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="Model.TokenScriptHash" For="@(() => Model.TokenScriptHash)" />
                         </MudItem>
                     </MudGrid>
                 </MudContainer>
@@ -22,7 +21,7 @@
                     }
                     else
                     {
-                        <span>CLAIM </span>
+                        <span>SEARCH</span>
                     }
                 </MudButton>
 

@@ -1,6 +1,6 @@
 ﻿using Client.Infrastructure.Models;
 using Client.Models;
-using Client.Pages.Modals;
+using Client.Pages.Locks.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo;
@@ -82,7 +82,7 @@ namespace Client.Pages.Locks
 
         private async Task<AssetToken> InvokeSearchNEP17TokenAsync()
         {
-            var dialog = DialogService.Show<SearchNep17TokenModal>($"NEP-17 Token");
+            var dialog = DialogService.Show<SearchNep17TokenForLockingModal>($"Search NEP-17 Token");
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)

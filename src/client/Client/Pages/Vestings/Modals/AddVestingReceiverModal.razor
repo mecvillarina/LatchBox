@@ -1,0 +1,46 @@
+﻿<MudContainer Class="pa-0 ma-0" MaxWidth="MaxWidth.False" style="max-height: 80vh; overflow-y: scroll">
+    <EditForm Model="@Model" OnValidSubmit="SubmitAsync">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+            <DialogContent>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    <MudGrid Class="pt-0 pb-4" Spacing="2">
+                        <MudItem xs="12">
+                            <MudTextField Label="Name" Placeholder=" " Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="Model.Name" For="@(() => Model.Name)" />
+                        </MudItem>
+
+                        <MudItem xs="12">
+                            <MudTextField Label="Wallet Address" Placeholder=" " Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="Model.ReceiverAddress" For="@(() => Model.ReceiverAddress)" />
+                        </MudItem>
+
+                        <MudItem xs="12">
+                            <MudTextField Label="@(string.Concat("Amount ", AssetToken.Symbol))" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="Model.Amount" For="@(() => Model.Amount)" T="double" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Paid" />
+                        </MudItem>
+
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.caption" Color="Color.Error"><b>Notice: The amount of duplicate receiver addresses will be add up.</b></MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudContainer>
+            </DialogContent>
+            <DialogActions>
+                <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                    @if (IsProcessing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    }
+                    else
+                    {
+                        <span>ADD</span>
+                    }
+                </MudButton>
+
+            </DialogActions>
+        </MudDialog>
+    </EditForm>
+</MudContainer>
+

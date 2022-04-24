@@ -1,4 +1,4 @@
-﻿@page "/locks"
+﻿@page "/locks/claims"
 
 @attribute [Authorize]
 
@@ -7,13 +7,12 @@
 
     <div class="d-flex mt-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Locks</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Claims</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Locks</MudText>
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Claims</MudText>
         </MudHidden>
 
-        <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddLockModalAsync" />
         @if (IsCompletelyLoaded)
         {
             <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
@@ -41,17 +40,15 @@
             <MudTable Items="@Locks" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
                     <MudTh>Lock Index</MudTh>
-                    <MudTh>Date Start</MudTh>
+                    <MudTh>Receiver</MudTh>
                     <MudTh>Date Unlock</MudTh>
-                    <MudTh>Revocable</MudTh>
-                    <MudTh>Total Amount</MudTh>
+                    <MudTh>Claimable Amount</MudTh>
                     <MudTh>Status</MudTh>
                     <MudTh>Actions</MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     @if (@context.AssetToken == null)
                     {
-                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
@@ -66,21 +63,18 @@
                             <b class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">@context.Transaction.LockIndex</b>
                         </MudText>
                     </MudTd>
-                    <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                    <MudTd DataLabel="Revocable">
-                        @if (context.IsRevocable)
-                            {
-                            <span>Yes</span>
-                            }
-                            else
-                            {
-                            <span>No</span>
-                            }
+                    <MudTd DataLabel="Receiver">
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            @context.Receiver.ReceiverAddress.ToMask(6)
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            @context.Receiver.ReceiverAddress
+                        </MudHidden>
                     </MudTd>
-                    <MudTd DataLabel="Total Amount">
+                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Claimable Amount">
                         <div class="d-flex">
-                            @context.TotalAmountDisplay
+                            @context.AmountDisplay
                         </div>
                     </MudTd>
                     <MudTd DataLabel="Status">
@@ -90,19 +84,19 @@
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                            <MudMenuItem Disabled="@(!context.IsRevocable || !context.Transaction.IsActive)" OnClick="(() => InvokeRevokeLockModalAsync(context))">Revoke Lock</MudMenuItem>
+                            <MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimLockModalAsync(context))">Claim Lock</MudMenuItem>
                         </MudMenu>
                     </MudTd>
                     }
             </RowTemplate>
         </MudTable>
-
     </MudPaper>
     }
     else
     {
         <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
-            No Locks found. You haven't created any locks.
+            You've no token claims.
         </MudText>
     }
+
 </MudContainer>

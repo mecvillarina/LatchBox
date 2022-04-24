@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using Client.Models;
-using Client.Pages.Modals;
+using Client.Pages.Locks.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo.SmartContract.Native;
@@ -9,7 +9,7 @@ using System.Numerics;
 
 namespace Client.Pages.Locks
 {
-    public partial class MyTokenClaimsPage
+    public partial class MyLockClaimsPage
     {
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }

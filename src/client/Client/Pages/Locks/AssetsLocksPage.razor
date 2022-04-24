@@ -3,19 +3,32 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <div class="d-flex">
+    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Locks</MudText>
+
+    <div class="d-flex mt-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Locked Assets</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Locked Assets</MudText>
         </MudHidden>
+
         @if (IsCompletelyLoaded)
         {
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
         }
-
     </div>
+
+    <div class="my-2">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+                @ManagerToolkit.NeoSettings.LockTokenVaultContractHash
+            </MudChip>
+        </MudHidden>
+    </div>
+
+    <MudText Class="mud-text-secondary" Typo="Typo.caption" GutterBottom="false">List of NEP-17 Tokens that has been locked and unlocked (claimed) from LatchBoxLockTokenVaultContract.</MudText>
+
 </MudContainer>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
@@ -36,17 +49,17 @@
                 <RowTemplate>
                     @if (@context.AssetToken == null)
                     {
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
-                        <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
                     <MudTd DataLabel="Asset">
                         <div>
                             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                                <MudText Color="Color.Primary" Align="Align.Right" Class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
-                                    <b>
+                                <MudText Color="Color.Primary" Align="Align.Right">
+                                    <b class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
                                         <span>@context.AssetToken.Symbol</span>
                                     </b>
                                 </MudText>
@@ -56,8 +69,8 @@
                             </MudHidden>
 
                             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                                <MudText Color="Color.Primary" Class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
-                                    <b>
+                                <MudText Color="Color.Primary">
+                                    <b class="cursor-pointer" @onclick="(() => InvokeAssetLockPreviewerModal(context))">
                                         <span>@context.AssetToken.Name (@context.AssetToken.Symbol)</span>
                                     </b>
                                 </MudText>
@@ -80,8 +93,8 @@
     }
     else
     {
-        <MudText Typo="Typo.h6" Class="mt-8" Color="Color.Secondary">
-            There are no NEP-17 token has been locked on the Vault. 
+        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
+            There are no NEP-17 token has been locked on the Vault.
         </MudText>
     }
 

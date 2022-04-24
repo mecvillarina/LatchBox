@@ -1,13 +1,14 @@
 ﻿using Blazored.FluentValidation;
 using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
 using System.Numerics;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
     public partial class AddLockModal
     {
@@ -59,14 +60,14 @@ namespace Client.Pages.Modals
                     }
                     else
                     {
-                        List<LockReceiverArg> receiversArg = new();
+                        List<LockReceiverParameter> receiversArg = new();
                         BigInteger totalAmount = 0;
                         foreach (var receiver in Model.Receivers)
                         {
                             var address = Utility.GetScriptHash(receiver.ReceiverAddress, ManagerToolkit.NeoProtocolSettings);
                             var actualAmount = Convert.ToDecimal(receiver.Amount).ToBigInteger((uint)AssetToken.Decimals);
 
-                            receiversArg.Add(new LockReceiverArg()
+                            receiversArg.Add(new LockReceiverParameter()
                             {
                                 ReceiverAddress = address,
                                 Amount = actualAmount

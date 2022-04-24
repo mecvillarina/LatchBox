@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Vestings.Modals
 {
-    public partial class ClaimRefundModal
+    public partial class ClaimVestingRefundModal
     {
         [Parameter] public AssetRefundModel Model { get; set; }
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
@@ -24,7 +24,7 @@ namespace Client.Pages.Modals
 
                 var account = Utility.GetScriptHash(Model.WalletAddress, ManagerToolkit.NeoProtocolSettings);
 
-                var validateResult = await LockTokenVaultManager.ValidateClaimRefundAsync(account, Model.AssetRefund.TokenScriptHash);
+                var validateResult = await VestingTokenVaultManager.ValidateClaimRefundAsync(account, Model.AssetRefund.TokenScriptHash);
 
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
@@ -34,16 +34,16 @@ namespace Client.Pages.Modals
                     {
                         try
                         {
-                            var addLockResult = await LockTokenVaultManager.ClaimRefundAsync(fromKey, Model.AssetRefund.TokenScriptHash);
+                            var result = await VestingTokenVaultManager.ClaimRefundAsync(fromKey, Model.AssetRefund.TokenScriptHash);
 
-                            if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "ClaimedRefund"))
+                            if (result.Executions.First().Notifications.Any(x => x.EventName == "ClaimedRefund"))
                             {
                                 AppDialogService.ShowSuccess($"Claim Refund success.");
                                 MudDialog.Close();
                             }
                             else
                             {
-                                AppDialogService.ShowError($"Claim Refund failed. Reason: {addLockResult.Executions.First().ExceptionMessage}");
+                                AppDialogService.ShowError($"Claim Refund failed. Reason: {result.Executions.First().ExceptionMessage}");
                             }
                         }
                         catch (Exception ex)

@@ -1,0 +1,92 @@
+﻿@page "/vestings/refunds"
+
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.False">
+ <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
+
+    <div class="d-flex mt-2">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp">
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Refunds</MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs">
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Refunds</MudText>
+        </MudHidden>
+
+        @if (IsCompletelyLoaded)
+        {
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+        }
+    </div>
+
+    <div class="my-2">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudChip Class="ma-0"  Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+                @ManagerToolkit.NeoSettings.VestingTokenVaultContractHash
+            </MudChip>
+        </MudHidden>
+    </div>
+</MudContainer>
+
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+    @if (!IsLoaded)
+    {
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="56px" Width="100%" />
+        <MudSkeleton Class="mt-2" SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="280px" Width="100%" />
+    }
+    else if (Refunds.Any())
+    {
+        <MudPaper Square="true" Elevation="10" Class="grey darken-4">
+            <MudTable Items="@Refunds" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Wallet Address</MudTh>
+                    <MudTh>Token</MudTh>
+                    <MudTh>Total Amount</MudTh>
+                    <MudTh>Actions</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    @if (@context.AssetToken == null)
+                    {
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    }
+                    else
+                    {
+                    <MudTd DataLabel="Wallet Address">
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            @context.WalletAddress.ToMask(6)
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            @context.WalletAddress
+                        </MudHidden>
+                    </MudTd>
+                    <MudTd DataLabel="Token">
+                        <div class="d-flex">
+                            @context.AssetToken.Name (@context.AssetToken.Symbol)
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Total Amount">
+                        <div class="d-flex">
+                            @context.AmountDisplay
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Actions">
+                        <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            <MudMenuItem OnClick="(() => InvokeClaimRefundModalAsync(context))">Claim</MudMenuItem>
+                        </MudMenu>
+                    </MudTd>
+                    }
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
+            You've no refunds.
+        </MudText>
+    }
+
+</MudContainer>

@@ -10,6 +10,8 @@ namespace Client.Shared
         private bool IsAuthenticated { get; set; }
         private bool DrawerOpen { get; set; } = true;
         private MudTheme CurrentTheme { get; set; }
+        public string Network { get; set; }
+        public string RpcUrl { get; set; }
 
         protected override void OnInitialized()
         {
@@ -24,6 +26,8 @@ namespace Client.Shared
                 {
                     IsAuthenticated = await AuthManager.IsAuthenticated();
                     await AppBreakpointService.InitAsync();
+                    Network = RpcManager.GetNetwork();
+                    RpcUrl = RpcManager.GetRpcUrl();
                     StateHasChanged();
                 });
             }

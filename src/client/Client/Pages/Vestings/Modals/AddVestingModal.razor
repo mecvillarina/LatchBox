@@ -1,0 +1,115 @@
+﻿<MudContainer Class="pa-0 ma-0" MaxWidth="MaxWidth.False" style="max-height: 80vh; overflow-y: scroll">
+    <EditForm Model="@Model" OnValidSubmit="SubmitAsync">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+            <DialogContent>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    <MudGrid Class="pt-0 pb-4" Spacing="2">
+                        <MudItem xs="12" sm="6">
+                            <MudGrid Class="pa-0" Spacing="2">
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.body1" Class="text-white"><b>NEP-17 Token Information</b></MudText>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudTextField Label="ScriptHash" Variant="Variant.Outlined" Disabled="true"
+                                                  @bind-Value="Model.TokenScriptHash" For="@(() => Model.TokenScriptHash)" />
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudTextField Label="Name" Variant="Variant.Outlined" Disabled="true"
+                                                  @bind-Value="AssetToken.Name" For="@(() => AssetToken.Name)" />
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudTextField Label="Symbol" Variant="Variant.Outlined" Disabled="true"
+                                                  @bind-Value="AssetToken.Symbol" For="@(() => AssetToken.Symbol)" />
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudTextField Label="Token Decimals" Variant="Variant.Outlined" Disabled="true"
+                                                  @bind-Value="AssetToken.Decimals" For="@(() => AssetToken.Decimals)" />
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.body1" Class="text-white"><b>Vesting Information</b></MudText>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudSelect T="string" Disabled="IsProcessing" Label="Wallet Address" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.WalletAddress">
+                                        @foreach (var walletAddress in WalletAddresses)
+                                        {
+                                            <MudSelectItem Value="@walletAddress">@walletAddress</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudSelect T="bool" Disabled="IsProcessing" Label="Revocable?" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.IsRevocable">
+                                        <MudSelectItem Value="true">Yes</MudSelectItem>
+                                        <MudSelectItem Value="false">No</MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.body1" Color="Color.Primary">
+                                        <b>
+                                            Total Amount to be Vested: @Model.Periods.Sum(x => x.Receivers.Sum(y => y.Amount)) @AssetToken.Symbol  <br />
+                                            Add Vesting Fee: @AddVestingPaymentFeeDisplay
+                                        </b>
+                                    </MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+
+                        <MudItem xs="12" sm="6">
+                            <MudGrid Class="pa-0" Spacing="2">
+                                <MudItem xs="12">
+                                    <MudText Typo="Typo.body1" Class="text-white"><b>Vesting Periods</b></MudText>
+                                    <MudButton Class="mt-2" Color="Color.Secondary" Variant="Variant.Filled" Disabled="IsProcessing" OnClick="(() => InvokeUpsetVestingPeriodModalAsync(null))">Add Period</MudButton>
+                                </MudItem>
+
+                                @if (Model.Periods.Any())
+                                {
+                                    <MudItem xs="12">
+                                        <MudTimeline TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Left">
+                                            @foreach (var period in Model.Periods)
+                                            {
+                                                <MudTimelineItem Color="Color.Secondary">
+                                                    <ItemContent>
+                                                        <MudText Color="Color.Primary">
+                                                            <span class="cursor-pointer" @onclick="(() => InvokeUpsetVestingPeriodModalAsync(period))">@period.Name </span>
+                                                            <MudIconButton Class="align-self-center ml-4" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemovePeriod(period.Id))" />
+                                                        </MudText>
+                                                        <MudText Typo="Typo.body2" Color="Color.Secondary">@period.Receivers.Count Receivers • @period.Receivers.Sum(x => x.Amount) @AssetToken.Symbol</MudText>
+                                                        <MudText Typo="Typo.caption" Class="mud-text-secondary">@period.UnlockDate.Value.ToString("MMMM dd, yyyy")</MudText>
+                                                    </ItemContent>
+                                                </MudTimelineItem>
+                                            }
+                                        </MudTimeline>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </MudItem>
+                    </MudGrid>
+                </MudContainer>
+            </DialogContent>
+            <DialogActions>
+                @if (IsLoaded)
+                {
+                    <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                    <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                        @if (IsProcessing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <span>ADD VESTING</span>
+                        }
+                    </MudButton>
+                }
+            </DialogActions>
+        </MudDialog>
+    </EditForm>
+</MudContainer>
+

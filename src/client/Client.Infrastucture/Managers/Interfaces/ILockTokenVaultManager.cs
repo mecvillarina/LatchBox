@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Models;
+using Client.Infrastructure.Models.Parameters;
 using Neo;
 using Neo.Network.RPC.Models;
 using Neo.Wallets;
@@ -11,7 +12,7 @@ namespace Client.Infrastructure.Managers.Interfaces
     public interface ILockTokenVaultManager : IManager
     {
         UInt160 ContractScriptHash { get; }
-        Task<BigInteger> GetLatchBoxLocksLengthAsync();
+        Task<BigInteger> GetLocksCountAsync();
         Task<UInt160> GetPaymentTokenScriptHashAsync();
         Task<BigInteger> GetPaymentTokenAddLockFeeAsync();
         Task<BigInteger> GetPaymentTokenClaimLockFee();
@@ -23,8 +24,8 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<List<AssetRefund>> GetRefundsAsync(string accountAddress);
         Task<List<AssetCounter>> GetAssetsCounterAsync();
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
-        Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable);
-        Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverArg> receiversArg, bool isRevocable);
+        Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable);
+        Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable);
         Task<RpcInvokeResult> ValidateClaimLockAsync(UInt160 account, BigInteger lockIndex);
         Task<RpcApplicationLog> ClaimLockAsync(KeyPair accountKey, BigInteger lockIndex);
         Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 account, BigInteger lockIndex);

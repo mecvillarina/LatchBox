@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
 
-namespace Client.Pages.Modals
+namespace Client.Pages.Locks.Modals
 {
-    public partial class SearchNep17TokenModal
+    public partial class SearchNep17TokenForLockingModal
     {
         [Parameter] public SearchNep17TokenParameter Model { get; set; } = new();
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }

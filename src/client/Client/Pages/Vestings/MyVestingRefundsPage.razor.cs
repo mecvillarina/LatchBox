@@ -1,10 +1,10 @@
 ﻿using Client.Models;
-using Client.Pages.Modals;
+using Client.Pages.Vestings.Modals;
 using MudBlazor;
 
-namespace Client.Pages.Locks
+namespace Client.Pages.Vestings
 {
-    public partial class MyTokenRefundsPage
+    public partial class MyVestingRefundsPage
     {
         public bool IsLoaded { get; set; }
         public bool IsCompletelyLoaded { get; set; }
@@ -33,7 +33,7 @@ namespace Client.Pages.Locks
 
             foreach (var address in addresses)
             {
-                var assetRefunds = await LockTokenVaultManager.GetRefundsAsync(address);
+                var assetRefunds = await VestingTokenVaultManager.GetRefundsAsync(address);
 
                 foreach (var assetRefund in assetRefunds)
                 {
@@ -58,9 +58,9 @@ namespace Client.Pages.Locks
         private async Task InvokeClaimRefundModalAsync(AssetRefundModel model)
         {
             var parameters = new DialogParameters();
-            parameters.Add(nameof(ClaimRefundModal.Model), model);
+            parameters.Add(nameof(ClaimVestingRefundModal.Model), model);
 
-            var dialog = DialogService.Show<ClaimRefundModal>($"Claim Refund for {model.AssetToken.Name} ({model.AssetToken.Symbol})", parameters);
+            var dialog = DialogService.Show<ClaimVestingRefundModal>($"Claim Refund for {model.AssetToken.Name} ({model.AssetToken.Symbol})", parameters);
             var dialogResult = await dialog.Result;
 
             if (!dialogResult.Cancelled)

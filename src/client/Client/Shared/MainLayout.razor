@@ -20,23 +20,41 @@
         else
         {
             <MudDrawerHeader>
-                <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
+                <div>
+                    <MudText Typo="Typo.h4" Color="Color.Primary" Class="text-lobster my-1">LatchBox</MudText>
+
+                    @if (!string.IsNullOrEmpty(Network))
+                    {
+                        <div class="mt-4 mb-0">
+                            <MudChip Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">NETWORK: @Network</MudChip>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(RpcUrl))
+                    {
+                        <div>
+                            <MudChip Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">RPC: @RpcUrl</MudChip>
+                        </div>
+                    }
+
+
+                </div>
             </MudDrawerHeader>
         }
 
         <MudNavMenu Rounded="true" Margin="Margin.Dense">
             <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
             <MudNavLink Href="/assets" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Payments">My Assets</MudNavLink>
-            <MudNavGroup Title="Locking" Icon="@Icons.Material.Filled.LockClock" Expanded="true">
+            <MudNavGroup Title="Locks" Icon="@Icons.Material.Filled.LockClock" Expanded="true">
                 <MudNavLink Href="/locks/assets" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CurrencyBitcoin">Locked Assets</MudNavLink>
                 <MudNavLink Href="/locks" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Lock">My Locks</MudNavLink>
                 <MudNavLink Href="/locks/claims" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Redeem">My Claims</MudNavLink>
                 <MudNavLink Href="/locks/refunds" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LockReset">My Refunds</MudNavLink>
             </MudNavGroup>
-            <MudNavGroup Title="Vesting" Icon="@Icons.Material.Filled.Assessment" Expanded="true">
-                <MudNavLink Href="/vesting" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBalance">My Vault</MudNavLink>
-                <MudNavLink Href="/vesting/claims" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Redeem">My Claims</MudNavLink>
-                <MudNavLink Href="/vesting/refunds" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LockReset">My Refunds</MudNavLink>
+            <MudNavGroup Title="Vestings" Icon="@Icons.Material.Filled.Assessment" Expanded="true">
+                <MudNavLink Href="/vestings" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountBalance">My Vestings</MudNavLink>
+                <MudNavLink Href="/vestings/claims" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Redeem">My Claims</MudNavLink>
+                <MudNavLink Href="/vestings/refunds" Disabled="@(!IsAuthenticated)" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LockReset">My Refunds</MudNavLink>
             </MudNavGroup>
         </MudNavMenu>
     </MudDrawer>
