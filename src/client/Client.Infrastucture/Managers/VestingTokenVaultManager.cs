@@ -183,5 +183,23 @@ namespace Client.Infrastructure.Managers
 
             return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
         }
+
+        public async Task<RpcInvokeResult> ValidateClaimVestingAsync(UInt160 account, BigInteger vestingIndex, BigInteger periodIdx)
+        {
+            byte[] script = ContractScriptHash.MakeScript("claimVesting", vestingIndex, periodIdx);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = account } };
+
+            return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
+        }
+
+        public async Task<RpcApplicationLog> ClaimVestingAsync(KeyPair accountKey, BigInteger vestingIndex, BigInteger periodIdx)
+        {
+            var sender = Contract.CreateSignatureRedeemScript(accountKey.PublicKey).ToScriptHash();
+
+            byte[] script = ContractScriptHash.MakeScript("claimVesting", vestingIndex, periodIdx);
+            Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
+
+            return await CreateAndExecuteTransactionAsync(script, signers, accountKey).ConfigureAwait(false);
+        }
     }
 }

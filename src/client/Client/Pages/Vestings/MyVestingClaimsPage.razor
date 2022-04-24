@@ -46,6 +46,7 @@
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
+                    <MudTd><MudSkeleton Height="20px" Width="90px" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" /></MudTd>
                     }
                     else
                     {
@@ -76,7 +77,8 @@
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
-                            <MudMenuItem Disabled="@(!context.CanClaim)">Claim Vesting</MudMenuItem>
+                            @*<MudMenuItem Disabled="@(!context.CanClaim)" OnClick="(() => InvokeClaimVestingModalAsync(context))">Claim Vesting</MudMenuItem>*@
+                            <MudMenuItem OnClick="(() => InvokeClaimVestingModalAsync(context))">Claim Vesting</MudMenuItem>
                         </MudMenu>
                     </MudTd>
                     }

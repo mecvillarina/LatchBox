@@ -24,5 +24,7 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<RpcApplicationLog> AddVestingAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, bool isRevocable, List<VestingPeriodParameter> periods);
         Task<RpcInvokeResult> ValidateRevokeVestingAsync(UInt160 account, BigInteger vestingIndex);
         Task<RpcApplicationLog> RevokeVestingAsync(KeyPair accountKey, BigInteger vestingIndex);
+        Task<RpcInvokeResult> ValidateClaimVestingAsync(UInt160 account, BigInteger vestingIndex, BigInteger periodIdx);
+        Task<RpcApplicationLog> ClaimVestingAsync(KeyPair accountKey, BigInteger vestingIndex, BigInteger periodIdx);
     }
 }

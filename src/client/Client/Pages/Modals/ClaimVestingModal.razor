@@ -1,0 +1,50 @@
+﻿<MudContainer Class="pa-0 ma-0" MaxWidth="MaxWidth.False" style="max-height: 80vh; overflow-y: scroll">
+    <EditForm Model="@Model" OnValidSubmit="SubmitAsync">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+            <DialogContent>
+                <MudContainer MaxWidth="MaxWidth.False">
+                    <MudGrid Class="pt-0 pb-4" Spacing="2">
+                        @if (!IsLoaded)
+                        {
+                            <MudItem xs="12">
+                                <MudSkeleton Height="120px" Width="100%" Animation="Animation.Wave" SkeletonType="SkeletonType.Rectangle" />
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Class="text-white">
+                                    You are about to claim <b>@Model.AmountDisplay</b> from <b>Vesting #@((long)Model.VestingIdx) - @Model.PeriodName</b> as receiver address <b>@Model.ReceiverAddress</b>.
+                                </MudText>
+                            </MudItem>
+@*
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.body1" Color="Color.Primary">
+                                    <b>Claim Lock Fee: @ClaimLockPaymentFeeDisplay</b>
+                                </MudText>
+                            </MudItem>*@
+                        }
+                    </MudGrid>
+                </MudContainer>
+            </DialogContent>
+            <DialogActions>
+                @if (IsLoaded)
+                {
+                    <MudButton DisableElevation Variant="Variant.Text" Disabled="IsProcessing" OnClick="Cancel">CANCEL</MudButton>
+                    <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Secondary">
+                        @if (IsProcessing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <span>CLAIM VESTING</span>
+                        }
+                    </MudButton>
+                }
+            </DialogActions>
+        </MudDialog>
+    </EditForm>
+</MudContainer>
+

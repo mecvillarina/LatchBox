@@ -71,27 +71,30 @@ namespace Client.Pages.Vestings
             StateHasChanged();
         }
 
-        //private async Task InvokeClaimLockModalAsync(LockTransactionReceiverModel lockModel)
-        //{
-        //    var lockIndex = lockModel.Transaction.LockIndex;
+        private async Task InvokeClaimVestingModalAsync(VestingTransactionReceiverModel vestingModel)
+        {
+            var vestingIdx = vestingModel.Transaction.VestingIndex;
+            var periodName = vestingModel.Period.Name;
 
-        //    var parameters = new DialogParameters();
-        //    parameters.Add(nameof(ClaimLockModal.Model), new ClaimLockParameter()
-        //    {
-        //        LockIndex = lockIndex,
-        //        ReceiverAddress = lockModel.Receiver.ReceiverAddress,
-        //        ReceiverHash160 = lockModel.Receiver.ReceiverHash160,
-        //        AmountDisplay = lockModel.AmountDisplay
-        //    });
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(ClaimVestingModal.Model), new ClaimVestingParameter()
+            {
+                VestingIdx = vestingIdx,
+                PeriodIdx = vestingModel.Period.PeriodIndex,
+                PeriodName = periodName,
+                ReceiverAddress = vestingModel.Receiver.ReceiverAddress,
+                ReceiverHash160 = vestingModel.Receiver.ReceiverHash160,
+                AmountDisplay = vestingModel.AmountDisplay
+            });
 
-        //    var dialog = DialogService.Show<ClaimLockModal>($"Claim from Lock #{lockIndex} as {lockModel.Receiver.ReceiverAddress.ToMask(6)}", parameters);
-        //    var dialogResult = await dialog.Result;
+            var dialog = DialogService.Show<ClaimVestingModal>($"Claim from Vesting #{vestingIdx} - {periodName} as {vestingModel.Receiver.ReceiverAddress.ToMask(6)}", parameters);
+            var dialogResult = await dialog.Result;
 
-        //    if (!dialogResult.Cancelled)
-        //    {
-        //        await FetchDataAsync();
-        //    }
-        //}
+            if (!dialogResult.Cancelled)
+            {
+                await FetchDataAsync();
+            }
+        }
 
         //private void InvokeLockPreviewerModal(BigInteger lockIndex)
         //{
