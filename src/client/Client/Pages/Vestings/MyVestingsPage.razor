@@ -64,7 +64,7 @@
                     {
                     <MudTd DataLabel="Vesting Index">
                         <MudText Color="Color.Primary">
-                            <b Class="cursor-pointer">@context.Transaction.VestingIndex</b>
+                            <b Class="cursor-pointer" @onclick="(() => InvokeVestingPreviewerModal(context.Transaction.VestingIndex))">@context.Transaction.VestingIndex</b>
                         </MudText>
                     </MudTd>
                     <MudTd DataLabel="Date Created">@context.Transaction.CreationTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>

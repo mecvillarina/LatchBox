@@ -101,28 +101,6 @@
                     </div>
                 </MudItem>
                 }
-
-
-                @*<MudItem xs="12">
-                <div>
-                <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Assets:</b></MudText>
-
-                @if (!Assets.Any())
-                {
-                <MudText Typo="Typo.body1" Class="text-white">No assets found.</MudText>
-                }
-                else
-                {
-                @foreach (var asset in Assets)
-                {
-                <div class="d-flex justify-space-between mb-2">
-                <MudText Typo="Typo.body1" Class="text-white">@asset.Symbol</MudText>
-                <MudText Typo="Typo.body1" Class="text-white">@(asset.Balance.ToAmountDisplay(asset.Decimals))</MudText>
-                </div>
-                }
-                }
-                </div>
-                </MudItem>*@
             </MudGrid>
         </DialogContent>
     </MudDialog>
