@@ -134,7 +134,7 @@ namespace Client.Infrastructure.Managers
                 var periodData = new Neo.VM.Types.Array();
                 periodData.Add(period.Name);
                 periodData.Add(period.TotalAmount);
-                periodData.Add(period.DurationInDays);
+                periodData.Add(period.UnlockTime);
 
                 var receiverArr = new Neo.VM.Types.Array();
                 foreach (var receiver in period.Receivers)
@@ -165,7 +165,7 @@ namespace Client.Infrastructure.Managers
                 var periodData = new Neo.VM.Types.Array();
                 periodData.Add(period.Name);
                 periodData.Add(period.TotalAmount);
-                periodData.Add(period.DurationInDays);
+                periodData.Add(period.UnlockTime);
 
                 var receiverArr = new Neo.VM.Types.Array();
                 foreach (var receiver in period.Receivers)

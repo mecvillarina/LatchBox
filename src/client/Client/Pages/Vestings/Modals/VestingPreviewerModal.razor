@@ -40,28 +40,28 @@
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Date Created</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.DateCreationDisplay</MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Date Created</b></MudText>
+                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.DateCreationDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Revocable</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.RevocableDisplay</MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Revocable</b></MudText>
+                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.RevocableDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Total Amount</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.TotalAmountDisplay</MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Total Amount</b></MudText>
+                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.TotalAmountDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Periods</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Periods</b></MudText>
 
                             <MudTimeline TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Left">
                                 @foreach (var period in Model.Transaction.Periods)
@@ -72,7 +72,7 @@
                                                 <span class="cursor-pointer" @onclick="(() => InvokeVestingPeriodPreviewerModal(period))">@period.Name </span>
                                             </MudText>
                                             <MudText Typo="Typo.body2" Color="Color.Secondary">@Model.Transaction.Receivers.Where(x => x.PeriodIndex == period.PeriodIndex).Count() Receivers • @Model.Transaction.Receivers.Where(x => x.PeriodIndex == period.PeriodIndex).Sum(x => x.Amount.ToAmount(Model.AssetToken.Decimals)).ToAmountDisplay(Model.AssetToken.Decimals) @Model.AssetToken.Symbol</MudText>
-                                            <MudText Typo="Typo.caption" Class="mud-text-secondary">@period.UnlockTime.ToString("MMMM dd, yyyy")</MudText>
+                                            <MudText Typo="Typo.caption" Class="mud-text-secondary">@period.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudText>
                                         </ItemContent>
                                     </MudTimelineItem>
                                 }

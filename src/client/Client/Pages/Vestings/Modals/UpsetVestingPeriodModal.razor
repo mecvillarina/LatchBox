@@ -15,12 +15,12 @@
                         else
                         {
                             <MudItem xs="12">
-                                <MudTextField Label="Period Name" Variant="Variant.Outlined"
+                                <MudTextField Label="Name" Variant="Variant.Outlined"
                                           @bind-Value="Model.Name" For="@(() => Model.Name)" />
                             </MudItem>
 
                             <MudItem xs="12">
-                                <MudDatePicker Label="Period Unlock Date" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
+                                <MudDatePicker Label="Unlock Date (EOD in UTC)" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
                             </MudItem>
 
                             <MudItem xs="12">

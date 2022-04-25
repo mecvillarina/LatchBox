@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Extensions;
+﻿using Client.Infrastructure.Constants;
+using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Models;
 using MudBlazor;
 using System.Numerics;
@@ -29,7 +30,7 @@ namespace Client.Models
             }
 
             InitiatorAddressDisplay = Transaction.InitiatorAddress;
-            DateCreationDisplay = Transaction.CreationTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt");
+            DateCreationDisplay = Transaction.CreationTime.ToString(ClientConstants.LongDateTimeFormat);
             RevocableDisplay = Transaction.IsRevocable ? "Yes" : "No";
             TotalAmountDisplay = $"{_totalAmount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals)} {AssetToken.Symbol}";
 

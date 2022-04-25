@@ -67,7 +67,7 @@ namespace Client.Pages.Vestings.Modals
                         {
                             var period = new VestingPeriodParameter();
                             period.Name = periodModel.Name;
-                            period.DurationInDays = periodModel.UnlockDate.Value.Date.Subtract(DateTime.Now.Date).Days;
+                            period.UnlockTime = ((DateTimeOffset) DateTime.SpecifyKind(periodModel.UnlockDate.Value.Date.AddDays(1).AddMilliseconds(-1), DateTimeKind.Utc)).ToUnixTimeMilliseconds();
                             period.Receivers = new();
 
                             foreach (var receiverModel in periodModel.Receivers)

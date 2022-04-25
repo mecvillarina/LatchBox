@@ -67,7 +67,7 @@
                             <b Class="cursor-pointer" @onclick="(() => InvokeVestingPreviewerModal(context.Transaction.VestingIndex))">@context.Transaction.VestingIndex</b>
                         </MudText>
                     </MudTd>
-                    <MudTd DataLabel="Date Created">@context.Transaction.CreationTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Date Created">@context.Transaction.CreationTime.ToString(ClientConstants.LongDateTimeFormat)</MudTd>
                     <MudTd DataLabel="Periods">@context.PeriodDisplay</MudTd>
                     <MudTd DataLabel="Revocable">
                         @if (context.IsRevocable)
@@ -85,7 +85,7 @@
                     <MudTd DataLabel="Upcoming Release">
                         @if (context.UpcomingPeriod != null)
                             {
-                            <span>@context.UpcomingPeriod.Name (@context.UpcomingPeriod.UnlockTime.ToCurrentTimeZone().ToFormat(ClientConstants.LongDateFormat))</span>
+                            <span>@context.UpcomingPeriod.Name<br/>@context.UpcomingPeriod.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</span>
                             }
                             else
                             {
@@ -94,7 +94,7 @@
                     </MudTd>
                     <MudTd DataLabel="Status">
                         <MudChip Color="@context.StatusColor" Size="Size.Small">
-                            <b>@context.StatusDisplay</b>
+                            @context.StatusDisplay
                         </MudChip>
                     </MudTd>
                     <MudTd DataLabel="Actions">

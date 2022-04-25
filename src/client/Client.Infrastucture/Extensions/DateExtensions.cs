@@ -19,11 +19,6 @@ namespace Client.Infrastructure.Extensions
             return date.Value.Add(offset);
         }
 
-        public static string ToFormat(this DateTimeOffset date, string format)
-        {
-            return date.ToString(format);
-        }
-
         public static string ToFormat(this DateTimeOffset? date, string format)
         {
             if (!date.HasValue)

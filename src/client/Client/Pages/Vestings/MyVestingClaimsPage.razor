@@ -74,7 +74,7 @@
                         </MudHidden>
                     </MudTd>
                     <MudTd DataLabel="Date Unlock">@context.Period.Name</MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Period.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Date Unlock">@context.Period.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudTd>
                     <MudTd DataLabel="Claimable Amount">
                         <div class="d-flex">
                             @context.AmountDisplay

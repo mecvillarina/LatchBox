@@ -4,48 +4,48 @@
             <MudGrid Class="pt-0 pb-4" Spacing="2">
                 <MudItem xs="12">
                     <div>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Name</b></MudText>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2">@Period.Name</MudText>
+                        <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Name</b></MudText>
+                        <MudText Typo="Typo.body2" Class="text-white mb-2">@Period.Name</MudText>
                     </div>
                 </MudItem>
 
                 <MudItem xs="12">
                     <div>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Unlock Date</b></MudText>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2">@Period.UnlockTime.ToCurrentTimeZone().ToString(ClientConstants.LongDateFormat)</MudText>
+                        <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Unlock Date</b></MudText>
+                        <MudText Typo="Typo.body2" Class="text-white mb-2">@Period.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudText>
                     </div>
                 </MudItem>
 
                 <MudItem xs="12">
                     <div>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Receivers</b></MudText>
+                        <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Receivers</b></MudText>
 
                         @if (Receivers.Any())
-                            {
-                                    <MudTable Items="Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.Sm">
-                                        <HeaderContent>
-                                            <MudTh>Name</MudTh>
-                                            <MudTh>Address</MudTh>
-                                            <MudTh>Amount</MudTh>
-                                        </HeaderContent>
-                                        <RowTemplate>
-                                            <MudTd DataLabel="Name">@receiverContext.Name</MudTd>
-                                            <MudTd DataLabel="Address">
-                                               @receiverContext.ReceiverAddress.ToMask(6)
-                                            </MudTd>
-                                            <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol</MudTd>
-                                        </RowTemplate>
-                                        <FooterContent>
-                                            <MudTd colspan="4" align="right">
-                                                <MudText Typo="Typo.body1" Color="Color.Primary">
-                                                    <b>
-                                                        Total Amount to be Vested: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
-                                                    </b>
-                                                </MudText>
-                                            </MudTd>
-                                        </FooterContent>
-                                    </MudTable>
-                            }
+                        {
+                            <MudTable Items="Receivers" Context="receiverContext" Elevation="0" Breakpoint="Breakpoint.Sm">
+                                <HeaderContent>
+                                    <MudTh>Name</MudTh>
+                                    <MudTh>Address</MudTh>
+                                    <MudTh>Amount</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Name">@receiverContext.Name</MudTd>
+                                    <MudTd DataLabel="Address">
+                                        @receiverContext.ReceiverAddress.ToMask(6)
+                                    </MudTd>
+                                    <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol</MudTd>
+                                </RowTemplate>
+                                <FooterContent>
+                                    <MudTd colspan="4" align="right">
+                                        <MudText Typo="Typo.body1" Color="Color.Primary">
+                                            <b>
+                                                Total Amount to be Vested: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
+                                            </b>
+                                        </MudText>
+                                    </MudTd>
+                                </FooterContent>
+                            </MudTable>
+                        }
                     </div>
                 </MudItem>
 
