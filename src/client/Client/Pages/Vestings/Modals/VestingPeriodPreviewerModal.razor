@@ -27,6 +27,7 @@
                                     <MudTh>Name</MudTh>
                                     <MudTh>Address</MudTh>
                                     <MudTh>Amount</MudTh>
+                                    <MudTh>Status</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd DataLabel="Name">@receiverContext.Name</MudTd>
@@ -34,17 +35,49 @@
                                         @receiverContext.ReceiverAddress.ToMask(6)
                                     </MudTd>
                                     <MudTd DataLabel="Amount">@receiverContext.Amount.ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol</MudTd>
-                                </RowTemplate>
-                                <FooterContent>
-                                    <MudTd colspan="4" align="right">
-                                        <MudText Typo="Typo.body1" Color="Color.Primary">
-                                            <b>
-                                                Total Amount to be Vested: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
-                                            </b>
-                                        </MudText>
-                                    </MudTd>
-                                </FooterContent>
-                            </MudTable>
+                                    <MudTd DataLabel="Status">
+                                        @if (receiverContext.DateRevoked.HasValue)
+                                        {
+                                        <MudChip Color="Color.Error" Size="Size.Small">
+                                            <b>Revoked</b>
+                                        </MudChip>
+                                        }
+                                        else if (receiverContext.DateClaimed.HasValue)
+                                        {
+                                        <MudChip Color="Color.Info" Size="Size.Small">
+                                            <b>Claimed</b>
+                                        </MudChip>
+                                        }
+                                        else
+                                        {
+                                            @if (Transaction.IsActive)
+                                            {
+                                                @if (DateTime.UtcNow < Period.UnlockTime)
+                                                {
+                                                <MudChip Color="Color.Primary" Size="Size.Small">
+                                                    <b>Locked</b>
+                                                </MudChip>
+                                                }
+                                                else
+                                                {
+                                                <MudChip Color="Color.Info" Size="Size.Small">
+                                                    <b>Unlocked</b>
+                                                </MudChip>
+                                                }
+                                            }
+                                        }
+                                </MudTd>
+                            </RowTemplate>
+                            <FooterContent>
+                                <MudTd colspan="4" align="right">
+                                    <MudText Typo="Typo.body1" Color="Color.Primary">
+                                        <b>
+                                            Total Amount to be Vested: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
+                                        </b>
+                                    </MudText>
+                                </MudTd>
+                            </FooterContent>
+                        </MudTable>
                         }
                     </div>
                 </MudItem>

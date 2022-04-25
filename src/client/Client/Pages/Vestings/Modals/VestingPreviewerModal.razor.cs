@@ -51,6 +51,7 @@ namespace Client.Pages.Vestings.Modals
             parameters.Add(nameof(VestingPeriodPreviewerModal.AssetToken), Model.AssetToken);
             parameters.Add(nameof(VestingPeriodPreviewerModal.Period), period);
             parameters.Add(nameof(VestingPeriodPreviewerModal.Receivers), receivers);
+            parameters.Add(nameof(VestingPeriodPreviewerModal.Transaction), Model.Transaction);
 
             var options = new DialogOptions() { CloseButton = true };
             DialogService.Show<VestingPeriodPreviewerModal>($"Vesting Period", parameters, options);
