@@ -21,7 +21,8 @@ namespace Client.Pages.Vestings.Modals
         public bool IsLoaded { get; set; }
         public DateTime MinDateValue { get; set; }
         public bool IsAdd { get; set; }
-        protected async override Task OnAfterRenderAsync(bool firstRender)
+
+        protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {

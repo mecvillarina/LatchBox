@@ -188,7 +188,7 @@ namespace Client.Infrastructure.Managers
             return await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script, signers);
         }
 
-        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable)
+        public async Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger unlockTime, List<LockReceiverParameter> receivers, bool isRevocable)
         {
             var receiverArr = new Neo.VM.Types.Array();
             foreach (var receiver in receivers)
@@ -201,7 +201,7 @@ namespace Client.Infrastructure.Managers
 
             var sender = Contract.CreateSignatureRedeemScript(fromKey.PublicKey).ToScriptHash();
 
-            byte[] script = ContractScriptHash.MakeScript("addLock", tokenAddress, totalAmount, durationInDays, receiverArr.ToParameter(), isRevocable);
+            byte[] script = ContractScriptHash.MakeScript("addLock", tokenAddress, totalAmount, unlockTime, receiverArr.ToParameter(), isRevocable);
             Signer[] signers = new[] { new Signer { Scopes = WitnessScope.Global, Account = sender } };
 
             return await CreateAndExecuteTransactionAsync(script, signers, fromKey).ConfigureAwait(false);

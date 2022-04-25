@@ -18,15 +18,7 @@ namespace Client.Pages.Locks.Modals
         public bool IsProcessing { get; set; }
         public List<string> WalletAddresses { get; set; } = new();
 
-        protected async override Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                StateHasChanged();
-            }
-        }
-
-        private async Task SubmitAsync()
+        private void SubmitAsync()
         {
             if (Validated)
             {

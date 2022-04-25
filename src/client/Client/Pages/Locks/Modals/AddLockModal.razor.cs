@@ -76,9 +76,9 @@ namespace Client.Pages.Locks.Modals
                         }
 
                         var sender = Utility.GetScriptHash(Model.WalletAddress, ManagerToolkit.NeoProtocolSettings);
-                        var durationInDays = Model.UnlockDate.Value.Date.Subtract(DateTime.Now.Date).Days;
+                        var unlockTime = ((DateTimeOffset)DateTime.SpecifyKind(Model.UnlockDate.Value.Date.AddDays(1).AddMilliseconds(-1), DateTimeKind.Utc)).ToUnixTimeMilliseconds();
 
-                        var validateResult = await LockTokenVaultManager.ValidateAddLockAsync(sender, AssetToken.AssetScriptHash, totalAmount, durationInDays, receiversArg, Model.IsRevocable);
+                        var validateResult = await LockTokenVaultManager.ValidateAddLockAsync(sender, AssetToken.AssetScriptHash, totalAmount, unlockTime, receiversArg, Model.IsRevocable);
 
                         if (string.IsNullOrEmpty(validateResult.Exception))
                         {
@@ -89,7 +89,7 @@ namespace Client.Pages.Locks.Modals
                                 try
                                 {
                                     IsProcessing = true;
-                                    var addLockResult = await LockTokenVaultManager.AddLockAsync(fromKey, AssetToken.AssetScriptHash, totalAmount, durationInDays, receiversArg, Model.IsRevocable);
+                                    var addLockResult = await LockTokenVaultManager.AddLockAsync(fromKey, AssetToken.AssetScriptHash, totalAmount, unlockTime, receiversArg, Model.IsRevocable);
 
                                     if (addLockResult.Executions.First().Notifications.Any(x => x.EventName == "CreatedLatchBoxLock"))
                                     {
