@@ -16,11 +16,11 @@ namespace Client.Infrastructure.Models
         public string InitiatorAddress { get; private set; }
         public DateTimeOffset CreationTime { get; private set; }
         public DateTimeOffset StartTime { get; private set; }
-        public double DurationInDays { get; private set; }
+        public DateTimeOffset UnlockTime { get; private set; }
+
         public bool IsRevocable { get; private set; }
         public bool IsRevoked { get; private set; }
         public bool IsActive { get; private set; }
-        public DateTimeOffset UnlockTime { get; private set; }
 
         public List<LockReceiver> Receivers { get; private set; }
 
@@ -32,13 +32,11 @@ namespace Client.Infrastructure.Models
             InitiatorAddress = InitiatorHash160.ToAddress(protocolSettings.AddressVersion);
             CreationTime = map["CreationTime"].GetInteger().ToDateTimeOffsetFromMilliseconds();
             StartTime = map["StartTime"].GetInteger().ToDateTimeOffsetFromMilliseconds();
-            DurationInDays = TimeSpan.FromMilliseconds(((long)map["DurationInMilliseconds"].GetInteger())).TotalDays;
+            UnlockTime = map["UnlockTime"].GetInteger().ToDateTimeOffsetFromMilliseconds();
             IsRevocable = map["IsRevocable"].GetBoolean();
             IsRevoked = map["IsRevoked"].GetBoolean();
             IsActive = map["IsActive"].GetBoolean();
-            UnlockTime = StartTime.AddDays(DurationInDays);
             Receivers = new List<LockReceiver>();
-
             var receiverArr = (Neo.VM.Types.Array)map["Receivers"];
 
             foreach (var receiverDataArr in receiverArr)

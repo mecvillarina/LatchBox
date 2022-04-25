@@ -22,7 +22,7 @@
     <div class="my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
             <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
-               @ManagerToolkit.NeoSettings.LockTokenVaultContractHash
+                @ManagerToolkit.NeoSettings.LockTokenVaultContractHash
             </MudChip>
         </MudHidden>
     </div>
@@ -63,14 +63,10 @@
                         </MudHidden>
                     </MudTd>
                     <MudTd DataLabel="Token">
-                        <div class="d-flex">
-                            @context.AssetToken.Name (@context.AssetToken.Symbol)
-                        </div>
+                        @context.AssetToken.Name (@context.AssetToken.Symbol)
                     </MudTd>
                     <MudTd DataLabel="Total Amount">
-                        <div class="d-flex">
-                            @context.AmountDisplay
-                        </div>
+                        @context.AmountDisplay
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">

@@ -4,6 +4,7 @@ using Client.Pages.Vestings.Modals;
 using Client.Parameters;
 using MudBlazor;
 using Neo;
+using System.Numerics;
 
 namespace Client.Pages.Vestings
 {
@@ -112,15 +113,15 @@ namespace Client.Pages.Vestings
             }
         }
 
-        //private void InvokeLockPreviewerModal(BigInteger lockIndex)
-        //{
-        //    var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
-        //    var parameters = new DialogParameters()
-        //    {
-        //         { nameof(LockPreviewerModal.LockIndex), lockIndex},
-        //    };
+        private void InvokeVestingPreviewerModal(BigInteger vestingIndex)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(VestingPreviewerModal.VestingIndex), vestingIndex},
+            };
 
-        //    DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
-        //}
+            DialogService.Show<VestingPreviewerModal>($"Vesting #{vestingIndex}", parameters, options);
+        }
     }
 }

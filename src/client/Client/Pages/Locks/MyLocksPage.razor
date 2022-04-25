@@ -66,8 +66,8 @@
                             <b class="cursor-pointer" @onclick="(() => InvokeLockPreviewerModal(context.Transaction.LockIndex))">@context.Transaction.LockIndex</b>
                         </MudText>
                     </MudTd>
-                    <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Date Start">@context.Transaction.StartTime.ToString(ClientConstants.LongDateTimeFormat)</MudTd>
+                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudTd>
                     <MudTd DataLabel="Revocable">
                         @if (context.IsRevocable)
                             {
@@ -79,9 +79,7 @@
                             }
                     </MudTd>
                     <MudTd DataLabel="Total Amount">
-                        <div class="d-flex">
-                            @context.TotalAmountDisplay
-                        </div>
+                        @context.TotalAmountDisplay
                     </MudTd>
                     <MudTd DataLabel="Status">
                         <MudChip Color="@context.StatusColor" Size="Size.Small">

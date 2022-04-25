@@ -71,11 +71,9 @@
                             @context.Receiver.ReceiverAddress
                         </MudHidden>
                     </MudTd>
-                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToCurrentTimeZone().ToFormat("MMMM dd, yyyy hh:mm tt")</MudTd>
+                    <MudTd DataLabel="Date Unlock">@context.Transaction.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudTd>
                     <MudTd DataLabel="Claimable Amount">
-                        <div class="d-flex">
-                            @context.AmountDisplay
-                        </div>
+                        @context.AmountDisplay
                     </MudTd>
                     <MudTd DataLabel="Status">
                         <MudChip Color="@context.StatusColor" Size="Size.Small">

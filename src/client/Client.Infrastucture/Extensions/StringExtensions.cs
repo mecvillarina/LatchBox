@@ -11,6 +11,11 @@ namespace Client.Infrastructure.Extensions
             return amount.ToString($"0.{new string('#', decimals)}");
         }
 
+        public static string ToAmountDisplay(this BigInteger amount, int decimals)
+        {
+            return amount.ToAmount(decimals).ToAmountDisplay(decimals);
+        }
+
         public static string ToMask(this string value, int length)
         {
             if (value == null) return "";

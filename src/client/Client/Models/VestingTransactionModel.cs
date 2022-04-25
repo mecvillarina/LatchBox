@@ -6,21 +6,20 @@ using System.Numerics;
 
 namespace Client.Models
 {
-    public class LockTransactionModel
+    public class VestingTransactionModel
     {
         private readonly BigInteger _totalAmount;
 
         public AssetToken AssetToken { get; private set; }
-        public LockTransaction Transaction { get; private set; }
+        public VestingTransaction Transaction { get; private set; }
         public string InitiatorAddressDisplay { get; private set; }
         public string TotalAmountDisplay { get; private set; }
-        public string DateStartDisplay { get; private set; }
-        public string DateUnlockDisplay { get; private set; }
+        public string DateCreationDisplay { get; private set; }
         public string RevocableDisplay { get; private set; }
         public string StatusDisplay { get; private set; }
         public Color StatusDisplayColor { get; private set; }
 
-        public LockTransactionModel(LockTransaction transaction, AssetToken assetToken)
+        public VestingTransactionModel(VestingTransaction transaction, AssetToken assetToken)
         {
             Transaction = transaction;
             AssetToken = assetToken;
@@ -31,16 +30,15 @@ namespace Client.Models
             }
 
             InitiatorAddressDisplay = Transaction.InitiatorAddress;
-            DateStartDisplay = Transaction.StartTime.ToString(ClientConstants.LongDateTimeFormat);
-            DateUnlockDisplay = Transaction.UnlockTime.ToString(ClientConstants.LongDateTimeFormat);
+            DateCreationDisplay = Transaction.CreationTime.ToString(ClientConstants.LongDateTimeFormat);
             RevocableDisplay = Transaction.IsRevocable ? "Yes" : "No";
             TotalAmountDisplay = $"{_totalAmount.ToAmount(AssetToken.Decimals).ToAmountDisplay(AssetToken.Decimals)} {AssetToken.Symbol}";
 
             if (Transaction.IsActive)
             {
-                if (DateTime.UtcNow < Transaction.UnlockTime)
+                if (Transaction.Periods.Any(x => DateTime.UtcNow < x.UnlockTime))
                 {
-                    StatusDisplay = "Locked";
+                    StatusDisplay = "On Vesting";
                     StatusDisplayColor = Color.Primary;
                 }
                 else
@@ -56,9 +54,10 @@ namespace Client.Models
             }
             else
             {
-                StatusDisplay = "Claimed";
+                StatusDisplay = "Completed";
                 StatusDisplayColor = Color.Info;
             }
+
         }
     }
 }

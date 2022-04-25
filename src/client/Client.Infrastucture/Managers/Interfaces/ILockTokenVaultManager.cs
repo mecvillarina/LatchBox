@@ -24,8 +24,8 @@ namespace Client.Infrastructure.Managers.Interfaces
         Task<List<AssetRefund>> GetRefundsAsync(string accountAddress);
         Task<List<AssetCounter>> GetAssetsCounterAsync();
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
-        Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable);
-        Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger durationInDays, List<LockReceiverParameter> receivers, bool isRevocable);
+        Task<RpcInvokeResult> ValidateAddLockAsync(UInt160 sender, UInt160 tokenAddress, BigInteger totalAmount, BigInteger unlockTime, List<LockReceiverParameter> receivers, bool isRevocable);
+        Task<RpcApplicationLog> AddLockAsync(KeyPair fromKey, UInt160 tokenAddress, BigInteger totalAmount, BigInteger unlockTime, List<LockReceiverParameter> receivers, bool isRevocable);
         Task<RpcInvokeResult> ValidateClaimLockAsync(UInt160 account, BigInteger lockIndex);
         Task<RpcApplicationLog> ClaimLockAsync(KeyPair accountKey, BigInteger lockIndex);
         Task<RpcInvokeResult> ValidateRevokeLockAsync(UInt160 account, BigInteger lockIndex);

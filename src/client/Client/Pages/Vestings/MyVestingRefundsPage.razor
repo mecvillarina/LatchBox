@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
- <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
+    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
 
     <div class="d-flex mt-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
@@ -21,7 +21,7 @@
 
     <div class="my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudChip Class="ma-0"  Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
                 @ManagerToolkit.NeoSettings.VestingTokenVaultContractHash
             </MudChip>
         </MudHidden>
@@ -63,14 +63,10 @@
                         </MudHidden>
                     </MudTd>
                     <MudTd DataLabel="Token">
-                        <div class="d-flex">
-                            @context.AssetToken.Name (@context.AssetToken.Symbol)
-                        </div>
+                        @context.AssetToken.Name (@context.AssetToken.Symbol)
                     </MudTd>
                     <MudTd DataLabel="Total Amount">
-                        <div class="d-flex">
-                            @context.AmountDisplay
-                        </div>
+                        @context.AmountDisplay
                     </MudTd>
                     <MudTd DataLabel="Actions">
                         <MudMenu Variant="Variant.Filled" Color="Color.Primary" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">

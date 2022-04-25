@@ -81,7 +81,7 @@
                                                             <MudIconButton Class="align-self-center ml-4" Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" Disabled="IsProcessing" OnClick="(() => RemovePeriod(period.Id))" />
                                                         </MudText>
                                                         <MudText Typo="Typo.body2" Color="Color.Secondary">@period.Receivers.Count Receivers • @period.Receivers.Sum(x => x.Amount) @AssetToken.Symbol</MudText>
-                                                        <MudText Typo="Typo.caption" Class="mud-text-secondary">@period.UnlockDate.Value.ToString("MMMM dd, yyyy")</MudText>
+                                                        <MudText Typo="Typo.caption" Class="mud-text-secondary">@period.UnlockDate.Value.ToString(ClientConstants.LongDateFormat)</MudText>
                                                     </ItemContent>
                                                 </MudTimelineItem>
                                             }

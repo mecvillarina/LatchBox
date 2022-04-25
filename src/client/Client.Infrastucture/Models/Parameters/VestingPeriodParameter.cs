@@ -7,7 +7,7 @@ namespace Client.Infrastructure.Models.Parameters
     {
         public string Name { get; set; }
         public BigInteger TotalAmount { get; set; }
-        public BigInteger DurationInDays { get; set; }
+        public BigInteger UnlockTime { get; set; }
         public List<VestingReceiverParameter> Receivers { get; set; }
     }
 }

@@ -22,6 +22,9 @@
 	  <Content Update="Pages\Modals\BuyPlatformTokenModal.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
+	  <Content Update="Pages\Vestings\Modals\VestingPreviewerModal.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
 	  <Content Update="Shared\MainLayout.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>
