@@ -1,7 +1,16 @@
 ﻿<MudContainer MaxWidth="MaxWidth.False" Style="max-height: 80vh; overflow-y: scroll">
-    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4" ClassContent="pt-0">
+        <TitleContent>
+            <div>
+                <MudText Typo="Typo.h6">Vesting #@VestingIndex</MudText>
+                @if (IsLoaded)
+                {
+                    <MudChip Size="Size.Small" Class="ma-0 mt-1" Color="Color.Primary" Variant="Variant.Text" OnClick="OnCopyShareLinkAsync">@ShareLink</MudChip>
+                }
+            </div>
+        </TitleContent>
         <DialogContent>
-            <MudGrid Class="pt-0 pb-4" Spacing="2">
+            <MudGrid Class="pt-0 pb-4" Spacing="1">
                 @if (!IsLoaded)
                 {
                     <MudItem xs="12">
@@ -12,21 +21,21 @@
                 {
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Asset</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Asset</b></MudText>
                             <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.AssetToken.Name (@Model.AssetToken.Symbol)</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Status</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Status</b></MudText>
                             <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.StatusDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Initiator</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Initiator</b></MudText>
                             <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                                 <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay.ToMask(6)</MudText>
 
@@ -41,21 +50,21 @@
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Date Created</b></MudText>
-                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.DateCreationDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.DateCreationDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Revocable</b></MudText>
-                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.RevocableDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.RevocableDisplay</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
                             <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Total Amount</b></MudText>
-                            <MudText Typo="Typo.body2" Class="text-white mb-2">@Model.TotalAmountDisplay</MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.TotalAmountDisplay</MudText>
                         </div>
                     </MudItem>
 
