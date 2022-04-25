@@ -1,6 +1,4 @@
-﻿using Client.Infrastructure.Extensions;
-using Client.Infrastructure.Models;
-using Client.Models;
+﻿using Client.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Numerics;
@@ -14,7 +12,7 @@ namespace Client.Pages.Locks.Modals
 
         public bool IsLoaded { get; set; }
         public LockTransactionModel Model { get; set; }
-
+        public string ShareLink { get; set; }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -34,14 +32,22 @@ namespace Client.Pages.Locks.Modals
                 var assetToken = await AssetManager.GetTokenAsync(transaction.TokenScriptHash);
 
                 Model = new LockTransactionModel(transaction, assetToken);
-                
+                ShareLink = $"{NavigationManager.BaseUri}view/locks/{LockIndex}";
                 IsLoaded = true;
+                MudDialog.SetTitle("");
                 StateHasChanged();
             }
             catch
             {
+                AppDialogService.ShowError("LatchBox Lock not found.");
                 MudDialog.Cancel();
             }
+        }
+
+        private async Task OnCopyShareLinkAsync()
+        {
+            await ClipboardService.WriteTextAsync(ShareLink);
+            AppDialogService.ShowSuccess("Lock Link copied to clipboard.");
         }
     }
 }

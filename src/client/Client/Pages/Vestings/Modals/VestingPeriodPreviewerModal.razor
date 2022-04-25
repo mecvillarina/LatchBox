@@ -1,18 +1,18 @@
 ﻿<MudContainer MaxWidth="MaxWidth.False" Style="max-height: 80vh; overflow-y: scroll">
-    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4">
+    <MudDialog DisableSidePadding="true" ClassActions="px-2 py-4" ClassContent="pt-0">
         <DialogContent>
-            <MudGrid Class="pt-0 pb-4" Spacing="2">
+            <MudGrid Class="pt-0 pb-4" Spacing="1">
                 <MudItem xs="12">
                     <div>
                         <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Name</b></MudText>
-                        <MudText Typo="Typo.body2" Class="text-white mb-2">@Period.Name</MudText>
+                        <MudText Typo="Typo.body1" Class="text-white mb-2">@Period.Name</MudText>
                     </div>
                 </MudItem>
 
                 <MudItem xs="12">
                     <div>
                         <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Unlock Date</b></MudText>
-                        <MudText Typo="Typo.body2" Class="text-white mb-2">@Period.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudText>
+                        <MudText Typo="Typo.body1" Class="text-white mb-2">@Period.UnlockTime.ToString(ClientConstants.LongDateTimeFormat)</MudText>
                     </div>
                 </MudItem>
 
