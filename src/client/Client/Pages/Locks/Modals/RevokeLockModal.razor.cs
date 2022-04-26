@@ -4,6 +4,7 @@ using Client.Infrastructure.Models;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Neo.SmartContract.Native;
 
 namespace Client.Pages.Locks.Modals
 {
@@ -36,10 +37,11 @@ namespace Client.Pages.Locks.Modals
             {
                 IsProcessing = true;
                 var validateResult = await LockTokenVaultManager.ValidateRevokeLockAsync(LockTransaction.InitiatorHash160, LockTransaction.LockIndex);
-
+                
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
-                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(LockTransaction.InitiatorAddress);
+                    var gasDetails = $"{((decimal)(validateResult.GasConsumed / Math.Pow(10, NativeContract.GAS.Decimals))).ToAmountDisplay(NativeContract.GAS.Decimals)} {NativeContract.GAS.Symbol}";
+                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(LockTransaction.InitiatorAddress, gasDetails);
 
                     if (fromKey != null)
                     {
