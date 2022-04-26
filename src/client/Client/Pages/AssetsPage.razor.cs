@@ -19,15 +19,20 @@ namespace Client.Pages
         {
             if (firstRender)
             {
-                await InvokeAsync(async () =>
+                await PageService.EnsureAuthenticatedAsync(async (authenticated) =>
                 {
-                    var addresses = await WalletManager.GetAddressesAsync();
-                    AddressBalances = addresses.Select(x => new AssetPageAddressBalance() { Address = x }).ToList();
-                    PlatformToken = await PlatformTokenManager.GetTokenAsync();
+                    if (!authenticated) return;
 
-                    IsLoaded = true;
-                    StateHasChanged();
-                    await FetchAddressBalancesAsync();
+                    await InvokeAsync(async () =>
+                    {
+                        var addresses = await WalletManager.GetAddressesAsync();
+                        AddressBalances = addresses.Select(x => new AssetPageAddressBalance() { Address = x }).ToList();
+                        PlatformToken = await PlatformTokenManager.GetTokenAsync();
+
+                        IsLoaded = true;
+                        StateHasChanged();
+                        await FetchAddressBalancesAsync();
+                    });
                 });
             }
         }

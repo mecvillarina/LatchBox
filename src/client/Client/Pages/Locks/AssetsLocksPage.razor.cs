@@ -16,9 +16,13 @@ namespace Client.Pages.Locks
         {
             if (firstRender)
             {
-                await InvokeAsync(async () =>
+                await PageService.EnsureAuthenticatedAsync(async (authenticated) =>
                 {
-                    await FetchDataAsync();
+                    if (!authenticated) return;
+                    await InvokeAsync(async () =>
+                    {
+                        await FetchDataAsync();
+                    });
                 });
             }
         }

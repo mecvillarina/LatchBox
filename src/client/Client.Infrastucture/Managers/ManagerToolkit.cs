@@ -66,6 +66,10 @@ namespace Client.Infrastructure.Managers
 
         public async Task<WalletInformation> GetWalletAsync()
         {
+            var isExists = await _localStorageService.ContainKeyAsync(StorageConstants.Local.Wallet);
+
+            if (!isExists) return null;
+
             return await _localStorageService.GetItemAsync<WalletInformation>(StorageConstants.Local.Wallet);
         }
 
