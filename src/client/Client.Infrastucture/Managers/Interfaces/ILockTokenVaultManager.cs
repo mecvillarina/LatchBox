@@ -12,7 +12,7 @@ namespace Client.Infrastructure.Managers.Interfaces
     public interface ILockTokenVaultManager : IManager
     {
         UInt160 ContractScriptHash { get; }
-        Task<BigInteger> GetLocksCountAsync();
+        Task<LockTokenVaultContractInfo> GetInfoAsync();
         Task<UInt160> GetPaymentTokenScriptHashAsync();
         Task<BigInteger> GetPaymentTokenAddLockFeeAsync();
         Task<BigInteger> GetPaymentTokenClaimLockFee();

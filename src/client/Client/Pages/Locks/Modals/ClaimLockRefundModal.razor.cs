@@ -1,9 +1,11 @@
 ﻿using Blazored.FluentValidation;
+using Client.Infrastructure.Extensions;
 using Client.Models;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
+using Neo.SmartContract.Native;
 
 namespace Client.Pages.Locks.Modals
 {
@@ -28,7 +30,8 @@ namespace Client.Pages.Locks.Modals
 
                 if (string.IsNullOrEmpty(validateResult.Exception))
                 {
-                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.WalletAddress);
+                    var gasDetails = $"{((decimal)(validateResult.GasConsumed / Math.Pow(10, NativeContract.GAS.Decimals))).ToAmountDisplay(NativeContract.GAS.Decimals)} {NativeContract.GAS.Symbol}";
+                    var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.WalletAddress, gasDetails);
 
                     if (fromKey != null)
                     {

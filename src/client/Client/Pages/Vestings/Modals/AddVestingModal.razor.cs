@@ -6,6 +6,7 @@ using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Neo.Network.RPC;
+using Neo.SmartContract.Native;
 using System.Numerics;
 
 namespace Client.Pages.Vestings.Modals
@@ -96,7 +97,8 @@ namespace Client.Pages.Vestings.Modals
 
                         if (string.IsNullOrEmpty(validateResult.Exception))
                         {
-                            var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.WalletAddress);
+                            var gasDetails = $"{((decimal)(validateResult.GasConsumed / Math.Pow(10, NativeContract.GAS.Decimals))).ToAmountDisplay(NativeContract.GAS.Decimals)} {NativeContract.GAS.Symbol}";
+                            var fromKey = await AppDialogService.ShowConfirmWalletTransaction(Model.WalletAddress,gasDetails);
 
                             if (fromKey != null)
                             {

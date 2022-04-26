@@ -4,12 +4,23 @@
         <DialogContent>
             <MudContainer MaxWidth="MaxWidth.False">
                 <MudGrid Class="pt-0" Spacing="1">
+
+                    @if (!string.IsNullOrEmpty(GasDetails))
+                    {
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.caption" Class="text-white"><b>Estimated GAS</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white">@GasDetails</MudText>
+                        </MudItem>
+                    }
+
                     <MudItem xs="12">
-                        <MudText Typo="Typo.body2" Class="text-white"><b>Address:</b> @Model.WalletAddress</MudText>
+                        <MudText Typo="Typo.caption" Class="text-white"><b>Wallet Address</b></MudText>
+                        <MudText Typo="Typo.body1" Class="text-white">@Model.WalletAddress</MudText>
                     </MudItem>
 
                     <MudItem xs="12">
-                        <MudTextField Label="Wallet Password" Placeholder="Please input password" Variant="Variant.Outlined" Disabled="IsProcessing"
+                        <MudText Typo="Typo.caption" Class="text-white"><b>Wallet Password</b></MudText>
+                        <MudTextField Placeholder="Please input password" Variant="Variant.Outlined" Disabled="IsProcessing"
                                       @bind-Value="Model.Password" For="@(() => Model.Password)"
                                       InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
                     </MudItem>

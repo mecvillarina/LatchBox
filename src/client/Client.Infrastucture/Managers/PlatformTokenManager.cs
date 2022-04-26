@@ -53,6 +53,26 @@ namespace Client.Infrastructure.Managers
             };
         }
 
+        public async Task<PlatformTokenStats> GetTokenStatsAsync()
+        {
+            byte[] script = Neo.Helper.Concat(TokenScriptHash.MakeScript("maxSupply"));
+            var result = await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script).ConfigureAwait(false);
+            var stack = result.Stack;
+
+            var token = await GetTokenAsync();
+            var stats = new PlatformTokenStats()
+            {
+                AssetScriptHash = token.AssetScriptHash,
+                Decimals = token.Decimals,
+                TotalSupply = token.TotalSupply,
+                Name = token.Name,
+                Symbol = token.Symbol
+            }; 
+
+            stats.MaxSupply = stack[0].GetInteger();
+            return stats;
+        }
+
         public async Task<bool> IsTokenSaleEnabled()
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(TokenScriptHash, "isTokenSaleEnabled").ConfigureAwait(false);

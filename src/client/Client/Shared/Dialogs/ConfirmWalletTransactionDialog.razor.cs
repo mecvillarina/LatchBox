@@ -8,6 +8,7 @@ namespace Client.Shared.Dialogs
     public partial class ConfirmWalletTransactionDialog
     {
         [Parameter] public ConfirmWalletTransactionParameter Model { get; set; } = new();
+        [Parameter] public string GasDetails { get; set; }
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         private FluentValidationValidator _fluentValidationValidator;

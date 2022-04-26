@@ -56,11 +56,12 @@ namespace Client.Services
             }
         }
 
-        public async Task<KeyPair> ShowConfirmWalletTransaction(string walletAddress)
+        public async Task<KeyPair> ShowConfirmWalletTransaction(string walletAddress, string gasDetails = null)
         {
             var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, Position = DialogPosition.TopRight };
             var parameters = new DialogParameters();
             parameters.Add(nameof(ConfirmWalletTransactionDialog.Model), new ConfirmWalletTransactionParameter() { WalletAddress = walletAddress });
+            parameters.Add(nameof(ConfirmWalletTransactionDialog.GasDetails), gasDetails);
             var dialog = _dialogService.Show<ConfirmWalletTransactionDialog>($"Confirm Wallet Transaction", parameters, options);
             var dialogResult = await dialog.Result;
 

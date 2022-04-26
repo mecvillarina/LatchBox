@@ -21,7 +21,7 @@
 
     <div class="my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" OnClick="(() => OnTextToClipboardAsync(ManagerToolkit.NeoSettings.LockTokenVaultContractHash))">
                 @ManagerToolkit.NeoSettings.VestingTokenVaultContractHash
             </MudChip>
         </MudHidden>
@@ -62,7 +62,7 @@
                     {
                     <MudTd DataLabel="Vesting Index">
                         <MudText Color="Color.Primary">
-                            <b class="cursor-pointer">@context.Transaction.VestingIndex</b>
+                            <b class="cursor-pointer" @onclick="(() => InvokeVestingPreviewerModal(context.Transaction.VestingIndex))">@context.Transaction.VestingIndex</b>
                         </MudText>
                     </MudTd>
                     <MudTd DataLabel="Receiver">

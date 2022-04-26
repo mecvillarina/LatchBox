@@ -12,7 +12,7 @@ namespace Client.Infrastructure.Managers.Interfaces
         UInt160 TokenScriptHash { get; }
         Task<AssetToken> GetTokenAsync();
         Task<PlatformTokenSaleInfo> GetSaleInfoAsync();
-
+        Task<PlatformTokenStats> GetTokenStatsAsync();
         Task<bool> IsTokenSaleEnabled();
         Task<BigInteger> GetTokensPerNEO();
         Task<BigInteger> GetTokensPerGAS();

@@ -123,5 +123,11 @@ namespace Client.Pages.Vestings
 
             DialogService.Show<VestingPreviewerModal>($"Vesting #{vestingIndex}", parameters, options);
         }
+
+        private async Task OnTextToClipboardAsync(string text)
+        {
+            await ClipboardService.WriteTextAsync(text);
+            AppDialogService.ShowSuccess("Contract ScriptHash copied to clipboard.");
+        }
     }
 }

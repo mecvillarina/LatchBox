@@ -25,6 +25,21 @@ namespace Client.Infrastructure.Managers
 
         public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.VestingTokenVaultContractHash, ManagerToolkit.NeoProtocolSettings);
 
+        public async Task<VestingTokenVaultContractInfo> GetInfoAsync()
+        {
+            byte[] script = Neo.Helper.Concat(
+              ContractScriptHash.MakeScript("getVestingsCount"),
+              ContractScriptHash.MakeScript("getPaymentBurnedAmount"));
+            var result = await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script).ConfigureAwait(false);
+            var stack = result.Stack;
+
+            return new VestingTokenVaultContractInfo()
+            {
+                TotalVestings = stack[0].GetInteger(),
+                BurnedAmount = stack[1].GetInteger()
+            };
+        }
+
         public async Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash)
         {
             var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "validateNEP17Token", tokenScriptHash).ConfigureAwait(false);

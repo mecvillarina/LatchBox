@@ -95,5 +95,12 @@ namespace Client.Pages.Locks
 
             DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
         }
+
+        private async Task OnTextToClipboardAsync(string text)
+        {
+            await ClipboardService.WriteTextAsync(text);
+            AppDialogService.ShowSuccess("Contract ScriptHash copied to clipboard.");
+        }
+
     }
 }

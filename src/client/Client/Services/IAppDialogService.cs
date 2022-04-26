@@ -8,6 +8,6 @@ namespace Client.Services
         void ShowWarning(string message);
         void ShowError(string message);
         void ShowErrors(List<string> messages);
-        Task<KeyPair> ShowConfirmWalletTransaction(string walletAddress);
+        Task<KeyPair> ShowConfirmWalletTransaction(string walletAddress, string gasDetails = null);
     }
 }
