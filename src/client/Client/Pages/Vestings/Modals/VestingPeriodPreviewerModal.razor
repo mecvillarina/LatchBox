@@ -72,7 +72,7 @@
                                 <MudTd colspan="4" align="right">
                                     <MudText Typo="Typo.body1" Color="Color.Primary">
                                         <b>
-                                            Total Amount to be Vested: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
+                                            Total Amount: @Receivers.Sum(x => x.Amount.ToAmount(AssetToken.Decimals)).ToAmountDisplay(AssetToken.Decimals) @AssetToken.Symbol  <br />
                                         </b>
                                     </MudText>
                                 </MudTd>
