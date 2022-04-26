@@ -41,6 +41,10 @@ namespace Client.Pages
 
         private async Task FetchDataAsync()
         {
+            IsLoaded = false;
+
+            StateHasChanged();
+
             PlatformTokenStats = await PlatformTokenManager.GetTokenStatsAsync();
             LockTokenVaultContractInfo = await LockTokenVaultManager.GetInfoAsync();
             VestingTokenVaultContractInfo = await VestingTokenVaultManager.GetInfoAsync();
