@@ -3,6 +3,7 @@ using Client.Models;
 using Client.Pages.Vestings.Modals;
 using Client.Parameters;
 using MudBlazor;
+using System.Numerics;
 
 namespace Client.Pages.Vestings
 {
@@ -49,7 +50,7 @@ namespace Client.Pages.Vestings
                 }
             }
 
-            Vestings = Vestings.OrderBy(x => x.Period.UnlockTime).Select(x => new
+            Vestings = Vestings.OrderBy(x => x.Transaction.IsRevoked).ThenBy(x => x.Period.UnlockTime).Select(x => new
             {
                 IsPastTime = x.Period.UnlockTime > DateTime.UtcNow,
                 Vesting = x
@@ -93,15 +94,21 @@ namespace Client.Pages.Vestings
             }
         }
 
-        //private void InvokeLockPreviewerModal(BigInteger lockIndex)
-        //{
-        //    var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
-        //    var parameters = new DialogParameters()
-        //    {
-        //         { nameof(LockPreviewerModal.LockIndex), lockIndex},
-        //    };
+        private void InvokeVestingPreviewerModal(BigInteger vestingIndex)
+        {
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.Medium };
+            var parameters = new DialogParameters()
+            {
+                 { nameof(VestingPreviewerModal.VestingIndex), vestingIndex},
+            };
 
-        //    DialogService.Show<LockPreviewerModal>($"Lock #{lockIndex}", parameters, options);
-        //}
+            DialogService.Show<VestingPreviewerModal>($"Vesting #{vestingIndex}", parameters, options);
+        }
+
+        private async Task OnTextToClipboardAsync(string text)
+        {
+            await ClipboardService.WriteTextAsync(text);
+            AppDialogService.ShowSuccess("Contract ScriptHash copied to clipboard.");
+        }
     }
 }

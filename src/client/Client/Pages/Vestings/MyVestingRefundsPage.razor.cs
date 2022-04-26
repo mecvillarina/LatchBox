@@ -69,5 +69,11 @@ namespace Client.Pages.Vestings
             }
         }
 
+        private async Task OnTextToClipboardAsync(string text)
+        {
+            await ClipboardService.WriteTextAsync(text);
+            AppDialogService.ShowSuccess("Contract ScriptHash copied to clipboard.");
+        }
+
     }
 }

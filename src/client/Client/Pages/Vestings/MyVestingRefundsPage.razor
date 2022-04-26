@@ -21,7 +21,7 @@
 
     <div class="my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small">
+            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" OnClick="(() => OnTextToClipboardAsync(ManagerToolkit.NeoSettings.LockTokenVaultContractHash))">
                 @ManagerToolkit.NeoSettings.VestingTokenVaultContractHash
             </MudChip>
         </MudHidden>
