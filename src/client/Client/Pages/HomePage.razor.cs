@@ -1,4 +1,5 @@
-﻿using Client.Pages.Locks.Modals;
+﻿using Client.Infrastructure.Models;
+using Client.Pages.Locks.Modals;
 using Client.Pages.Vestings.Modals;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -14,6 +15,10 @@ namespace Client.Pages
         [Parameter]
         public long? VestingIndex { get; set; }
 
+        public bool IsLoaded { get; set; }
+        public PlatformTokenStats PlatformTokenStats { get; set; }
+        public LockTokenVaultContractInfo LockTokenVaultContractInfo { get; set; }
+        public VestingTokenVaultContractInfo VestingTokenVaultContractInfo { get; set; }
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -26,7 +31,22 @@ namespace Client.Pages
                 {
                     InvokeVestingPreviewerModal(VestingIndex.Value);
                 }
+
+                await InvokeAsync(async () =>
+                {
+                    await FetchDataAsync();
+                });
             }
+        }
+
+        private async Task FetchDataAsync()
+        {
+            PlatformTokenStats = await PlatformTokenManager.GetTokenStatsAsync();
+            LockTokenVaultContractInfo = await LockTokenVaultManager.GetInfoAsync();
+            VestingTokenVaultContractInfo = await VestingTokenVaultManager.GetInfoAsync();
+
+            IsLoaded = true;
+            StateHasChanged();
         }
 
         private void InvokeLockPreviewerModal(BigInteger lockIndex)

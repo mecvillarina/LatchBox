@@ -26,10 +26,19 @@ namespace Client.Infrastructure.Managers
 
         public UInt160 ContractScriptHash => Neo.Network.RPC.Utility.GetScriptHash(ManagerToolkit.NeoSettings.LockTokenVaultContractHash, ManagerToolkit.NeoProtocolSettings);
 
-        public async Task<BigInteger> GetLocksCountAsync()
+        public async Task<LockTokenVaultContractInfo> GetInfoAsync()
         {
-            var result = await ManagerToolkit.NeoContractClient.TestInvokeAsync(ContractScriptHash, "getLocksCount").ConfigureAwait(false);
-            return result.Stack.Single().GetInteger();
+            byte[] script = Neo.Helper.Concat(
+              ContractScriptHash.MakeScript("getLocksCount"),
+              ContractScriptHash.MakeScript("getPaymentBurnedAmount"));
+            var result = await ManagerToolkit.NeoRpcClient.InvokeScriptAsync(script).ConfigureAwait(false);
+            var stack = result.Stack;
+
+            return new LockTokenVaultContractInfo()
+            {
+                TotalLocks = stack[0].GetInteger(),
+                BurnedAmount = stack[1].GetInteger()
+            };
         }
 
         public async Task<UInt160> GetPaymentTokenScriptHashAsync()

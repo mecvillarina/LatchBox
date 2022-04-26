@@ -12,6 +12,7 @@ namespace Client.Infrastructure.Managers.Interfaces
     public interface IVestingTokenVaultManager : IManager
     {
         UInt160 ContractScriptHash { get; }
+        Task<VestingTokenVaultContractInfo> GetInfoAsync();
         Task<bool> ValidateNEP17TokenAsync(UInt160 tokenScriptHash);
         Task<UInt160> GetPaymentTokenScriptHashAsync();
         Task<BigInteger> GetPaymentTokenAddVestingFeeAsync();
