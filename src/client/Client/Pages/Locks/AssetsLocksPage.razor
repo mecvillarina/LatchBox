@@ -7,10 +7,10 @@
 
     <div class="d-flex mt-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Locked Assets</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Locked Tokens</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Locked Assets</MudText>
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Locked Tokens</MudText>
         </MudHidden>
 
         @if (IsCompletelyLoaded)
@@ -42,7 +42,7 @@
         <MudPaper Square="true" Elevation="10" Class="grey darken-4">
             <MudTable Items="@AssetCounters" Class="mx-0 grey darken-4" FixedHeader="true" Breakpoint="Breakpoint.Sm">
                 <HeaderContent>
-                    <MudTh>Asset</MudTh>
+                    <MudTh>Token</MudTh>
                     <MudTh>Locked Amount</MudTh>
                     <MudTh>Unlocked Amount</MudTh>
                 </HeaderContent>
@@ -55,7 +55,7 @@
                     }
                     else
                     {
-                    <MudTd DataLabel="Asset">
+                    <MudTd DataLabel="Token">
                         <div>
                             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                                 <MudText Color="Color.Primary" Align="Align.Right">

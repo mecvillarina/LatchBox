@@ -5,7 +5,7 @@
 
                 <MudItem xs="12">
                     <div>
-                        <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Address:</b></MudText>
+                        <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Address</b></MudText>
                         <MudText Typo="Typo.body1" Class="text-white">@Address</MudText>
                     </div>
                 </MudItem>
@@ -20,11 +20,11 @@
                 {
                     <MudItem xs="12">
                         <div>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2"><b>Assets:</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Tokens</b></MudText>
 
                             @if (!Assets.Any())
                             {
-                                <MudText Typo="Typo.body1" Class="text-white">No assets found.</MudText>
+                                <MudText Typo="Typo.body1" Class="text-white">No tokens found.</MudText>
                             }
                             else
                             {

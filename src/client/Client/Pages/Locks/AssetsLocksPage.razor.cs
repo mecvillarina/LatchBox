@@ -63,7 +63,7 @@ namespace Client.Pages.Locks
                  { nameof(AssetLockPreviewerModal.AssetCounterModel), model},
             };
 
-            DialogService.Show<AssetLockPreviewerModal>($"Asset Locks of {model.AssetToken.Symbol}", parameters, options);
+            DialogService.Show<AssetLockPreviewerModal>($"{model.AssetToken.Symbol}'s Locks", parameters, options);
         }
 
         private async Task OnTextToClipboardAsync(string text)

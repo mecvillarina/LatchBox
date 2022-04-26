@@ -21,15 +21,20 @@
                 {
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Asset</b></MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Token</b></MudText>
                             <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.AssetToken.Name (@Model.AssetToken.Symbol)</MudText>
                         </div>
                     </MudItem>
 
                     <MudItem xs="12" md="6">
                         <div>
-                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Status</b></MudText>
-                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.StatusDisplay</MudText>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Token ScriptHash</b></MudText>
+                            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                                <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.AssetToken.AssetScriptHash.ToString().ToMask(10)</MudText>
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                                <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.AssetToken.AssetScriptHash.ToString()</MudText>
+                            </MudHidden>
                         </div>
                     </MudItem>
 
@@ -44,6 +49,13 @@
                                 <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.InitiatorAddressDisplay</MudText>
 
                             </MudHidden>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div>
+                            <MudText Typo="Typo.caption" Class="text-white mb-2"><b>Status</b></MudText>
+                            <MudText Typo="Typo.body1" Class="text-white mb-2">@Model.StatusDisplay</MudText>
                         </div>
                     </MudItem>
 
