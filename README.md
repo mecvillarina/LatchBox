@@ -5,7 +5,7 @@
 ## LatchBox Platform
 - **App Portal** - https://app-latchbox-testnet.azurewebsites.net/
 - **Blockchain** - NEO Blockchain (N3)
-    - **Network** - TESTNET
+    - **Network** - TESTNET (877933390)
     - **RPC Url** - http://seed1t4.neo.org:20332
 
 ## Features
