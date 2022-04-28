@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32414.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatchBoxLockTokenVaultContract", "LatchBoxLockTokenVaultContract\src\LatchBoxLockTokenVaultContract.csproj", "{0DFBCA72-9E7F-4B6F-A979-04361C016642}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatchBoxToken", "LatchBoxToken\src\LatchBoxToken.csproj", "{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatchBoxVestingTokenVaultContract", "LatchBoxVestingTokenVaultContract\src\LatchBoxVestingTokenVaultContract.csproj", "{6B8ACB39-F260-4974-9767-A511FAB90707}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LatchBoxToken", "LatchBoxToken", "{5C8B3682-FEEB-4123-B2F8-22A5FAA2E258}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LockTokenVaultContract", "LockTokenVaultContract", "{98D4E4FD-8852-476B-B55A-4AD3AC939549}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VestingTokenVaultContract", "VestingTokenVaultContract", "{6BB4142F-58D1-4D12-833D-9375576D12A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DFBCA72-9E7F-4B6F-A979-04361C016642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DFBCA72-9E7F-4B6F-A979-04361C016642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DFBCA72-9E7F-4B6F-A979-04361C016642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DFBCA72-9E7F-4B6F-A979-04361C016642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B8ACB39-F260-4974-9767-A511FAB90707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B8ACB39-F260-4974-9767-A511FAB90707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B8ACB39-F260-4974-9767-A511FAB90707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B8ACB39-F260-4974-9767-A511FAB90707}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DFBCA72-9E7F-4B6F-A979-04361C016642} = {98D4E4FD-8852-476B-B55A-4AD3AC939549}
+		{F2D8B0A7-036E-4C6A-84BA-4D818A5CF82E} = {5C8B3682-FEEB-4123-B2F8-22A5FAA2E258}
+		{6B8ACB39-F260-4974-9767-A511FAB90707} = {6BB4142F-58D1-4D12-833D-9375576D12A2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE9D7D9C-BA7B-4441-A214-31018E7CA73E}
+	EndGlobalSection
+EndGlobal
