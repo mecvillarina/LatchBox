@@ -7,15 +7,15 @@
 <MudContainer MaxWidth="MaxWidth.False">
     <div class="d-flex">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Dashboard</MudText>
+            <MudText Class="mr-2 align-self-center" Color="Color.Primary" Typo="Typo.h5" GutterBottom="false">Dashboard</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">Dashboard</MudText>
+            <MudText Class="mr-4 align-self-center" Color="Color.Primary" Typo="Typo.h4" GutterBottom="false">Dashboard</MudText>
         </MudHidden>
 
         @if (IsLoaded)
         {
-            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+            <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
         }
     </div>
 </MudContainer>
@@ -23,124 +23,124 @@
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
     <MudGrid Spacing="4" Class="pa-0">
         <MudItem xs="12">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Platform Token</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false" Color="Color.Primary">Platform Token</MudText>
 
             <MudGrid Spacing="2" Class="mt-2">
                 <MudItem xs="12" xl="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>ScriptHash</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>ScriptHash</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.AssetScriptHash.ToString()</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0 text-limit-1">@PlatformTokenStats.AssetScriptHash.ToString()</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" xl="2">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Name</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Name</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.Name</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0text-limit-1">@PlatformTokenStats.Name</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" xl="2">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Symbol</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Symbol</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.Symbol</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0 text-limit-1">@PlatformTokenStats.Symbol</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" xl="2">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Decimals</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Decimals</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.Decimals</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0 text-limit-1">@PlatformTokenStats.Decimals</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" xl="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Current Supply</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Current Supply</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="42px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.TotalSupply.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@PlatformTokenStats.TotalSupply.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" xl="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Max Supply</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Max Supply</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="42px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@PlatformTokenStats.MaxSupply.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@PlatformTokenStats.MaxSupply.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
@@ -149,51 +149,51 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Lock Token Vault Contract</MudText>
+            <MudText Class="mr-2 align-self-center" Color="Color.Primary" Typo="Typo.h5" GutterBottom="false">Lock Token Vault Contract</MudText>
 
             <MudGrid Spacing="2" Class="mt-2">
                 <MudItem xs="12">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>ScriptHash</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>ScriptHash</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@ManagerToolkit.NeoSettings.LockTokenVaultContractHash</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0 text-limit-1">@ManagerToolkit.NeoSettings.LockTokenVaultContractHash</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" md="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Total Locks</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Total Locks</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@LockTokenVaultContractInfo.TotalLocks</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@LockTokenVaultContractInfo.TotalLocks</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" md="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
                                 @if (!IsLoaded)
@@ -202,18 +202,18 @@
                                 }
                                 else
                                 {
-                                    <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Burned Amount (@PlatformTokenStats.Symbol)</b></MudText>
+                                    <MudText Typo="Typo.body1" Class="text-limit-1"><b>Burned Amount (@PlatformTokenStats.Symbol)</b></MudText>
                                 }
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@LockTokenVaultContractInfo.BurnedAmount.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@LockTokenVaultContractInfo.BurnedAmount.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
@@ -222,51 +222,51 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">Vesting Token Vault Contract</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false" Color="Color.Primary">Vesting Token Vault Contract</MudText>
 
             <MudGrid Spacing="2" Class="mt-2">
                 <MudItem xs="12">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>ScriptHash</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>ScriptHash</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h6" Class="py-0 shades-text text-white text-limit-1">@ManagerToolkit.NeoSettings.VestingTokenVaultContractHash</MudText>
+                                <MudText Typo="Typo.h6" Class="py-0 text-limit-1">@ManagerToolkit.NeoSettings.VestingTokenVaultContractHash</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" md="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Total Vestings</b></MudText>
+                                <MudText Typo="Typo.body1" Class="text-limit-1"><b>Total Vestings</b></MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@VestingTokenVaultContractInfo.TotalVestings</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@VestingTokenVaultContractInfo.TotalVestings</MudText>
                             }
                         </MudCardContent>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="12" md="6">
-                    <MudCard Elevation="10" Class="grey darken-4">
+                    <MudCard Elevation="10" Class="palette-secondary">
                         <MudCardHeader>
                             <CardHeaderContent>
                                 @if (!IsLoaded)
@@ -275,18 +275,18 @@
                                 }
                                 else
                                 {
-                                    <MudText Typo="Typo.body1" Color="Color.Primary" Class="text-limit-1"><b>Burned Amount (@PlatformTokenStats.Symbol)</b></MudText>
+                                    <MudText Typo="Typo.body1" Class="text-limit-1"><b>Burned Amount (@PlatformTokenStats.Symbol)</b></MudText>
                                 }
                             </CardHeaderContent>
                         </MudCardHeader>
-                        <MudCardContent Class="pt-2">
+                        <MudCardContent Class="pt-0">
                             @if (!IsLoaded)
                             {
                                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="40px" Width="100%" />
                             }
                             else
                             {
-                                <MudText Typo="Typo.h4" Class="py-0 shades-text text-white text-limit-1">@VestingTokenVaultContractInfo.BurnedAmount.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
+                                <MudText Typo="Typo.h4" Class="py-0 text-limit-1">@VestingTokenVaultContractInfo.BurnedAmount.ToAmount(PlatformTokenStats.Decimals).ToAmountDisplay(PlatformTokenStats.Decimals)</MudText>
                             }
                         </MudCardContent>
                     </MudCard>

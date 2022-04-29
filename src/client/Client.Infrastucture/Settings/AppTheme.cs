@@ -122,15 +122,13 @@ namespace Client.Infrastructure.Settings
                 LayoutProperties = DefaultLayoutProperties
             };
 
-            theme.PaletteDark.Primary = Colors.Amber.Lighten3;
-            theme.PaletteDark.PrimaryContrastText = "#1C1F29";
-            theme.PaletteDark.Secondary = Colors.Amber.Lighten4;
-            theme.PaletteDark.SecondaryContrastText = "#1C1F29";
-            theme.PaletteDark.Tertiary = Colors.Amber.Darken3;
-            theme.PaletteDark.Background = "#1C1F29";
-            theme.PaletteDark.Surface = "#1C1F29";
-            theme.PaletteDark.DrawerBackground = "#1C1F29";
-            theme.PaletteDark.AppbarBackground = "#1C1F29";
+            theme.PaletteDark.Black = "#222629";
+            theme.PaletteDark.Primary = "#87C232"; 
+            theme.PaletteDark.Secondary = "#618930";
+            theme.PaletteDark.Background = "#222629";
+            theme.PaletteDark.Surface = "#222629";
+            theme.PaletteDark.DrawerBackground = "#222629";
+            theme.PaletteDark.AppbarBackground = "#222629";
             theme.PaletteDark.Error = Colors.Red.Lighten2;
             return theme;
         }

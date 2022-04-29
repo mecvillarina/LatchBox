@@ -40,8 +40,6 @@ builder.Services.AddManagers();
 builder.Services.AddScoped<AppBreakpointService>();
 builder.Services.AddScoped<ClipboardService>();
 builder.Services.AddScoped<PageService>();
-//builder.Services.AddScoped<FetchDataExecutor>();
-//builder.Services.AddScoped<RenderUIExecutor>();
 
 var app = builder.Build();
 
