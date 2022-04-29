@@ -1,19 +1,5 @@
 ﻿@if (IsLoaded)
 {
-    @*    
-    @if (!IsAuthenticated)
-    {
-        <MudHidden Breakpoint="Breakpoint.SmAndDown">
-            <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
-                @Network
-            </MudChip>
-
-            <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
-                @RpcUrl
-            </MudChip>
-        </MudHidden>
-    }
-    *@
     <MudSpacer />
     if (!IsAuthenticated)
     {
@@ -24,15 +10,15 @@
         @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
         {
             <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                <MudChip Class="ml-1" Color="Color.Primary" Variant="Variant.Text">
                     1 NEO ≈ @PlatformTokensPerNEO @PlatformTokenSymbol
                 </MudChip>
-                <MudChip Class="ml-1" Color="Color.Secondary" Variant="Variant.Text">
+                <MudChip Class="ml-1" Color="Color.Primary" Variant="Variant.Text">
                     1 GAS ≈ @PlatformTokensPerGAS @PlatformTokenSymbol
                 </MudChip>
                 <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
                     <ActivatorContent>
-                        <MudChip Class="cursor-pointer" Color="Color.Info">Buy @PlatformTokenSymbol</MudChip>
+                        <MudChip Class="cursor-pointer" Color="Color.Primary">Buy @PlatformTokenSymbol</MudChip>
                     </ActivatorContent>
                     <ChildContent>
                         <MudMenuItem OnClick="@(() => InvokeBuyPlatformTokenModal("NEO"))">Buy @PlatformTokenSymbol with NEO</MudMenuItem>
@@ -44,7 +30,6 @@
 
         <MudMenu Class="ml-3" Label="Connected" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" StartIcon="@Icons.Material.Filled.ConnectedTv" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Variant="Variant.Filled" Color="Color.Primary">
             <ChildContent>
-                @*<MudMenuItem Class="cursor-default"><span>@Network</span> <span>(@RpcUrl)</span></MudMenuItem>*@
                 @if (IsPlatformTokenLoaded && IsPlatformTokenOnSale)
                 {
                     <MudHidden Breakpoint="Breakpoint.MdAndUp">

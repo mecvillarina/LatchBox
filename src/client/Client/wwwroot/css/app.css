@@ -2,6 +2,19 @@
     background-color: var(--mud-palette-background);
 }
 
+.palette-secondary {
+    background-color: var(--mud-palette-secondary);
+    color: var(--mud-palette-secondary-text);
+}
+
+.text-gray {
+    color: #474A4F
+}
+
+.text-lightgray {
+    color: #6A6E71
+}
+
 .text-limit-1 {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -20,6 +33,6 @@
     display: block;
 }
 
-.text-lobster {
-    font-family: "Lobster Two", "Montserrat"
+.text-logo {
+    font-family: "Skranji", "Helvetica"
 }

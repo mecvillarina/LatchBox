@@ -3,25 +3,25 @@
 @attribute [Authorize]
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <MudText Class="mb-0 mud-text-secondary" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
+    <MudText Class="mb-0 text-lightgray" Typo="Typo.body1" GutterBottom="false">Vestings</MudText>
 
-    <div class="d-flex mt-2">
+    <div class="d-flex mt-0">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" GutterBottom="false">My Vestings</MudText>
+            <MudText Class="mr-2 align-self-center" Typo="Typo.h5" Color="Color.Primary" GutterBottom="false">My Vestings</MudText>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" GutterBottom="false">My Vestings</MudText>
+            <MudText Class="mr-4 align-self-center" Typo="Typo.h4" Color="Color.Primary" GutterBottom="false">My Vestings</MudText>
         </MudHidden>
-        <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddVestingModalAsync" />
+        <MudIconButton Class="align-self-center" Icon="@Icons.Material.Filled.Add" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" OnClick="InvokeAddVestingModalAsync" />
         @if (IsCompletelyLoaded)
         {
-            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
+            <MudIconButton Class="align-self-center mx-1" Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" OnClick="FetchDataAsync" />
         }
     </div>
 
     <div class="my-2">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudChip Class="ma-0" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" OnClick="(() => OnTextToClipboardAsync(ManagerToolkit.NeoSettings.LockTokenVaultContractHash))">
+            <MudChip Class="ma-0" Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" OnClick="(() => OnTextToClipboardAsync(ManagerToolkit.NeoSettings.LockTokenVaultContractHash))">
                 @ManagerToolkit.NeoSettings.VestingTokenVaultContractHash
             </MudChip>
         </MudHidden>
@@ -110,7 +110,7 @@
     }
     else
     {
-        <MudText Typo="Typo.h6" Class="mt-4" Color="Color.Secondary">
+        <MudText Typo="Typo.h5" Class="mt-4">
             No Vestings found. You haven't created any vesting.
         </MudText>
     }
