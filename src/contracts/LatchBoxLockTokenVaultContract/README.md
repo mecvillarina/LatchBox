@@ -1,6 +1,8 @@
+# LatchBoxLockTokenVaultContract
+
 # Overview
 
-LatchBox Platform Locks feature relies in this contract and it was deployed on Neo N3 Testnet (877933390)
+LatchBox Platform Lock feature fully utilizes this contract and it was deployed on Neo N3 Testnet (877933390)
 - Contract ScriptHash: `0x3dccbd00cdd180aec6bf702eab5bd534b5c0e285`
 
 # Features
@@ -41,5 +43,5 @@ BigInteger GetPaymentTokenAddLockFee(); //If payment has been setup, it will ret
 BigInteger GetPaymentTokenClaimLockFee(); //If payment has been setup, it will return the claim lock fee, otherwise it returns 0. 
 BigInteger GetPaymentTokenRevokeLockFee(); //If payment has been setup, it will return the revoke lock fee, otherwise it returns 0. 
 BigInteger GetPaymentBurnedAmount();  //Get Burned Amount from the lock transactions
-SetupPayment(UInt160 tokenScriptHash, BigInteger addLockFee, BigInteger claimLockFee, BigInteger revokeLockFee); //setup payment for lock transactions.
+void SetupPayment(UInt160 tokenScriptHash, BigInteger addLockFee, BigInteger claimLockFee, BigInteger revokeLockFee); //setup payment for lock transactions.
 ```
