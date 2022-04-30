@@ -1,6 +1,6 @@
 # LatchBox
 
-**LatchBox** is a fully decentralized token lock and vesting platform on Neo N3 Blockchain. LatchBox aims to protect every cryptocurrency community from rug pulls and traitorous advisors. The native token used in LatchBox platform is named `LATCH` with a ScriptHash of `0xb9c2c7f906c66d5b9a27597a7168ccb0fe8c2442`.
+**LatchBox** is a fully decentralized token lock and vesting platform on Neo Blockchain. LatchBox aims to protect every cryptocurrency community from rug pulls and traitorous advisors. The native token used in LatchBox platform is named `LATCH` with a ScriptHash of `0xb9c2c7f906c66d5b9a27597a7168ccb0fe8c2442`.
 
 ## LatchBox Platform
 - **App Portal** - https://app-latchbox-testnet.azurewebsites.net/
@@ -13,7 +13,7 @@
     - 1 `NEO` = 500 `LATCH`
     - 1 `GAS` - 50 `LATCH`
 
-- **Token Lock** provides locking of NEP-17 Tokens in a Smart Contract for certain period of time. This is designed for the people who loves to hold their tokens for a long time and have no intention selling it for a cheap price. 
+- **Token Lock** provides locking of NEP-17 Tokens in a Smart Contract for certain period of time. This is designed for those people who loves to hold their tokens for a long time and have no intention selling it for a cheap price. 
     
     The `initiator` of the lock can:
     - **Add Lock**, the initiator can choose the NEP-17 Token to be locked, define the unlock date, option to make it revocable anytime, and the token amount and address of each receiver of the lock.
@@ -26,7 +26,7 @@
     And anyone can view:
     - **Lock Previewer**, it contains the lock details including the receivers' details (amount and address) and it has a link that is shareable and publicly viewable.
 
-- **Token Vesting** is similar with token lock but it supports multiple unlock periods. This is designed for newly launched Cryptocurrency projects on NEO blockchain that undergo presale/ICO and have vesting period for the releases of the token for their investors without manually releasing it to them. Also, this could use to lock team allocated tokens and only unlock on the promised period and to gain and keep the trust of their community to them.
+- **Token Vesting** is similar with token lock but it supports multiple unlock periods. This is designed for newly launched/upcoming cryptocurrency projects on NEO blockchain that underwent presale/ICO and have vesting period for the releases of their token for their investors without manually releasing it to them. Also, this could be use to lock team allocated tokens and only unlock on the promised period and to gain and keep the trust of their community to them.
     
     The `initiator` of the vesting can:
     - **Add Vesting**, the initiator can choose the NEP-17 Token to be vested, define the periods and option to make it revocable anytime. For every period, the initiator can define unlock date and the token amount and address of each receivers of that period.

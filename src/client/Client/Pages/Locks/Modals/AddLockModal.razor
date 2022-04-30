@@ -51,7 +51,7 @@
                             </MudItem>
 
                             <MudItem xs="12">
-                                <MudDatePicker Label="Unlock Date (EOD in UTC)" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
+                                <MudDatePicker Label="Unlock Date (EOD in GMT)" For="@(() => Model.UnlockDate)" Variant="Variant.Outlined" Disabled="IsProcessing" MinDate="@MinDateValue" @bind-Date="Model.UnlockDate" />
                             </MudItem>
                             <MudItem xs="12">
                                 <MudSelect T="bool" Disabled="IsProcessing" Label="Revocable?" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="Model.IsRevocable">
