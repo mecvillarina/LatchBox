@@ -23,7 +23,7 @@ namespace Client.Infrastructure.Managers
 
         public string GetNetwork()
         {
-            return ManagerToolkit.NeoSettings.Network;
+            return ManagerToolkit.NeoProtocolSettings.Network.ToString();
         }
     }
 }

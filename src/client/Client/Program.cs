@@ -25,6 +25,7 @@ builder.Services.AddServerSideBlazor()
 builder.Services.AddSignalR().AddAzureSignalR();
 #endif
 builder.Services.Configure<NeoSettings>(builder.Configuration.GetSection("NEO"));
+builder.Services.Configure<NeoProtocolConfiguration>(builder.Configuration.GetSection("NeoProtocolConfiguration"));
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
 {
