@@ -39,14 +39,14 @@
     And anyone can view:
     - **Vesting Previewer**, it contains the vesting details including the period timeline and the receivers' details and it has a link that is shareable and publicly viewable.
 
-## Cost
-`GAS` is needed for the payment of all blockchain transactions. All token lock and vesting transactions requires `LATCH` Token, the price will vary in the future but as of the moment the cost will be:
+## Costs
+All token lock and vesting transactions requires `LATCH` and `GAS` Token, the cost will vary in the future but for now it will be:
+- `GAS` will be used as transaction fee.
 - Locks
     - Add Lock - **5 `LATCH`**
     - Claim Lock - **2 `LATCH`**
     - Revoke Lock - **10 `LATCH`**
     - Claim Refunds - **FREE**
-
 - Vestings
     - Add Vesting - **10 `LATCH`**
     - Claim Vesting - **2 `LATCH`**

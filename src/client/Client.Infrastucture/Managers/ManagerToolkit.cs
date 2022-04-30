@@ -16,6 +16,7 @@ namespace Client.Infrastructure.Managers
     {
         private readonly ILocalStorageService _localStorageService;
         public NeoSettings NeoSettings { get; }
+        public NeoProtocolConfiguration NeoProtocolConfiguration { get; }
 
         public RpcClient NeoRpcClient { get; }
         public ProtocolSettings NeoProtocolSettings { get; }
@@ -27,10 +28,11 @@ namespace Client.Infrastructure.Managers
         public string FilePathTemp => Path.Combine(Directory.GetCurrentDirectory(), "..", "temp");
         public string FilePathWallet => Path.Combine(Directory.GetCurrentDirectory(), "..", "wallet");
 
-        public ManagerToolkit(ILocalStorageService localStorageService, IOptions<NeoSettings> neoSettingsOption)
+        public ManagerToolkit(ILocalStorageService localStorageService, IOptions<NeoSettings> neoSettingsOption, IOptions<NeoProtocolConfiguration> neoProtocolConfigurationOptions)
         {
             _localStorageService = localStorageService;
             NeoSettings = neoSettingsOption.Value;
+            NeoProtocolConfiguration = neoProtocolConfigurationOptions.Value; 
 
             NeoProtocolSettings = ProtocolSettings.Load(NeoSettings.ProtocolSettingsConfigFile);
             NeoRpcClient = new RpcClient(new Uri(NeoSettings.RpcUrl), null, null, NeoProtocolSettings);
