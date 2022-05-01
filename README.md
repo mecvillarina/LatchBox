@@ -72,6 +72,7 @@ LatchBox Platform has dashboard to track the following:
 - **Platform Token (LATCH)** - `0xb9c2c7f906c66d5b9a27597a7168ccb0fe8c2442` ([See Code](src/contracts/LatchBoxToken/))
 - **Lock Token Vault Contract** - `0x3dccbd00cdd180aec6bf702eab5bd534b5c0e285` ([See Code](src/contracts/LatchBoxLockTokenVaultContract/))
 - **Vesting Token Vault Contract** - `0xbea9990a498bab7773e6deb93bcf69bc922e0596` ([See Code](src/contracts/LatchBoxVestingTokenVaultContract/))
+- **AwAwToken (AWAW)** - `0xbea9990a498bab7773e6deb93bcf69bc922e0596` ([See Code](src/contracts/AwAwToken/))
 
 ## Technology Stack & Tools
 - Cloud Service Provider: Microsoft Azure
