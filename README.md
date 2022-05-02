@@ -65,8 +65,8 @@ All token lock and vesting transactions will be paid using `LATCH` and it will b
 ## Dashboard Statistics
 LatchBox Platform has dashboard to track the following:
 - **Platform Token** - token information about `LATCH`.
-- **Lock Token Vault Contract** - total number of created token locks, the amount burned in `LATCH` for using Locks feature.
-- **Vesting Token Vault Contract** - total number of created token vestings, the amount burned in `LATCH` for using Vesting feature.
+- **Lock Token Vault Contract** - total number of created token locks, the amount burned in `LATCH` for using Lock features.
+- **Vesting Token Vault Contract** - total number of created token vestings, the amount burned in `LATCH` for using Vesting features.
 
 ## Smart Contracts
 - **Platform Token (LATCH)** - `0xb9c2c7f906c66d5b9a27597a7168ccb0fe8c2442` ([See Code](src/contracts/LatchBoxToken/))
