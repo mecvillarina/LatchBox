@@ -1,8 +1,6 @@
 ﻿using Client.Infrastructure.Managers.Interfaces;
 using Client.Infrastructure.Models;
 using Neo;
-using Neo.Network.P2P.Payloads;
-using Neo.SmartContract;
 using Neo.SmartContract.Native;
 using Neo.VM;
 using Neo.Wallets;
@@ -67,7 +65,7 @@ namespace Client.Infrastructure.Managers
                 TotalSupply = token.TotalSupply,
                 Name = token.Name,
                 Symbol = token.Symbol
-            }; 
+            };
 
             stats.MaxSupply = stack[0].GetInteger();
             return stats;

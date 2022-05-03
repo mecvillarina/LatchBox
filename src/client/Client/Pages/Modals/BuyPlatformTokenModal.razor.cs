@@ -91,22 +91,6 @@ namespace Client.Pages.Modals
             }
         }
 
-        //private async Task<KeyPair> InvokeConfirmWalletTransactionModal(string walletAddress)
-        //{
-        //    var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, Position = DialogPosition.TopRight };
-        //    var parameters = new DialogParameters();
-        //    parameters.Add(nameof(ConfirmWalletTransactionModal.Model), new ConfirmWalletTransactionParameter() { WalletAddress = walletAddress });
-        //    var dialog = DialogService.Show<ConfirmWalletTransactionModal>($"Confirm Wallet Transaction", parameters, options);
-        //    var dialogResult = await dialog.Result;
-
-        //    if (!dialogResult.Cancelled)
-        //    {
-        //        return ((WalletAccountKeyPair)dialogResult.Data).KeyPair;
-        //    }
-
-        //    return null;
-        //}
-
         public void Cancel()
         {
             MudDialog.Cancel();

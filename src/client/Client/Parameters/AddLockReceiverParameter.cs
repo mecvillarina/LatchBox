@@ -34,7 +34,6 @@ namespace Client.Parameters
                 }).WithMessage("Invalid 'Receiver Address' format.");
 
             RuleFor(v => v.Amount)
-                //.NotEmpty().WithMessage("'Amount' must not be empty and decimal places should be in dot format.")
                 .GreaterThan(0.0).WithMessage("'Amount' must be greater than 0");
         }
     }
