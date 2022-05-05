@@ -50,6 +50,17 @@ namespace LatchBoxLockTokenVaultContract
         [DisplayName("ClaimedRefund")]
         public static event OnClaimedRefundDelegate OnClaimedRefund = default!;
 
+        /// <summary>
+        /// Add a lock, the Tx.Sender will be the initiator of the lock.
+        /// </summary>
+        /// <param name="tokenScriptHash">NEP-17 Token that the initiator wants to lock.</param>
+        /// <param name="totalAmount">Total amount</param>
+        /// <param name="unlockTime">Unlock time, it must be at least 1 day from the current time.</param>
+        /// <param name="receivers">List of all receivers of the lock</param>
+        /// <param name="isRevocable">Determines if the lock is revocable or not.</param>
+        /// <exception cref="System.Exception">Thrown when the parameter total amount is less than or equal to 0.</exception>
+        /// <exception cref="System.Exception">Thrown when the difference the currentTime and unlockTime is less than 1 day.</exception>
+        /// <exception cref="System.Exception">Thrown when insufficient token balance.</exception>
         public static void AddLock(UInt160 tokenScriptHash, BigInteger totalAmount, BigInteger unlockTime, LatchBoxLockReceiverParameter[] receivers, bool isRevocable)
         {
             ValidateNEP17Token(tokenScriptHash);
@@ -123,6 +134,16 @@ namespace LatchBoxLockTokenVaultContract
             OnCreatedLatchBoxLock(lockIdx);
         }
 
+        /// <summary>
+        /// Claim a lock, this method can identity if the Tx.Sender is a receiver of the lock.
+        /// </summary>
+        /// <param name="lockIdx">Lock Index</param>
+        /// <exception cref="System.Exception">Thrown when the Tx.Sender is not a receiver of a certain lock.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock has been already revoked.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock is not active anymore.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock has been claimed.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock is not yet ready to be claimed.</exception>
+        /// <exception cref="System.Exception">Thrown when insufficient token balance.</exception>
         public void ClaimLock(BigInteger lockIdx)
         {
             var transaction = GetLockTransactionOrThrow(lockIdx);
@@ -183,6 +204,14 @@ namespace LatchBoxLockTokenVaultContract
             OnClaimedLatchBoxLock(lockIdx, receiver.ReceiverAddress, receiver.Amount);
         }
 
+        /// <summary>
+        /// Revoke a lock, only the initiator of the lock can successfully execute this method.
+        /// </summary>
+        /// <param name="lockIdx">Lock Index</param>
+        /// <exception cref="System.Exception">Thrown when the Tx.Sender is not the initiator of a certain lock.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock has been already revoked by the initiator.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock is not active anymore.</exception>
+        /// <exception cref="System.Exception">Thrown when the lock is irrevocable.</exception>
         public static void RevokeLock(BigInteger lockIdx)
         {
             var transaction = GetLockTransactionOrThrow(lockIdx);
@@ -242,6 +271,11 @@ namespace LatchBoxLockTokenVaultContract
             OnRevokedLatchBoxLock(lockIdx, totalRefundAmount);
         }
 
+        /// <summary>
+        /// After revoking a lock, the lock initiator can call this method to claim the refund of the locked tokens.
+        /// </summary>
+        /// <param name="tokenScriptHash">NEP-17 Token Script Hash</param>
+        /// <exception cref="System.Exception">Thrown when the Token Script Hash is not on the refund list.</exception>
         public static void ClaimRefund(UInt160 tokenScriptHash)
         {
             ValidateNEP17Token(tokenScriptHash);
@@ -255,9 +289,18 @@ namespace LatchBoxLockTokenVaultContract
             OnClaimedRefund(Tx.Sender, tokenScriptHash, refund.Amount);
         }
 
+        /// <summary>
+        /// Returns Total Number of Locks
+        /// </summary>
+        /// <returns>BigInteger</returns>
         [Safe]
         public static BigInteger GetLocksCount() => GetLockIndex();
 
+        /// <summary>
+        /// Returns the lock transaction map, which includes, the lock index, lock itself, and its receivers.
+        /// </summary>
+        /// <param name="lockIdx">Lock Index</param>
+        /// <returns>Map<ByteString, object> where object is a lock transaction map</ByteString></returns>
         [Safe]
         public static Map<ByteString, object> GetLockTransaction(BigInteger lockIdx)
         {
@@ -266,6 +309,11 @@ namespace LatchBoxLockTokenVaultContract
             return map;
         }
 
+        /// <summary>
+        /// Returns the lock transaction list created by the initiator.
+        /// </summary>
+        /// <param name="initiatorAddress">Initiator Address</param>
+        /// <returns>Array of Map<ByteString, object> where object is a lock transaction map</returns>
         [Safe]
         public static Map<ByteString, object>[] GetLocksByInitiator(UInt160 initiatorAddress)
         {
@@ -289,6 +337,11 @@ namespace LatchBoxLockTokenVaultContract
             return maps;
         }
 
+        /// <summary>
+        /// Returns receiver's lock transaction list.
+        /// </summary>
+        /// <param name="receiverAddress">Receiver Address</param>
+        /// <returns>Array of Map<ByteString, object> where object is a lock transaction map</returns>
         [Safe]
         public static Map<ByteString, object>[] GetLocksByReceiver(UInt160 receiverAddress)
         {
@@ -312,6 +365,11 @@ namespace LatchBoxLockTokenVaultContract
             return maps;
         }
 
+        /// <summary>
+        /// Returns lock transaction list by asset/token.
+        /// </summary>
+        /// <param name="tokenScriptHash">Token Script Hash</param>
+        /// <returns>Array of Map<ByteString, object> where object is a lock transaction map</returns>
         [Safe]
         public static Map<ByteString, object>[] GetLocksByAsset(UInt160 tokenScriptHash)
         {
@@ -335,6 +393,10 @@ namespace LatchBoxLockTokenVaultContract
             return maps;
         }
 
+        /// <summary>
+        /// Returns the list of refund by assets/tokens from revoking a lock.
+        /// </summary>
+        /// <returns>Map<ByteString, BigInteger> where the key is the tokenScriptHash</returns>
         [Safe]
         public static Map<ByteString, BigInteger> GetRefunds()
         {
@@ -352,6 +414,10 @@ namespace LatchBoxLockTokenVaultContract
             return map;
         }
 
+        /// <summary>
+        /// Returns the list of assets/tokens that been locked and unlocked (claimed)
+        /// </summary>
+        /// <returns>Map<ByteString, object> where the key is a tokenScriptHash and value is a LatchBoxAssetCounter</returns>
         [Safe]
         public static Map<ByteString, object> GetAssetsCounter()
         {
@@ -373,6 +439,11 @@ namespace LatchBoxLockTokenVaultContract
             //do nothing
         }
 
+        /// <summary>
+        /// Converts the LatchBoxLockTransaction instance into a Map<ByteString, object>.
+        /// </summary>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
         private static Map<ByteString, object> LockTransactionToMap(LatchBoxLockTransaction transaction)
         {
             Map<ByteString, object> map = new();
@@ -386,10 +457,15 @@ namespace LatchBoxLockTokenVaultContract
             map["StartTime"] = transaction.Lock.StartTime;
             map["TokenScriptHash"] = transaction.Lock.TokenScriptHash;
             map["Receivers"] = transaction.Receivers;
-
             return map;
         }
 
+        /// <summary>
+        /// Returns lock transactions, it includes lock index, lock itself, and its receivers
+        /// </summary>
+        /// <param name="lockIdx"></param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception">Throw an exception if the lock doesn't exists.</exception>
         private static LatchBoxLockTransaction GetLockTransactionOrThrow(BigInteger lockIdx)
         {
             var lockObj = Locks[(ByteString)lockIdx];
