@@ -1,5 +1,4 @@
 ﻿using Blazored.FluentValidation;
-using Client.Infrastructure.Exceptions;
 using Client.Parameters;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
