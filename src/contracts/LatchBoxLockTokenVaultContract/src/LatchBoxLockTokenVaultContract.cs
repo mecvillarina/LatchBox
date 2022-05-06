@@ -297,7 +297,7 @@ namespace LatchBoxLockTokenVaultContract
         public static BigInteger GetLocksCount() => GetLockIndex();
 
         /// <summary>
-        /// Returns the lock transaction map, which includes, the lock index, lock itself, and its receivers.
+        /// Returns the lock transaction map, which includes the lock index, lock itself, and its receivers.
         /// </summary>
         /// <param name="lockIdx">Lock Index</param>
         /// <returns>Map<ByteString, object> where object is a lock transaction map</ByteString></returns>

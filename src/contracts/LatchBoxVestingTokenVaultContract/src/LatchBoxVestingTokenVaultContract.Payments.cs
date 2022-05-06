@@ -25,21 +25,48 @@ namespace LatchBoxVestingTokenVaultContract
         [InitialValue("NWN1iyBuSpsUhvLhLddo9tbU8fYEaLp4A4", ContractParameterType.Hash160)]
         static readonly UInt160 PlatformAddress = default!;
 
+        /// <summary>
+        /// Returns the fee token script hash
+        /// </summary>
+        /// <returns></returns>
         [Safe]
         public static UInt160 GetPaymentTokenScriptHash() => (UInt160)Storage.Get(Storage.CurrentContext, new byte[] { Prefix_PaymentTokenScriptHash });
 
+        /// <summary>
+        /// Returns the fee for adding a vesting
+        /// </summary>
+        /// <returns></returns>
         [Safe]
         public static BigInteger GetPaymentTokenAddVestingFee() => (BigInteger)Storage.Get(Storage.CurrentContext, new byte[] { Prefix_PaymentTokenAddVestingFee });
 
+        /// <summary>
+        /// Returns the fee for claiming a vesting
+        /// </summary>
+        /// <returns></returns>
         [Safe]
         public static BigInteger GetPaymentTokenClaimVestingFee() => (BigInteger)Storage.Get(Storage.CurrentContext, new byte[] { Prefix_PaymentTokenClaimVestingFee });
 
+        /// <summary>
+        /// Returns the fee for revoking a vesting
+        /// </summary>
+        /// <returns></returns>
         [Safe]
         public static BigInteger GetPaymentTokenRevokeVestingFee() => (BigInteger)Storage.Get(Storage.CurrentContext, new byte[] { Prefix_PaymentTokenRevokeVestingFee });
 
+        /// <summary>
+        /// Returns the total amount of fee token burned from the vesting transactions
+        /// </summary>
+        /// <returns></returns>
         [Safe]
         public static BigInteger GetPaymentBurnedAmount() => (BigInteger)Storage.Get(Storage.CurrentContext, new byte[] { Prefix_PaymentTokenBurnedAmount });
 
+        /// <summary>
+        /// Setup the payment
+        /// </summary>
+        /// <param name="tokenScriptHash">NEP-17 Token, it could be NEO, GAS or any NEP-17 token</param>
+        /// <param name="addVestingFee">Add Vesting Fee</param>
+        /// <param name="claimVestingFee">Claim Vesting Fee</param>
+        /// <param name="revokeVestingFee">Revoke Vesting Fee</param>
         public static void SetupPayment(UInt160 tokenScriptHash, BigInteger addVestingFee, BigInteger claimVestingFee, BigInteger revokeVestingFee) 
         {
             if (!IsOwner()) ReportErrorAndThrow("No authorization.");
