@@ -10,6 +10,11 @@ namespace LatchBoxVestingTokenVaultContract
 {
     public partial class LatchBoxVestingTokenVaultContract : SmartContract
     {
+        /// <summary>
+        /// Validates if the tokenScriptHash is valid to be vested
+        /// </summary>
+        /// <param name="tokenScriptHash">Token Script Hash</param>
+        /// <exception cref="System.Exception">Thrown when the tokenScriptHash is not a NEP-17 Token and if the NEP-17 Token doesn't have onNEP17Payment permission.</exception>
         public static void ValidateNEP17Token(UInt160 tokenScriptHash)
         {
             if (ValidateAddress(tokenScriptHash))

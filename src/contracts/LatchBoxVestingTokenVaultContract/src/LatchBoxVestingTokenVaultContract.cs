@@ -49,7 +49,16 @@ namespace LatchBoxVestingTokenVaultContract
 
         [DisplayName("ClaimedRefund")]
         public static event OnClaimedRefundDelegate OnClaimedRefund = default!;
-        
+
+        /// <summary>
+        /// Add vesting,the Tx.Sender will be the initiator of the vesting.
+        /// </summary>
+        /// <param name="tokenScriptHash">NEP-17 Token that the initiator wants to be vested.</param>
+        /// <param name="totalAmount">Total amount</param>
+        /// <param name="isRevocable">Determines if the vesting is revocable or not.</param>
+        /// <param name="periods">List of all periods including the receivers.</param>
+        /// <exception cref="System.Exception">Thrown when the parameter total amount is less than or equal to 0.</exception>
+        /// <exception cref="System.Exception">Thrown when the parameter periods is less than 2, any period doesn't have any receivers, or the receiver is not a standard address.</exception>
         public static void AddVesting(UInt160 tokenScriptHash, BigInteger totalAmount, bool isRevocable, LatchBoxVestingPeriodParameter[] periods)
         {
             ValidateNEP17Token(tokenScriptHash);
@@ -131,6 +140,17 @@ namespace LatchBoxVestingTokenVaultContract
             OnCreatedLatchBoxVesting(vestingIdx);
         }
 
+        /// <summary>
+        /// Claim vesting, this method can identity if the Tx.Sender is a receiver of a certain period of a vesting.
+        /// </summary>
+        /// <param name="vestingIdx">Vesting Index</param>
+        /// <param name="periodIdx">Period Index</param>
+        /// <exception cref="System.Exception">Thrown when the Tx.Sender is not a receiver of a certain period of a vesting.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting has been already revoked.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting is not active anymore.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting has been claimed.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting is not yet ready to be claimed.</exception>
+        /// <exception cref="System.Exception">Thrown when insufficient token balance.</exception>
         public void ClaimVesting(BigInteger vestingIdx, BigInteger periodIdx)
         {
             var transaction = GetVestingTransactionOrThrow(vestingIdx);
@@ -193,6 +213,14 @@ namespace LatchBoxVestingTokenVaultContract
             OnClaimedLatchBoxVesting(vestingIdx, periodIdx, receiver.Address, receiver.Amount);
         }
 
+        /// <summary>
+        /// Revoke vesting, only the initiator of the vesting can successfully execute this method.
+        /// </summary>
+        /// <param name="vestingIdx">Vesting Index</param>
+        /// /<exception cref="System.Exception">Thrown when the Tx.Sender is not the initiator of a certain vesting.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting has been already revoked by the initiator.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting is not active anymore.</exception>
+        /// <exception cref="System.Exception">Thrown when the vesting is irrevocable.</exception>
         public static void RevokeVesting(BigInteger vestingIdx)
         {
             var transaction = GetVestingTransactionOrThrow(vestingIdx);
@@ -251,6 +279,11 @@ namespace LatchBoxVestingTokenVaultContract
             OnRevokedLatchBoxVesting(vestingIdx, totalRefundAmount);
         }
 
+        /// <summary>
+        /// After revoking a vesting, the vesting initiator can call this method to claim the refund of the unclaimed vested tokens.
+        /// </summary>
+        /// <param name="tokenScriptHash"></param>
+        /// <exception cref="System.Exception">Thrown when the Token Script Hash is not on the refund list.</exception>
         public static void ClaimRefund(UInt160 tokenScriptHash)
         {
             ValidateNEP17Token(tokenScriptHash);
@@ -263,9 +296,18 @@ namespace LatchBoxVestingTokenVaultContract
             OnClaimedRefund(Tx.Sender, tokenScriptHash, refund.Amount);
         }
 
+        /// <summary>
+        /// Returns Total Number of Vestings
+        /// </summary>
+        /// <returns>BigInteger</returns>
         [Safe]
         public static BigInteger GetVestingsCount() => GetVestingIndex();
 
+        /// <summary>
+        /// Returns the vesting transaction map, which includes the vesting index, vesting itself, periods, and its receivers.
+        /// </summary>
+        /// <param name="vestingIdx">Vesting Index</param>
+        /// <returns>Map<ByteString, object> where object is a vesting transaction map</ByteString></returns>
         [Safe]
         public static Map<ByteString, object> GetVestingTransaction(BigInteger vestingIdx)
         {
@@ -274,6 +316,11 @@ namespace LatchBoxVestingTokenVaultContract
             return map;
         }
 
+        /// <summary>
+        /// Returns the vesting transaction list created by the initiator.
+        /// </summary>
+        /// <param name="initiatorAddress">Initiator Address</param>
+        /// <returns></returns>
         [Safe]
         public static Map<ByteString, object>[] GetVestingsByInitiator(UInt160 initiatorAddress)
         {
@@ -297,6 +344,11 @@ namespace LatchBoxVestingTokenVaultContract
             return maps;
         }
 
+        /// <summary>
+        /// Returns receiver's vesting transaction list.
+        /// </summary>
+        /// <param name="receiverAddress">Receiver Address</param>
+        /// <returns>Array of Map<ByteString, object> where object is a vesting transaction map</returns>
         [Safe]
         public static Map<ByteString, Map<ByteString, object>> GetVestingsByReceiver(UInt160 receiverAddress)
         {
@@ -320,6 +372,10 @@ namespace LatchBoxVestingTokenVaultContract
             return maps;
         }
 
+        /// <summary>
+        /// Returns the list of refund by assets/tokens from revoking a vesting.
+        /// </summary>
+        /// <returns>Map<ByteString, BigInteger> where the key is the tokenScriptHash</returns>
         [Safe]
         public static Map<ByteString, BigInteger> GetRefunds()
         {
@@ -343,7 +399,6 @@ namespace LatchBoxVestingTokenVaultContract
             //do nothing
         }
 
-       
         private static Map<ByteString, object> VestingTransactionToMap(LatchBoxVestingTransaction transaction)
         {
             Map<ByteString, object> map = new();
