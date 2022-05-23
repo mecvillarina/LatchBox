@@ -8,7 +8,10 @@
 
 <MudLayout>
     <MudAppBar Elevation="5" Dense="false">
-        <AppBarContent />
+        @if (IsLoaded)
+        {
+            <AppBarContent />
+        }
     </MudAppBar>
     <MudDrawer @bind-Open="DrawerOpen" Elevation="10" Width="300px" Variant="@DrawerVariant.Mini" ClipMode="DrawerClipMode.Never">
         @if (!DrawerOpen)
@@ -60,7 +63,10 @@
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False" Class="mt-4 mb-2 px-2 px-sm-4 py-4">
-            @Body
+            @if (IsLoaded)
+            {
+                @Body
+            }
         </MudContainer>
     </MudMainContent>
 </MudLayout>
