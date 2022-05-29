@@ -3,7 +3,7 @@
 **LatchBox** is a fully decentralized token lock and vesting platform on Neo Blockchain (N3). LatchBox aims to protect every cryptocurrency community from rug pulls and traitorous advisors. The native token used in LatchBox platform is named `LATCH` with a ScriptHash of `0xb9c2c7f906c66d5b9a27597a7168ccb0fe8c2442`.
 
 ## LatchBox Platform
-- **App Portal** - https://app-latchbox-testnet.azurewebsites.net/
+- **App Portal** - https://neon3-testnet.latchbox.io/
 - **Blockchain** - Neo Blockchain (N3)
     - **Network** - TESTNET (877933390)
     - **RPC Url** - http://seed1t4.neo.org:20332
