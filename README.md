@@ -8,9 +8,6 @@
     - **Network** - TESTNET (877933390)
     - **RPC Url** - http://seed1t4.neo.org:20332
 
-## Build Status
-[![Build Status](https://mecodes.visualstudio.com/LatchBox/_apis/build/status/LatchBox.Portal?branchName=main)](https://mecodes.visualstudio.com/LatchBox/_build/latest?definitionId=87&branchName=main)
-
 ## Features
 - **FOR TESTNET**, anyone can buy `LATCH` with `NEO` or `GAS` on the LatchBox Portal, the current conversion are:
     - 1 `NEO` = 500 `LATCH`
