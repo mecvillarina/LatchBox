@@ -1,7 +1,4 @@
-﻿using Client.Infrastructure.Settings;
-using MudBlazor;
-using System;
-using System.Threading.Tasks;
+﻿using MudBlazor;
 
 namespace Client.Shared
 {
@@ -12,7 +9,7 @@ namespace Client.Shared
         private MudTheme CurrentTheme { get; set; }
         public string Network { get; set; }
         public string RpcUrl { get; set; }
-
+        public bool IsLoaded { get; set; }
         protected override void OnInitialized()
         {
             CurrentTheme = ClientPreferenceManager.GetCurrentTheme();
@@ -28,6 +25,7 @@ namespace Client.Shared
                     await AppBreakpointService.InitAsync();
                     Network = RpcManager.GetNetwork();
                     RpcUrl = RpcManager.GetRpcUrl();
+                    IsLoaded = true;
                     StateHasChanged();
                 });
             }

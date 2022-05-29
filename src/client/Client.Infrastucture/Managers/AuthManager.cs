@@ -1,9 +1,7 @@
 ﻿using Client.Infrastructure.Managers.Interfaces;
 using Microsoft.AspNetCore.Components.Forms;
-using Neo.Wallets;
 using Neo.Wallets.NEP6;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +17,14 @@ namespace Client.Infrastructure.Managers
         public async Task<bool> IsAuthenticated()
         {
             var wallet = await ManagerToolkit.GetWalletAsync();
-            return wallet != null;
+
+            if (wallet != null)
+            {
+                var walletFilePath = $"{ManagerToolkit.FilePathWallet}/{wallet.Filename}";
+                return File.Exists(walletFilePath);
+            }
+
+            return false;
         }
 
         public async Task DisconnectWalletAsync()
@@ -68,6 +73,6 @@ namespace Client.Infrastructure.Managers
             }
         }
 
-       
+
     }
 }
